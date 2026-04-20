@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Trắc nghiệm Cấp số cộng - Cấp số nhân</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+            color: #1a1a2e;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 25px 30px;
+        }
+        h1 {
+            text-align: center;
+            font-size: 1.8rem;
+            color: #0f3460;
+            border-bottom: 3px solid #e94560;
+            display: inline-block;
+            width: auto;
+            margin: 0 auto 20px;
+            padding-bottom: 8px;
+        }
+        .title-wrapper {
+            text-align: center;
+        }
+        .info {
+            background: #e9ecef;
+            padding: 10px 15px;
+            border-radius: 12px;
+            margin: 20px 0;
+            font-size: 0.95rem;
+            text-align: center;
+        }
+        .question-card {
+            background: #ffffff;
+            border-left: 5px solid #e94560;
+            margin-bottom: 20px;
+            padding: 15px 20px;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            transition: 0.2s;
+        }
+        .question-card:hover {
+            background: #fef9f7;
+        }
+        .question-text {
+            font-weight: 600;
+            font-size: 1.05rem;
+            margin-bottom: 12px;
+            word-break: break-word;
+        }
+        .options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-left: 15px;
+        }
+        .option {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+        .option input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+            accent-color: #e94560;
+        }
+        button {
+            background: #0f3460;
+            color: white;
+            border: none;
+            padding: 12px 28px;
+            font-size: 1.1rem;
+            border-radius: 40px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.2s;
+            display: block;
+            margin: 30px auto 20px;
+            width: 200px;
+        }
+        button:hover {
+            background: #e94560;
+            transform: scale(1.02);
+        }
+        .result {
+            text-align: center;
+            background: #16213e;
+            color: white;
+            padding: 15px;
+            border-radius: 40px;
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin-top: 20px;
+            display: none;
+        }
+        .result span {
+            color: #f9c74f;
+            font-size: 1.8rem;
+        }
+        footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #e94560;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+            .options {
+                flex-direction: column;
+                gap: 10px;
+            }
+            .question-card {
+                padding: 12px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="title-wrapper">
+        <h1>📘 CẤP SỐ CỘNG - CẤP SỐ NHÂN</h1>
+    </div>
+    <div class="info">
+        ✅ Đề gồm <strong>35 câu trắc nghiệm</strong>.<br>
+        📌 Chọn đáp án cho mỗi câu, sau đó bấm "NỘP BÀI" để xem kết quả.
+    </div>
+
+    <form id="quizForm">
+        <div id="questions-container"></div>
+        <button type="button" id="submitBtn">✅ NỘP BÀI</button>
+    </form>
+    <div id="result" class="result"></div>
+    <footer>- ĐẬU NV1 CÙNG ANH TIẾN ĐẠT</footer>
+</div>
+
+<script>
+    // Dữ liệu các câu hỏi (35 câu)
+    const questionsData = [
+        { id: 1, text: "Cho cấp số cộng 2;5;8;11;14... Công sai của cấp số cộng đã cho bằng", options: ["-3", "3", "2", "14"], correct: "B" },
+        { id: 2, text: "Trong các dãy số sau, dãy số nào không là cấp số cộng?", options: ["2;0;-2;-4;-5", "1/2; -1/2; -3/2; -5/2; -7/2", "√2; √2; √2; √2; √2", "-7;-4;-1;2;5"], correct: "A" },
+        { id: 3, text: "Công thức tính số hạng tổng quát của cấp số cộng với công sai d và số hạng đầu u₁ là", options: ["uₙ = n.u₁ + n(n-1)d", "uₙ = u₁ + (n-1)d", "uₙ = u₁ + n(n-1)d/2", "uₙ = n.u₁ + n(n-1)d/2"], correct: "B" },
+        { id: 4, text: "Cho cấp số cộng (uₙ) với u₁ = 9 và công sai d = 2. Giá trị của u₂ bằng", options: ["11", "9/2", "18", "7"], correct: "A" },
+        { id: 5, text: "Cho cấp số cộng (uₙ) với u₁ = 5; u₂ = 10. Công sai của cấp số cộng đã cho bằng", options: ["-5", "5", "2", "15"], correct: "B" },
+        { id: 6, text: "Cho cấp số cộng (uₙ) với u₁ = 2 và u₇ = -10. Công sai của cấp số cộng đã cho bằng", options: ["2", "3", "-1", "-2"], correct: "D" },
+        { id: 7, text: "Cho cấp số cộng (uₙ) với u₁ = 1 và u₄ = -26. Công sai của (uₙ) bằng", options: ["-27", "-9", "-26", "∛(-26)"], correct: "B" },
+        { id: 8, text: "Cho cấp số cộng (uₙ) với u₁ = 4 và d = 8. Số hạng u₂₀ của cấp số cộng đã cho bằng", options: ["156", "165", "12", "245"], correct: "A" },
+        { id: 9, text: "Cho cấp số cộng (uₙ), với u₁ = 2, u₅ = 14. Công sai của cấp số cộng là", options: ["3", "-3", "4", "-4"], correct: "A" },
+        { id: 10, text: "Cho cấp số cộng (uₙ), biết u₃ = -2; u₇ = 18. Số hạng u₁₁ bằng", options: ["38", "20", "43", "33"], correct: "A" },
+        { id: 11, text: "Cho cấp số cộng (uₙ) với u₁ = 3 và d = -3. Tổng 10 số hạng đầu tiên của cấp số cộng đã cho bằng", options: ["26", "-26", "-105", "105"], correct: "C" },
+        { id: 12, text: "Cho cấp số cộng (uₙ) có u₁ = 1 và công sai d = 2. Tổng S₁₀ = u₁+...+u₁₀ bằng", options: ["110", "100", "21", "19"], correct: "B" },
+        { id: 13, text: "Cho cấp số cộng (uₙ) có số hạng đầu u₁ = 3 và công sai d = 2. Tổng của 2019 số hạng đầu bằng", options: ["4 080 399", "4 800 399", "4 399 080", "8 154 741"], correct: "A" },
+        { id: 14, text: "Một cấp số cộng có số hạng đầu u₁ = 1/3, công sai d = -1. Tổng n số hạng đầu bằng -425. Giá trị của n bằng", options: ["30", "60", "45", "15"], correct: "A" },
+        { id: 15, text: "Cho dãy số (uₙ) với uₙ = 2n + 1, số hạng thứ 2019 của dãy là", options: ["4039", "4390", "4930", "4093"], correct: "A" },
+        { id: 16, text: "Cho cấp số cộng (uₙ) với u₁ = 2; d = 9. Khi đó số 2018 là số hạng thứ mấy?", options: ["226", "225", "223", "224"], correct: "B" },
+        { id: 17, text: "Cho (uₙ) là cấp số cộng có u₄ + u₁₆ = 48. Số hạng u₁₀ bằng", options: ["438", "24", "96", "72"], correct: "B" },
+        { id: 18, text: "Cho cấp số cộng (uₙ) biết u₅ + u₇ = 19. Giá trị của u₂ + u₁₀ là", options: ["38", "29", "12", "19"], correct: "D" },
+        { id: 19, text: "Cho (uₙ) là cấp số cộng có u₉ = 5u₂ và u₁₃ = 2u₆ + 5. Số hạng đầu u₁ và công sai d là", options: ["u₁ = -3, d = 4", "u₁ = 3, d = 4", "u₁ = 4, d = 3", "u₁ = -4, d = 3"], correct: "B" },
+        { id: 20, text: "Trong các dãy số (uₙ) với số hạng tổng quát sau, dãy số nào là cấp số cộng?", options: ["uₙ = 5ⁿ", "uₙ = 2 - 5n", "uₙ = 5ⁿ - 2", "uₙ = 5 + n²"], correct: "B" },
+        { id: 21, text: "Trong các dãy số (uₙ) với số hạng tổng quát sau, dãy số nào là cấp số cộng?", options: ["uₙ = 3.2ⁿ", "uₙ = 3 - 2n", "uₙ = 2ⁿ + 3", "uₙ = 2 + n³"], correct: "B" },
+        { id: 23, text: "Cho cấp số cộng (uₙ) có u₁ = 5 và tổng của 50 số hạng đầu bằng 5150. Tìm công thức số hạng tổng quát uₙ.", options: ["uₙ = 1 + 4n", "uₙ = 5n", "uₙ = 3 + 2n", "uₙ = 2 + 3n"], correct: "A" },
+        { id: 25, text: "Cho cấp số nhân (uₙ) với u₁ = 3 và công bội q = 2. Giá trị của u₂ bằng", options: ["8", "9", "6", "3/2"], correct: "C" },
+        { id: 26, text: "Cho cấp số nhân (uₙ) với u₁ = 2 và u₂ = 6. Công bội của cấp số nhân đã cho bằng", options: ["3", "-4", "4", "1/3"], correct: "A" },
+        { id: 27, text: "Cho cấp số nhân (uₙ) với u₁ = 3; u₂ = 1. Công bội của cấp số nhân đã cho bằng", options: ["1/3", "-2", "3", "2"], correct: "A" },
+        { id: 28, text: "Dãy số nào sau đây không phải là cấp số nhân?", options: ["1; -3; 9; -27; 54", "1; 2; 4; 8; 16", "1; -1; 1; -1; 1", "1; -2; 4; -8; 16"], correct: "A" },
+        { id: 32, text: "Cho cấp số nhân có u₁ = 3, q = -2. Tính u₅", options: ["-6", "-5", "48", "-24"], correct: "C" },
+        { id: 33, text: "Cho cấp số nhân (uₙ) có u₁ = 2 và q = 3. Giá trị u₂₀₁₉ bằng", options: ["2·3²⁰¹⁸", "3·2²⁰¹⁸", "2·3²⁰¹⁹", "3·2²⁰¹⁹"], correct: "A" },
+        { id: 34, text: "Một cấp số nhân có u₁ = 3, q = 2. Biết Sₙ = 21. Tìm n?", options: ["10", "3", "7", "Không có giá trị"], correct: "B" },
+        { id: 35, text: "Cho cấp số nhân (uₙ) biết uₙ = 3ⁿ. Công bội q bằng", options: ["-3", "1/3", "±3", "3"], correct: "D" },
+        { id: 36, text: "Cho cấp số nhân (uₙ) có u₁ = 2 và u₆ = 486. Công bội q bằng", options: ["3", "5", "3/2", "2/3"], correct: "A" },
+        { id: 37, text: "Cho cấp số nhân (uₙ) có q > 1, u₂ = -3 và u₁+u₂+u₃ = -13. Số hạng đầu u₄ và công bội q là", options: ["u₁=1, q=3", "u₁=-1, q=-3", "u₁=-1, q=3", "u₁=1, q=-3"], correct: "C" },
+        { id: 38, text: "Cho cấp số nhân (uₙ) biết u₄ - u₂ = 54 và u₅ - u₃ = 108. Tìm u₁ và q.", options: ["u₁=9, q=2", "u₁=9, q=-2", "u₁=-9, q=-2", "u₁=-9, q=2"], correct: "A" },
+        { id: 39, text: "Cho cấp số nhân (uₙ) có u₄+u₆ = -540 và u₃+u₅ = 180. Tính S₂₁.", options: ["½(3²¹+1)", "3²¹-1", "1-3²¹", "-½(3²¹+1)"], correct: "A" },
+        { id: 40, text: "Một loại vi khuẩn sau mỗi phút số lượng tăng gấp đôi. Sau 5 phút có 64000 con. Hỏi sau bao nhiêu phút có 2048000 con?", options: ["10", "11", "26", "50"], correct: "A" }
+    ];
+
+    function renderQuestions() {
+        const container = document.getElementById('questions-container');
+        container.innerHTML = '';
+        for (let q of questionsData) {
+            const card = document.createElement('div');
+            card.className = 'question-card';
+            card.dataset.id = q.id;
+            
+            const questionText = document.createElement('div');
+            questionText.className = 'question-text';
+            questionText.innerHTML = `<strong>Câu ${q.id}:</strong> ${q.text}`;
+            card.appendChild(questionText);
+            
+            const optionsDiv = document.createElement('div');
+            optionsDiv.className = 'options';
+            const letters = ['A', 'B', 'C', 'D'];
+            for (let i = 0; i < q.options.length; i++) {
+                const opt = q.options[i];
+                const letter = letters[i];
+                const label = document.createElement('label');
+                label.className = 'option';
+                const radio = document.createElement('input');
+                radio.type = 'radio';
+                radio.name = `q${q.id}`;
+                radio.value = letter;
+                const span = document.createElement('span');
+                span.innerHTML = `<strong>${letter}.</strong> ${opt}`;
+                label.appendChild(radio);
+                label.appendChild(span);
+                optionsDiv.appendChild(label);
+            }
+            card.appendChild(optionsDiv);
+            container.appendChild(card);
+        }
+    }
+
+    function gradeQuiz() {
+        let correctCount = 0;
+        for (let q of questionsData) {
+            const selected = document.querySelector(`input[name="q${q.id}"]:checked`);
+            if (selected && selected.value === q.correct) {
+                correctCount++;
+            }
+        }
+        const total = questionsData.length;
+        const resultDiv = document.getElementById('result');
+        resultDiv.style.display = 'block';
+        resultDiv.innerHTML = `📊 KẾT QUẢ: Bạn đúng <span>${correctCount}</span> / ${total} câu (${Math.round(correctCount/total*100)}%) 🎯`;
+        resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    renderQuestions();
+    document.getElementById('submitBtn').addEventListener('click', gradeQuiz);
+</script>
+</body>
+</html>
