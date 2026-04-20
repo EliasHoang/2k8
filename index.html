@@ -22,7 +22,6 @@
             justify-content: center;
         }
 
-        /* Màn hình nhập mật khẩu */
         .password-screen {
             background: white;
             border-radius: 32px;
@@ -86,7 +85,6 @@
             display: none;
         }
 
-        /* Nội dung chính (ẩn ban đầu) */
         .quiz-container {
             max-width: 1000px;
             width: 100%;
@@ -311,14 +309,14 @@
         <button type="button" id="submitBtn">📝 NỘP BÀI</button>
     </form>
     <div id="result" class="result"></div>
-    <footer>🎯 ĐẬU NV1 CÙNG ANH TIẾN ĐẠT </footer>
+    <footer>🎯 ĐẬU NV1 CÙNG ANH TIẾN ĐẠT</footer>
 </div>
 
 <script>
-    // Mật khẩu mặc định (có thể đổi thành mật khẩu bạn muốn)
+    // Mật khẩu mặc định
     const CORRECT_PASSWORD = "tamduc";
 
-    // Dữ liệu 35 câu (giống như trước)
+    // Dữ liệu 35 câu
     const questionsData = [
         { id: 1, text: "Cho cấp số cộng 2;5;8;11;14... Công sai của cấp số cộng đã cho bằng", options: ["-3", "3", "2", "14"], correct: "B" },
         { id: 2, text: "Trong các dãy số sau, dãy số nào không là cấp số cộng?", options: ["2;0;-2;-4;-5", "1/2; -1/2; -3/2; -5/2; -7/2", "√2; √2; √2; √2; √2", "-7;-4;-1;2;5"], correct: "A" },
@@ -356,6 +354,82 @@
         { id: 39, text: "Cho cấp số nhân (uₙ) có u₄+u₆ = -540 và u₃+u₅ = 180. Tính S₂₁.", options: ["½(3²¹+1)", "3²¹-1", "1-3²¹", "-½(3²¹+1)"], correct: "A" },
         { id: 40, text: "Một loại vi khuẩn sau mỗi phút số lượng tăng gấp đôi. Sau 5 phút có 64000 con. Hỏi sau bao nhiêu phút có 2048000 con?", options: ["10", "11", "26", "50"], correct: "A" }
     ];
+
+    // ========== CÁC HÀM LƯU TRẠNG THÁI ==========
+    function saveAnswersToLocal() {
+        const allRadios = document.querySelectorAll('input[type="radio"]');
+        const answers = {};
+        allRadios.forEach(radio => {
+            if (radio.checked) {
+                answers[radio.name] = radio.value;
+            }
+        });
+        localStorage.setItem('quizAnswers', JSON.stringify(answers));
+        localStorage.setItem('quizTimestamp', Date.now());
+    }
+
+    function restoreAnswersFromLocal() {
+        const saved = localStorage.getItem('quizAnswers');
+        if (!saved) return false;
+        const answers = JSON.parse(saved);
+        let restoredCount = 0;
+        for (const [name, value] of Object.entries(answers)) {
+            const radio = document.querySelector(`input[name="${name}"][value="${value}"]`);
+            if (radio) {
+                radio.checked = true;
+                restoredCount++;
+            }
+        }
+        if (restoredCount > 0) {
+            const infoDiv = document.querySelector('.info');
+            const originalText = infoDiv.innerHTML;
+            infoDiv.innerHTML = `🔄 Đã khôi phục ${restoredCount} câu trả lời từ lần trước! 🎉<br>📌 Chọn đáp án, bấm "NỘP BÀI" để xem kết quả.`;
+            setTimeout(() => { infoDiv.innerHTML = originalText; }, 3000);
+        }
+        return restoredCount > 0;
+    }
+
+    function autoSaveOnChange() {
+        const allRadios = document.querySelectorAll('input[type="radio"]');
+        allRadios.forEach(radio => {
+            radio.addEventListener('change', function() {
+                saveAnswersToLocal();
+                updateProgress();
+            });
+        });
+    }
+
+    function clearSavedAnswers() {
+        localStorage.removeItem('quizAnswers');
+        localStorage.removeItem('quizTimestamp');
+    }
+
+    function addResetButton() {
+        if (document.getElementById('resetBtn')) return; // tránh tạo nhiều lần
+        const submitBtn = document.getElementById('submitBtn');
+        const resetBtn = document.createElement('button');
+        resetBtn.id = 'resetBtn';
+        resetBtn.innerHTML = '🔄 LÀM LẠI TỪ ĐẦU';
+        resetBtn.style.background = '#6c757d';
+        resetBtn.style.marginTop = '10px';
+        resetBtn.style.width = '220px';
+        resetBtn.onclick = function() {
+            if (confirm('Bạn có chắc muốn xóa tất cả câu trả lời và làm lại từ đầu?')) {
+                const allRadios = document.querySelectorAll('input[type="radio"]');
+                allRadios.forEach(radio => radio.checked = false);
+                clearSavedAnswers();
+                updateProgress();
+                const resultDiv = document.getElementById('result');
+                resultDiv.style.display = 'block';
+                resultDiv.innerHTML = '🗑️ Đã xóa toàn bộ câu trả lời. Bạn có thể làm lại từ đầu!';
+                setTimeout(() => {
+                    if (resultDiv.innerHTML.includes('Đã xóa')) resultDiv.style.display = 'none';
+                }, 2000);
+            }
+        };
+        submitBtn.parentNode.insertBefore(resetBtn, submitBtn.nextSibling);
+    }
+    // ========== KẾT THÚC LƯU TRẠNG THÁI ==========
 
     // Hàm render câu hỏi
     function renderQuestions() {
@@ -434,18 +508,18 @@
         const pwd = document.getElementById('passwordInput').value;
         const errorDiv = document.getElementById('errorMsg');
         if (pwd === CORRECT_PASSWORD) {
-            // Ẩn màn hình password, hiện quiz container
             document.getElementById('passwordScreen').style.display = 'none';
             document.getElementById('quizContainer').style.display = 'block';
-            // Render câu hỏi lần đầu
-            renderQuestions();
-            updateProgress();
-            // Gắn sự kiện change cho radio để cập nhật progress
-            document.addEventListener('change', function(e) {
-                if (e.target && e.target.type === 'radio') {
-                    updateProgress();
-                }
-            });
+            
+            renderQuestions();               // tạo các câu hỏi
+            updateProgress();                // cập nhật progress ban đầu
+            
+            // Kích hoạt lưu trạng thái sau khi đã có radio
+            autoSaveOnChange();              // tự động lưu khi chọn đáp án
+            restoreAnswersFromLocal();       // khôi phục câu đã làm từ trước
+            updateProgress();                // cập nhật lại progress sau khi khôi phục
+            addResetButton();                // thêm nút "Làm lại từ đầu"
+            
             document.getElementById('submitBtn').addEventListener('click', gradeQuiz);
         } else {
             errorDiv.style.display = 'block';
