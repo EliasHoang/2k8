@@ -3,9 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>Trắc nghiệm Cấp số cộng - Cấp số nhân</title>
+<title>Trắc nghiệm Toán - 14 Chuyên đề</title>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
+/* (giữ nguyên toàn bộ style như phiên bản trước) */
 :root {
   --bg-gradient-start: #0b3b5f;
   --bg-gradient-end: #1b4f72;
@@ -19,7 +20,6 @@
   --border-color: #cbd5e1;
   --correct-color: #10b981;
   --wrong-color: #ef4444;
-  --flag-color: #f59e0b;
   --shadow-sm: 0 4px 12px rgba(0,0,0,0.05);
   --shadow-lg: 0 25px 50px -12px rgba(0,0,0,0.25);
 }
@@ -34,100 +34,269 @@
   --bg-option-hover: #475569;
   --bg-info: #334155;
   --border-color: #475569;
-  --flag-color: #fbbf24;
+  --shadow-sm: 0 4px 12px rgba(0,0,0,0.3);
+  --shadow-lg: 0 25px 50px -12px rgba(0,0,0,0.5);
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'Be Vietnam Pro', 'Segoe UI', sans-serif; margin: 0; min-height: 100vh; overflow-x: hidden; }
-
-/* Portal login (giữ nguyên) */
-#login-screen { position: fixed; inset: 0; display: flex; justify-content: center; align-items: center; background: radial-gradient(circle at center, #0f172a, #020617); z-index: 999; transition: opacity 0.8s ease, transform 0.8s ease; }
+body {
+  font-family: 'Be Vietnam Pro', 'Segoe UI', sans-serif;
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+  overflow-x: hidden;
+  transition: background 0.3s;
+}
+#login-screen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: radial-gradient(circle at center, #0f172a, #020617);
+  z-index: 999;
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
 #login-screen.exit { opacity: 0; transform: scale(1.06); pointer-events: none; }
-.portal { position: absolute; width: 1200px; height: 1200px; background: conic-gradient(#6366f1, #8b5cf6, #ec4899, #3b82f6, #6366f1); border-radius: 50%; filter: blur(110px); animation: portalSpin 18s linear infinite; opacity: 0.55; }
+.portal {
+  position: absolute;
+  width: 1200px;
+  height: 1200px;
+  background: conic-gradient(#6366f1, #8b5cf6, #ec4899, #3b82f6, #6366f1);
+  border-radius: 50%;
+  filter: blur(110px);
+  animation: portalSpin 18s linear infinite;
+  opacity: 0.55;
+}
 @keyframes portalSpin { to { transform: rotate(360deg); } }
-.portal-light { position: fixed; width: 280px; height: 280px; background: radial-gradient(circle, rgba(255,255,255,0.18), transparent 70%); pointer-events: none; transform: translate(-50%, -50%); transition: left 0.1s, top 0.1s; z-index: 1000; }
-.login-card { position: relative; z-index: 10; width: 360px; padding: 44px 40px; border-radius: 28px; backdrop-filter: blur(36px); background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); box-shadow: 0 30px 80px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.1); color: white; animation: cardAppear 1s cubic-bezier(0.16, 1, 0.3, 1) both; }
-@keyframes cardAppear { from { opacity: 0; transform: scale(0.82) translateY(40px); filter: blur(12px); } to { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); } }
-.login-icon { width: 56px; height: 56px; margin: 0 auto 20px; background: linear-gradient(135deg, #6366f1, #ec4899); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 8px 24px rgba(99,102,241,0.5); }
+.portal-light {
+  position: fixed;
+  width: 280px;
+  height: 280px;
+  background: radial-gradient(circle, rgba(255,255,255,0.18), transparent 70%);
+  pointer-events: none;
+  transform: translate(-50%, -50%);
+  transition: left 0.1s, top 0.1s;
+  z-index: 1000;
+}
+.login-card {
+  position: relative;
+  z-index: 10;
+  width: 360px;
+  padding: 44px 40px;
+  border-radius: 28px;
+  backdrop-filter: blur(36px);
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.12);
+  box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+  color: white;
+  animation: cardAppear 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@keyframes cardAppear {
+  from { opacity: 0; transform: scale(0.82) translateY(40px); filter: blur(12px); }
+  to   { opacity: 1; transform: scale(1) translateY(0);       filter: blur(0); }
+}
+.login-icon {
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 20px;
+  background: linear-gradient(135deg, #6366f1, #ec4899);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  font-weight: bold;
+}
 .login-title { text-align: center; font-size: 22px; font-weight: 600; margin-bottom: 6px; }
 .login-subtitle { text-align: center; font-size: 13px; color: rgba(255,255,255,0.5); margin-bottom: 32px; }
 .field { position: relative; margin-bottom: 16px; }
-.field input { width: 100%; padding: 14px 16px; border-radius: 14px; border: 1px solid rgba(255,255,255,0.1); outline: none; background: rgba(255,255,255,0.06); color: white; font-size: 15px; }
+.field input {
+  width: 100%;
+  padding: 14px 16px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.1);
+  outline: none;
+  background: rgba(255,255,255,0.06);
+  color: white;
+  font-size: 15px;
+  font-family: inherit;
+}
 .field input:focus { border-color: rgba(139,92,246,0.7); box-shadow: 0 0 0 3px rgba(99,102,241,0.2); }
-.field label { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); font-size: 14px; color: rgba(255,255,255,0.35); pointer-events: none; transition: 0.25s; }
-.field input:focus ~ label, .field input:not(:placeholder-shown) ~ label { top: -8px; font-size: 11px; color: rgba(139,92,246,0.9); }
-.login-btn { width: 100%; padding: 15px; border-radius: 14px; border: none; background: linear-gradient(135deg, #6366f1, #8b5cf6, #ec4899); color: white; font-weight: 600; cursor: pointer; margin-top: 8px; transition: 0.2s; }
-.login-btn:hover { transform: translateY(-1px); box-shadow: 0 12px 32px rgba(99,102,241,0.5); }
-.login-error { margin-top: 12px; text-align: center; font-size: 13px; color: #f87171; min-height: 20px; animation: shake 0.4s ease; }
-@keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
-.btn-ripple { position: absolute; border-radius: 50%; background: rgba(255,255,255,0.4); transform: scale(0); animation: ripple 0.6s linear; pointer-events: none; }
-@keyframes ripple { to { transform: scale(4); opacity: 0; } }
-
-/* Quiz app */
-#quiz-app { display: none; min-height: 100vh; background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end)); padding: 20px; }
-#quiz-app.visible { display: block; animation: quizFadeIn 0.7s; }
-@keyframes quizFadeIn { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
-.quiz-wrapper { max-width: 900px; margin: 0 auto; background: var(--bg-card); border-radius: 28px; box-shadow: var(--shadow-lg); padding: 30px 32px; }
-.quiz-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid var(--border-color); }
-.quiz-title { font-size: 22px; font-weight: 700; color: var(--text-color); }
-.quiz-meta { background: var(--bg-info); padding: 6px 14px; border-radius: 30px; font-weight: 500; color: var(--secondary-color); }
+.field label {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  color: rgba(255,255,255,0.35);
+  pointer-events: none;
+  transition: 0.25s ease;
+}
+.field input:focus ~ label, .field input:not(:placeholder-shown) ~ label {
+  top: -8px;
+  font-size: 11px;
+  color: rgba(139,92,246,0.9);
+}
+.login-btn {
+  width: 100%;
+  padding: 15px;
+  border-radius: 14px;
+  border: none;
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+  color: white;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: transform 0.15s;
+  margin-top: 8px;
+}
+.login-btn:hover { transform: translateY(-1px); }
+.login-error { margin-top: 12px; text-align: center; font-size: 13px; color: #f87171; min-height: 20px; animation: shake 0.4s ease; display: none; }
+@keyframes shake { 0%,100%{ transform: translateX(0); } 25%{ transform: translateX(-6px); } 75%{ transform: translateX(6px); } }
+#app-container {
+  display: none;
+  min-height: 100vh;
+  background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+  padding: 20px;
+}
+#app-container.visible { display: block; }
+.quiz-wrapper, .admin-wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+  background: var(--bg-card);
+  border-radius: 28px;
+  box-shadow: var(--shadow-lg);
+  padding: 30px 32px;
+}
+.topic-selector {
+  margin-bottom: 25px;
+  padding: 15px;
+  background: var(--bg-info);
+  border-radius: 20px;
+}
+.topic-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+.topic-btn {
+  padding: 10px 20px;
+  border-radius: 40px;
+  border: none;
+  background: var(--bg-option);
+  color: var(--text-color);
+  font-weight: 600;
+  cursor: pointer;
+}
+.topic-btn.active {
+  background: var(--primary-color);
+  color: white;
+}
+.part-buttons {
+  display: flex;
+  gap: 15px;
+}
+.part-btn {
+  padding: 8px 20px;
+  border-radius: 30px;
+  border: none;
+  background: var(--bg-option);
+  color: var(--text-color);
+  font-weight: 500;
+  cursor: pointer;
+}
+.part-btn.active {
+  background: var(--secondary-color);
+  color: white;
+}
+.quiz-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
 .progress-bar { margin-bottom: 25px; }
-.progress-label { display: flex; justify-content: space-between; font-size: 13px; color: var(--text-color); margin-bottom: 6px; }
+.progress-label { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px; }
 .progress-track { height: 6px; background: var(--border-color); border-radius: 99px; overflow: hidden; }
 .progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); width: 0%; transition: width 0.3s; }
-
-/* Chú thích màu sắc */
-.legend { display: flex; justify-content: center; gap: 20px; margin-bottom: 15px; font-size: 12px; color: var(--text-color); background: var(--bg-info); padding: 6px 12px; border-radius: 40px; width: fit-content; margin-left: auto; margin-right: auto; }
-.legend span { display: inline-flex; align-items: center; gap: 5px; }
-.legend .color-box { width: 16px; height: 16px; border-radius: 4px; display: inline-block; }
-
-.nav-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 25px; justify-content: center; max-height: 120px; overflow-y: auto; padding: 8px; background: var(--bg-info); border-radius: 20px; position: relative; }
-.nav-btn { width: 44px; height: 44px; border-radius: 12px; border: none; background: var(--bg-option); color: var(--text-color); font-weight: 600; font-size: 16px; cursor: pointer; transition: all 0.2s; position: relative; }
-.nav-btn:hover { background: var(--secondary-color); color: white; transform: scale(1.05); }
+.nav-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 25px; justify-content: center; max-height: 120px; overflow-y: auto; padding: 8px; background: var(--bg-info); border-radius: 20px; }
+.nav-btn {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: none;
+  background: var(--bg-option);
+  color: var(--text-color);
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+}
 .nav-btn.active { background: var(--primary-color); color: white; }
 .nav-btn.answered { background: var(--correct-color); color: white; }
-.nav-btn.flagged { background: var(--flag-color); color: #1e293b; }
-.nav-btn.flagged::after { content: "🏁"; position: absolute; top: -6px; right: -6px; font-size: 12px; background: white; border-radius: 20px; padding: 0 4px; }
-/* Tooltip cho nav-btn */
-.nav-btn[data-tooltip]:hover::before { content: attr(data-tooltip); position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 4px 8px; border-radius: 8px; font-size: 12px; white-space: nowrap; z-index: 10; margin-bottom: 6px; }
-
+.nav-btn.flagged::after {
+  content: "🚩";
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  font-size: 14px;
+  background: var(--bg-card);
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 .question-card { background: var(--bg-info); border-radius: 20px; padding: 24px; margin-bottom: 20px; }
-.question-number { font-size: 13px; font-weight: 600; color: var(--secondary-color); margin-bottom: 10px; }
-.question-text { font-size: 18px; font-weight: 600; color: var(--text-color); margin-bottom: 20px; line-height: 1.5; }
+.question-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+.flag-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  padding: 5px;
+  border-radius: 50%;
+  transition: 0.2s;
+}
+.flag-btn:hover { transform: scale(1.1); background: rgba(0,0,0,0.1); }
+.question-text { font-size: 18px; font-weight: 600; margin-bottom: 20px; }
 .options { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
-.option { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: var(--bg-option); border: 2px solid var(--border-color); border-radius: 14px; cursor: pointer; transition: all 0.2s; color: var(--text-color); }
-.option:hover { background: var(--bg-option-hover); transform: translateX(4px); }
-.option input { accent-color: var(--secondary-color); cursor: pointer; }
-.flag-button { margin-top: 16px; padding: 8px 16px; background: rgba(245, 158, 11, 0.15); border: 1px solid var(--flag-color); border-radius: 40px; font-size: 13px; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; color: var(--flag-color); transition: 0.2s; }
-.flag-button:hover { background: rgba(245, 158, 11, 0.3); }
-.answer-result { margin-top: 16px; padding: 14px 18px; border-radius: 14px; font-size: 14px; display: none; }
-.answer-result.correct { background: rgba(16, 185, 129, 0.1); border-left: 4px solid var(--correct-color); color: var(--correct-color); display: block; }
-.answer-result.wrong { background: rgba(239, 68, 68, 0.1); border-left: 4px solid var(--wrong-color); color: var(--wrong-color); display: block; }
-.navigation-buttons { display: flex; justify-content: space-between; margin-top: 15px; flex-wrap: wrap; gap: 15px; }
-.nav-control { display: flex; gap: 15px; }
-.action-buttons { display: flex; justify-content: center; gap: 20px; margin: 30px 0 20px; }
-.btn { padding: 12px 24px; border-radius: 40px; border: none; font-weight: 700; font-size: 15px; cursor: pointer; transition: 0.2s; }
+.option { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: var(--bg-option); border: 2px solid var(--border-color); border-radius: 14px; cursor: pointer; }
+.option:hover { background: var(--bg-option-hover); }
+.option input { accent-color: var(--secondary-color); }
+.answer-result { margin-top: 16px; padding: 14px 18px; border-radius: 14px; display: none; }
+.answer-result.correct { background: rgba(16,185,129,0.1); border-left: 4px solid var(--correct-color); display: block; }
+.answer-result.wrong { background: rgba(239,68,68,0.1); border-left: 4px solid var(--wrong-color); display: block; }
+.navigation-buttons { display: flex; justify-content: space-between; margin-top: 15px; }
+.action-buttons { display: flex; justify-content: center; gap: 15px; margin: 30px 0 20px; flex-wrap: wrap; }
+.btn { padding: 10px 20px; border-radius: 40px; border: none; font-weight: 600; cursor: pointer; font-size: 14px; }
 .btn-primary { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white; }
-.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(0,0,0,0.2); }
 .btn-secondary { background: #6c757d; color: white; }
+.btn-danger { background: #dc3545; color: white; }
 .result-summary { background: var(--bg-info); border-radius: 20px; padding: 20px; margin-top: 25px; text-align: center; display: none; }
-.result-stats { display: flex; justify-content: center; gap: 30px; margin: 20px 0; flex-wrap: wrap; }
-.stat { text-align: center; }
+.result-stats { display: flex; justify-content: center; gap: 30px; margin: 20px 0; }
 .stat-value { font-size: 32px; font-weight: 700; color: var(--secondary-color); }
-.theme-toggle { position: fixed; top: 20px; right: 20px; width: 44px; height: 44px; border-radius: 50%; background: rgba(255,255,255,0.12); backdrop-filter: blur(12px); color: white; font-size: 20px; cursor: pointer; z-index: 100; display: none; align-items: center; justify-content: center; }
+.admin-tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid var(--border-color); }
+.tab-btn { background: none; border: none; padding: 10px 20px; font-size: 16px; font-weight: 600; cursor: pointer; color: var(--text-color); opacity: 0.6; }
+.tab-btn.active { opacity: 1; border-bottom: 3px solid var(--secondary-color); }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+.admin-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+.admin-table th, .admin-table td { border: 1px solid var(--border-color); padding: 10px; text-align: center; }
+.admin-table th { background: var(--primary-color); color: white; }
+.theme-toggle {
+  position: fixed; top: 20px; right: 20px; width: 44px; height: 44px; border-radius: 50%;
+  background: rgba(255,255,255,0.12); backdrop-filter: blur(12px); color: white; font-size: 20px;
+  cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 100; display: none;
+}
 .theme-toggle.show { display: flex; }
 footer { text-align: center; margin-top: 30px; font-size: 13px; color: var(--text-color); opacity: 0.6; border-top: 1px solid var(--border-color); padding-top: 18px; }
-
-/* Modal hướng dẫn */
-.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 1000; visibility: hidden; opacity: 0; transition: 0.2s; }
-.modal-overlay.active { visibility: visible; opacity: 1; }
-.modal-content { background: var(--bg-card); color: var(--text-color); max-width: 500px; width: 90%; border-radius: 28px; padding: 28px; box-shadow: var(--shadow-lg); text-align: center; animation: modalPop 0.3s ease; }
-@keyframes modalPop { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-.modal-content h3 { font-size: 24px; margin-bottom: 20px; color: var(--secondary-color); }
-.modal-content ul { text-align: left; margin: 20px 0; padding-left: 20px; }
-.modal-content li { margin: 12px 0; line-height: 1.4; }
-.modal-content .btn { margin-top: 20px; width: 100%; }
-
-@media (max-width: 600px) { .quiz-wrapper { padding: 18px; } .nav-btn { width: 36px; height: 36px; font-size: 14px; } .legend { font-size: 10px; gap: 12px; } }
+.modal {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; visibility: hidden; opacity: 0; transition: 0.2s;
+}
+.modal.show { visibility: visible; opacity: 1; }
+.modal-content { background: var(--bg-card); padding: 25px; border-radius: 20px; width: 90%; max-width: 400px; color: var(--text-color); }
+.modal-content h3 { margin-bottom: 15px; }
+.modal-content input { width: 100%; padding: 10px; margin-bottom: 15px; border-radius: 12px; border: 1px solid var(--border-color); background: var(--bg-option); color: var(--text-color); }
+.modal-buttons { display: flex; justify-content: flex-end; gap: 10px; }
+@media (max-width: 600px) { .quiz-wrapper, .admin-wrapper { padding: 18px; } .nav-btn { width: 36px; height: 36px; } }
 </style>
 </head>
 <body>
@@ -135,370 +304,590 @@ footer { text-align: center; margin-top: 30px; font-size: 13px; color: var(--tex
   <div class="portal"></div>
   <div class="portal-light" id="portalLight"></div>
   <div class="login-card">
-    <div class="login-icon">📐</div>
+    <div class="login-icon">π</div>
     <div class="login-title">Trắc Nghiệm Toán</div>
-    <div class="login-subtitle">Cấp số cộng · Cấp số nhân</div>
-    <div class="field">
-      <input type="password" id="passwordInput" placeholder=" " autocomplete="current-password">
-      <label>Nhập mật khẩu</label>
-    </div>
-    <button class="login-btn" id="loginBtn">Bắt đầu thi →</button>
+    <div class="login-subtitle">14 Chuyên đề</div>
+    <div class="field"><input type="text" id="loginUsername" placeholder=" "><label>Mã số / Tên đăng nhập</label></div>
+    <div class="field"><input type="password" id="loginPassword" placeholder=" "><label>Mật khẩu</label></div>
+    <button class="login-btn" id="loginBtn">Đăng nhập →</button>
     <div class="login-error" id="loginError"></div>
   </div>
 </div>
 <button class="theme-toggle" id="themeToggle">🌙</button>
-<div id="quiz-app">
-  <div class="quiz-wrapper">
-    <div class="quiz-header">
-      <div class="quiz-title">📘 Cấp số cộng · Cấp số nhân</div>
-      <div class="quiz-meta">40 câu</div>
-    </div>
-    <div class="progress-bar">
-      <div class="progress-label"><span>Tiến độ làm bài</span><span id="answeredPercent">0%</span></div>
-      <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
-    </div>
-    <!-- Chú thích màu sắc -->
-    <div class="legend">
-      <span><div class="color-box" style="background: var(--correct-color);"></div> Đã trả lời</span>
-      <span><div class="color-box" style="background: var(--flag-color);"></div> Có cờ 🏁</span>
-      <span><div class="color-box" style="background: var(--primary-color);"></div> Đang xem</span>
-      <span><div class="color-box" style="background: var(--bg-option); border:1px solid var(--border-color);"></div> Chưa làm</span>
-    </div>
-    <div id="navGrid" class="nav-grid"></div>
-    <div id="currentQuestion"></div>
-    <div class="navigation-buttons">
-      <div class="nav-control">
+<div id="app-container"></div>
+
+<script>
+// ========== DỮ LIỆU NGƯỜI DÙNG ==========
+const DEFAULT_USERS = [
+  { id: "2608001", username: "2608001", password: "123", fullname: "Nguyễn Văn A", role: "student" },
+  { id: "2608002", username: "2608002", password: "123", fullname: "Trần Thị B", role: "student" },
+  { id: "admin", username: "admin", password: "123", fullname: "Giáo viên", role: "admin" }
+];
+function loadUsers() {
+  const stored = localStorage.getItem('users_list');
+  if (stored) return JSON.parse(stored);
+  localStorage.setItem('users_list', JSON.stringify(DEFAULT_USERS));
+  return [...DEFAULT_USERS];
+}
+function saveUsers(users) { localStorage.setItem('users_list', JSON.stringify(users)); }
+
+// ========== CÂU HỎI CHUYÊN ĐỀ 1 (40 câu, đã sắp xếp lại) ==========
+// 15 câu đầu (bài tập trên lớp) gồm 7 câu CSC + 8 câu CSN, dễ, áp dụng công thức.
+// 25 câu sau (bài tập về nhà) giữ nguyên thứ tự cũ (từ câu 16 đến 40 trong bản gốc).
+const allQuestionsCh1 = [
+  // === PHẦN DỄ: BÀI TẬP TRÊN LỚP (15 câu) ===
+  // CSC (7 câu)
+  { text: "Cho cấp số cộng 2;5;8;11;14... Công sai?", options: ["A. -3", "B. 3", "C. 2", "D. 14"], correct: 1, explanation: "d = 5-2 = 3." },
+  { text: "CSC có u₁ = 9, d = 2. Giá trị u₂ là?", options: ["A. 11", "B. 9/2", "C. 18", "D. 7"], correct: 0, explanation: "u₂ = 9 + 2 = 11." },
+  { text: "CSC có u₁ = 5, u₂ = 10. Công sai d = ?", options: ["A. -5", "B. 5", "C. 2", "D. 15"], correct: 1, explanation: "d = 10 - 5 = 5." },
+  { text: "CSC có u₁ = 2, u₇ = -10. Công sai d = ?", options: ["A. 2", "B. 3", "C. -1", "D. -2"], correct: 3, explanation: "u₇ = 2 + 6d = -10 ⇒ 6d = -12 ⇒ d = -2." },
+  { text: "CSC có u₁ = 4, d = 8. Số hạng u₂₀ = ?", options: ["A. 156", "B. 165", "C. 12", "D. 245"], correct: 0, explanation: "u₂₀ = 4 + 19·8 = 156." },
+  { text: "CSC có u₁ = 2, u₅ = 14. Công sai d = ?", options: ["A. 3", "B. -3", "C. 4", "D. -4"], correct: 0, explanation: "u₅ = 2 + 4d = 14 ⇒ 4d = 12 ⇒ d = 3." },
+  { text: "CSC có u₁ = 1, u₄ = -26. Công sai d = ?", options: ["A. -27", "B. -9", "C. -26", "D. ∛(-26)"], correct: 1, explanation: "u₄ = 1 + 3d = -26 ⇒ 3d = -27 ⇒ d = -9." },
+  // CSN (8 câu)
+  { text: "CSN có u₁ = 3, q = 2. Giá trị u₂ = ?", options: ["A. 8", "B. 9", "C. 6", "D. 3/2"], correct: 2, explanation: "u₂ = 3·2 = 6." },
+  { text: "CSN có u₁ = 2, u₂ = 6. Công bội q = ?", options: ["A. 3", "B. -4", "C. 4", "D. 1/3"], correct: 0, explanation: "q = 6/2 = 3." },
+  { text: "CSN có u₁ = 3, u₂ = 1. Công bội q = ?", options: ["A. 1/3", "B. -2", "C. 3", "D. 2"], correct: 0, explanation: "q = 1/3." },
+  { text: "CSN có u₁ = 5, q = -1. Số hạng u₆ = ?", options: ["A. 5", "B. -5", "C. 10", "D. -10"], correct: 1, explanation: "u₆ = 5·(-1)⁵ = -5." },
+  { text: "CSN có u₁ = 3, q = -2. Số hạng u₅ = ?", options: ["A. -6", "B. -5", "C. 48", "D. -24"], correct: 2, explanation: "u₅ = 3·(-2)⁴ = 48." },
+  { text: "CSN có u₁ = 2, q = 3. Giá trị u₃ = ?", options: ["A. 6", "B. 12", "C. 18", "D. 54"], correct: 2, explanation: "u₃ = 2·3² = 18." },
+  { text: "CSN có u₂ = 6, u₃ = 18. Công bội q = ?", options: ["A. 2", "B. 3", "C. 1/3", "D. 4"], correct: 1, explanation: "q = 18/6 = 3." },
+  { text: "CSN có u₁ = 4, q = 1/2. Số hạng u₃ = ?", options: ["A. 1", "B. 2", "C. 3", "D. 4"], correct: 0, explanation: "u₃ = 4·(1/2)² = 1." },
+  // === PHẦN CÒN LẠI: BÀI TẬP VỀ NHÀ (25 câu, từ câu 16 đến 40 trong bản gốc) ===
+  { text: "CSC u₁=3, d=-3, tổng 10 số đầu?", options: ["A. 26", "B. -26", "C. -105", "D. 105"], correct: 2, explanation: "S₁₀ = 5·(6-27) = -105." },
+  { text: "CSC u₁=1, d=2, S₁₀=?", options: ["A. 110", "B. 100", "C. 21", "D. 19"], correct: 1, explanation: "S₁₀ = 5·(2+18)=100." },
+  { text: "CSC u₁=3, d=2, tổng 2019 số đầu?", options: ["A. 4 080 399", "B. 4 800 399", "C. 4 399 080", "D. 8 154 741"], correct: 0, explanation: "S₂₀₁₉ = 2019·2021 = 4 080 399." },
+  { text: "CSC u₁=1/3, d=-1, Sₙ=-425, n=?", options: ["A. 30", "B. 60", "C. 45", "D. 15"], correct: 0, explanation: "n=30." },
+  { text: "uₙ=2n+1, số hạng thứ 2019?", options: ["A. 4039", "B. 4390", "C. 4930", "D. 4093"], correct: 0, explanation: "u₂₀₁₉ = 4039." },
+  { text: "CSC u₁=2, d=9, số 2018 là hạng thứ mấy?", options: ["A. 226", "B. 225", "C. 223", "D. 224"], correct: 1, explanation: "n=225." },
+  { text: "CSC u₄+u₁₆=48, u₁₀=?", options: ["A. 438", "B. 24", "C. 96", "D. 72"], correct: 1, explanation: "u₁₀=24." },
+  { text: "CSC u₅+u₇=19, u₂+u₁₀=?", options: ["A. 38", "B. 29", "C. 12", "D. 19"], correct: 3, explanation: "=19." },
+  { text: "CSC u₉=5u₂, u₁₃=2u₆+5, u₁,d?", options: ["A. -3,4", "B. 3,4", "C. 4,3", "D. -4,3"], correct: 1, explanation: "u₁=3,d=4." },
+  { text: "Dãy nào là CSC?", options: ["A. 5ⁿ", "B. 2-5n", "C. 5ⁿ-2", "D. 5+n²"], correct: 1, explanation: "2-5n là CSC." },
+  { text: "Dãy nào là CSC?", options: ["A. 3·2ⁿ", "B. 3-2n", "C. 2ⁿ+3", "D. 2+n³"], correct: 1, explanation: "3-2n là CSC." },
+  { text: "CSC u₁₀=30, u₂₀=80, d=?", options: ["A. 5", "B. 10", "C. 50", "D. 110"], correct: 0, explanation: "d=5." },
+  { text: "CSC u₁=5, S₅₀=5150, uₙ=?", options: ["A. 1+4n", "B. 5n", "C. 3+2n", "D. 2+3n"], correct: 0, explanation: "uₙ=4n+1." },
+  { text: "Ba số x,y,z lập CSC, x+y+z=15, xyz=80, y=?", options: ["A. 4", "B. 5", "C. 6", "D. 8"], correct: 1, explanation: "y=5." },
+  { text: "Dãy nào không là CSN?", options: ["A. 1;-3;9;-27;54", "B. 1;2;4;8;16", "C. 1;-1;1;-1;1", "D. 1;-2;4;-8;16"], correct: 0, explanation: "q không đều." },
+  { text: "CSN u₂=6, u₅=162, q>0, q=?", options: ["A. 2", "B. 3", "C. 4", "D. 6"], correct: 1, explanation: "q=3." },
+  { text: "CSN u₃=12, u₆=96, S₆=?", options: ["A. 189", "B. 378", "C. 126", "D. 252"], correct: 0, explanation: "S₆=189." },
+  { text: "CSN u₁=2, q=3, u₂₀₁₉=?", options: ["A. 2·3²⁰¹⁸", "B. 3·2²⁰¹⁸", "C. 2·3²⁰¹⁹", "D. 3·2²⁰¹⁹"], correct: 0, explanation: "2·3²⁰¹⁸." },
+  { text: "CSN u₁=3, q=2, Sₙ=21, n=?", options: ["A. 10", "B. 3", "C. 7", "D. Không"], correct: 1, explanation: "n=3." },
+  { text: "CSN uₙ=3ⁿ, q=?", options: ["A. -3", "B. 1/3", "C. ±3", "D. 3"], correct: 3, explanation: "q=3." },
+  { text: "CSN u₁=2, u₆=486, q=?", options: ["A. 3", "B. 5", "C. 3/2", "D. 2/3"], correct: 0, explanation: "q=3." },
+  { text: "CSN q>1, u₂=-3, u₁+u₂+u₃=-13, u₁,q?", options: ["A. 1,3", "B. -1,-3", "C. -1,3", "D. 1,-3"], correct: 2, explanation: "u₁=-1, q=3." },
+  { text: "CSN u₄-u₂=54, u₅-u₃=108, u₁,q?", options: ["A. 9,2", "B. 9,-2", "C. -9,-2", "D. -9,2"], correct: 0, explanation: "u₁=9,q=2." },
+  { text: "CSN u₄+u₆=-540, u₃+u₅=180, S₂₁=?", options: ["A. ½(3²¹+1)", "B. 3²¹-1", "C. 1-3²¹", "D. -½(3²¹+1)"], correct: 0, explanation: "S₂₁=(3²¹+1)/2." },
+  { text: "Vi khuẩn tăng gấp đôi, sau 5p có 64000, hỏi sau bao lâu có 2048000?", options: ["A. 10", "B. 11", "C. 26", "D. 50"], correct: 0, explanation: "t=10 phút." }
+];
+
+// Chia làm 2 phần: 15 câu đầu (bài tập trên lớp), 25 câu sau (bài tập về nhà)
+const classQuestions = allQuestionsCh1.slice(0, 15);
+const homeQuestions = allQuestionsCh1.slice(15, 40);
+
+// Cấu trúc các chuyên đề (hiện tại chỉ có chuyên đề 1, có thể mở rộng)
+const topics = [
+  { id: 1, name: "Chuyên đề 1: Cấp số cộng - Cấp số nhân", parts: [
+    { id: "class", name: "Bài tập trên lớp", questions: classQuestions },
+    { id: "home", name: "Bài tập về nhà", questions: homeQuestions }
+  ] }
+];
+
+// ========== LƯU KẾT QUẢ HỌC SINH ==========
+function saveStudentResult(studentId, topicId, partId, result) {
+  const allResults = JSON.parse(localStorage.getItem('quiz_results') || '{}');
+  if (!allResults[studentId]) allResults[studentId] = {};
+  if (!allResults[studentId][topicId]) allResults[studentId][topicId] = {};
+  allResults[studentId][topicId][partId] = { ...result, timestamp: new Date().toLocaleString('vi-VN') };
+  localStorage.setItem('quiz_results', JSON.stringify(allResults));
+}
+function getStudentResult(studentId, topicId, partId) {
+  const allResults = JSON.parse(localStorage.getItem('quiz_results') || '{}');
+  return allResults[studentId]?.[topicId]?.[partId] || null;
+}
+function getAllResultsForTopic(topicId, partId) {
+  const allResults = JSON.parse(localStorage.getItem('quiz_results') || '{}');
+  const results = {};
+  for (const [sid, topics] of Object.entries(allResults)) {
+    if (topics[topicId] && topics[topicId][partId]) {
+      results[sid] = topics[topicId][partId];
+    }
+  }
+  return results;
+}
+
+// ========== QUIZ LOGIC ==========
+let currentStudent = null;
+let currentTopic = null;
+let currentPart = null;
+let currentQuestions = [];
+let currentIndex = 0;
+let userAnswers = [];
+let flags = [];
+let submitted = false;
+let startTime = null;
+let timerInterval = null;
+
+function renderQuiz() {
+  const container = document.getElementById('app-container');
+  container.innerHTML = `
+    <div class="quiz-wrapper">
+      <div class="topic-selector">
+        <div class="topic-buttons" id="topicButtons"></div>
+        <div class="part-buttons" id="partButtons"></div>
+      </div>
+      <div class="quiz-header">
+        <div class="quiz-title">📘 ${currentTopic.name} - ${currentPart.name}</div>
+        <div class="quiz-meta">Học sinh: ${currentStudent.fullname} (${currentStudent.username})</div>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-label"><span>Tiến độ</span><span id="answeredPercent">0%</span></div>
+        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+      </div>
+      <div id="navGrid" class="nav-grid"></div>
+      <div id="currentQuestion"></div>
+      <div class="navigation-buttons">
         <button class="btn btn-secondary" id="prevBtn">◀ Câu trước</button>
         <button class="btn btn-secondary" id="nextBtn">Câu tiếp theo ▶</button>
       </div>
+      <div class="action-buttons">
+        <button class="btn btn-primary" id="submitBtn">📝 NỘP BÀI</button>
+        <button class="btn btn-secondary" id="resetBtn">🔄 LÀM LẠI</button>
+        <button class="btn btn-secondary" id="changePwdBtn">🔑 ĐỔI MẬT KHẨU</button>
+        <button class="btn btn-secondary" id="logoutBtn">🚪 ĐĂNG XUẤT</button>
+      </div>
+      <div id="resultSummary" class="result-summary"></div>
+      <footer>🎯 ĐẬU NV1 CÙNG ANH TIẾN ĐẠT</footer>
     </div>
-    <div class="action-buttons">
-      <button class="btn btn-primary" id="submitBtn">📝 NỘP BÀI</button>
-      <button class="btn btn-secondary" id="resetBtn">🔄 LÀM LẠI</button>
-    </div>
-    <div id="resultSummary" class="result-summary"></div>
-    <footer>🎯 ĐẬU NV1 CÙNG ANH TIẾN ĐẠT</footer>
-  </div>
-</div>
-
-<!-- Modal hướng dẫn -->
-<div id="tutorialModal" class="modal-overlay">
-  <div class="modal-content">
-    <h3>📖 Hướng dẫn làm bài</h3>
-    <ul>
-      <li>✅ <strong>Chọn đáp án</strong> bằng cách click vào ô tròn bên cạnh.</li>
-      <li>🚩 <strong>Gắn cờ</strong> (🚩) để đánh dấu câu cần xem lại – nút màu cam ở dưới mỗi câu.</li>
-      <li>🎨 <strong>Bảng số</strong> phía trên:<br>
-        🟢 <em>Xanh lá</em> = đã trả lời<br>
-        🟠 <em>Cam</em> = đã gắn cờ<br>
-        🔵 <em>Xanh đậm</em> = câu đang xem<br>
-        ⚪ <em>Trắng/xám</em> = chưa làm
-      </li>
-      <li>📝 Sau khi hoàn thành, bấm <strong>"NỘP BÀI"</strong>. Hệ thống sẽ cảnh báo nếu còn câu chưa trả lời.</li>
-      <li>🌓 Có thể chuyển chế độ sáng/tối bằng nút góc phải trên cùng.</li>
-    </ul>
-    <button class="btn btn-primary" id="closeModalBtn">Hiểu rồi, bắt đầu làm bài! 🚀</button>
-  </div>
-</div>
-
-<script>
-const questions = [
-  { text: "Cho cấp số cộng 2;5;8;11;14... Công sai của cấp số cộng đã cho bằng", options: ["A. -3", "B. 3", "C. 2", "D. 14"], correct: 1, explanation: "Công sai d = 5 - 2 = 3." },
-  { text: "Trong các dãy số sau, dãy số nào không là cấp số cộng?", options: ["A. 2;0;-2;-4;-5", "B. 1/2; -1/2; -3/2; -5/2; -7/2", "C. √2; √2; √2; √2; √2", "D. -7;-4;-1;2;5"], correct: 0, explanation: "Dãy A có công sai không đều." },
-  { text: "Công thức tính số hạng tổng quát của cấp số cộng với công sai d và số hạng đầu u₁ là", options: ["A. uₙ = n.u₁ + n(n-1)d", "B. uₙ = u₁ + (n-1)d", "C. uₙ = u₁ + n(n-1)d/2", "D. uₙ = n.u₁ + n(n-1)d/2"], correct: 1, explanation: "Công thức đúng: uₙ = u₁ + (n-1)d." },
-  { text: "Cho cấp số cộng (uₙ) với u₁ = 9 và công sai d = 2. Giá trị của u₂ bằng", options: ["A. 11", "B. 9/2", "C. 18", "D. 7"], correct: 0, explanation: "u₂ = 9+2=11." },
-  { text: "Cho cấp số cộng (uₙ) với u₁ = 5; u₂ = 10. Công sai của cấp số cộng đã cho bằng", options: ["A. -5", "B. 5", "C. 2", "D. 15"], correct: 1, explanation: "d = 10-5=5." },
-  { text: "Cho cấp số cộng (uₙ) với u₁ = 2 và u₇ = -10. Công sai của cấp số cộng đã cho bằng", options: ["A. 2", "B. 3", "C. -1", "D. -2"], correct: 3, explanation: "u₇ = u₁+6d ⇒ d=-2." },
-  { text: "Cho cấp số cộng (uₙ) với u₁ = 1 và u₄ = -26. Công sai của (uₙ) bằng", options: ["A. -27", "B. -9", "C. -26", "D. ∛(-26)"], correct: 1, explanation: "u₄ = u₁+3d ⇒ d=-9." },
-  { text: "Cho cấp số cộng (uₙ) với u₁ = 4 và d = 8. Số hạng u₂₀ của cấp số cộng đã cho bằng", options: ["A. 156", "B. 165", "C. 12", "D. 245"], correct: 0, explanation: "u₂₀ = 4+19·8=156." },
-  { text: "Cho cấp số cộng (uₙ), với u₁ = 2, u₅ = 14. Công sai của cấp số cộng là", options: ["A. 3", "B. -3", "C. 4", "D. -4"], correct: 0, explanation: "u₅ = u₁+4d ⇒ d=3." },
-  { text: "Cho cấp số cộng (uₙ), biết u₃ = -2; u₇ = 18. Số hạng u₁₁ bằng", options: ["A. 38", "B. 20", "C. 43", "D. 33"], correct: 0, explanation: "d=5, u₁₁=38." },
-  { text: "Cho cấp số cộng (uₙ) với u₁ = 3 và d = -3. Tổng 10 số hạng đầu tiên bằng", options: ["A. 26", "B. -26", "C. -105", "D. 105"], correct: 2, explanation: "S₁₀ = -105." },
-  { text: "Cho cấp số cộng (uₙ) có u₁ = 1 và công sai d = 2. Tổng S₁₀ = u₁+...+u₁₀ bằng", options: ["A. 110", "B. 100", "C. 21", "D. 19"], correct: 1, explanation: "S₁₀ = 100." },
-  { text: "Cho cấp số cộng (uₙ) có số hạng đầu u₁ = 3 và công sai d = 2. Tổng của 2019 số hạng đầu bằng", options: ["A. 4 080 399", "B. 4 800 399", "C. 4 399 080", "D. 8 154 741"], correct: 0, explanation: "S₂₀₁₉ = 4 080 399." },
-  { text: "Một cấp số cộng có số hạng đầu u₁ = 1/3, công sai d = -1. Tổng n số hạng đầu bằng -425. Giá trị của n bằng", options: ["A. 30", "B. 60", "C. 45", "D. 15"], correct: 0, explanation: "n=30." },
-  { text: "Cho dãy số (uₙ) với uₙ = 2n + 1, số hạng thứ 2019 của dãy là", options: ["A. 4039", "B. 4390", "C. 4930", "D. 4093"], correct: 0, explanation: "4039." },
-  { text: "Cho cấp số cộng (uₙ) với u₁ = 2; d = 9. Khi đó số 2018 là số hạng thứ mấy?", options: ["A. 226", "B. 225", "C. 223", "D. 224"], correct: 1, explanation: "n=225." },
-  { text: "Cho (uₙ) là cấp số cộng có u₄ + u₁₆ = 48. Số hạng u₁₀ bằng", options: ["A. 438", "B. 24", "C. 96", "D. 72"], correct: 1, explanation: "u₁₀ = 24." },
-  { text: "Cho cấp số cộng (uₙ) biết u₅ + u₇ = 19. Giá trị của u₂ + u₁₀ là", options: ["A. 38", "B. 29", "C. 12", "D. 19"], correct: 3, explanation: "u₂+u₁₀=19." },
-  { text: "Cho (uₙ) là cấp số cộng có u₉ = 5u₂ và u₁₃ = 2u₆ + 5. Số hạng đầu u₁ và công sai d là", options: ["A. u₁=-3,d=4", "B. u₁=3,d=4", "C. u₁=4,d=3", "D. u₁=-4,d=3"], correct: 1, explanation: "u₁=3,d=4." },
-  { text: "Trong các dãy số (uₙ) với số hạng tổng quát sau, dãy số nào là cấp số cộng?", options: ["A. uₙ=5ⁿ", "B. uₙ=2-5n", "C. uₙ=5ⁿ-2", "D. uₙ=5+n²"], correct: 1, explanation: "uₙ=2-5n là CSC." },
-  { text: "Trong các dãy số (uₙ) với số hạng tổng quát sau, dãy số nào là cấp số cộng?", options: ["A. uₙ=3·2ⁿ", "B. uₙ=3-2n", "C. uₙ=2ⁿ+3", "D. uₙ=2+n³"], correct: 1, explanation: "uₙ=3-2n là CSC." },
-  { text: "Cho cấp số cộng (uₙ) có u₁₀ = 30 và u₂₀ = 80. Công sai d bằng", options: ["A. 5", "B. 10", "C. 50", "D. 110"], correct: 0, explanation: "d=5." },
-  { text: "Cho cấp số cộng (uₙ) có u₁ = 5 và tổng của 50 số hạng đầu bằng 5150. Tìm công thức số hạng tổng quát uₙ.", options: ["A. uₙ=1+4n", "B. uₙ=5n", "C. uₙ=3+2n", "D. uₙ=2+3n"], correct: 0, explanation: "uₙ=4n+1." },
-  { text: "Ba số x, y, z theo thứ tự lập thành cấp số cộng. Biết x+y+z=15 và xyz=80. Giá trị y bằng", options: ["A. 4", "B. 5", "C. 6", "D. 8"], correct: 1, explanation: "y=5." },
-  { text: "Cho cấp số nhân (uₙ) với u₁=3 và q=2. Giá trị của u₂ bằng", options: ["A. 8", "B. 9", "C. 6", "D. 3/2"], correct: 2, explanation: "u₂=6." },
-  { text: "Cho cấp số nhân (uₙ) với u₁=2 và u₂=6. Công bội q bằng", options: ["A. 3", "B. -4", "C. 4", "D. 1/3"], correct: 0, explanation: "q=3." },
-  { text: "Cho cấp số nhân (uₙ) với u₁=3; u₂=1. Công bội q bằng", options: ["A. 1/3", "B. -2", "C. 3", "D. 2"], correct: 0, explanation: "q=1/3." },
-  { text: "Dãy số nào sau đây không phải là cấp số nhân?", options: ["A. 1;-3;9;-27;54", "B. 1;2;4;8;16", "C. 1;-1;1;-1;1", "D. 1;-2;4;-8;16"], correct: 0, explanation: "Dãy A không đều công bội." },
-  { text: "Cho cấp số nhân (uₙ) có u₁=5, q=-1. u₆ bằng", options: ["A. 5", "B. -5", "C. 10", "D. -10"], correct: 1, explanation: "u₆=-5." },
-  { text: "Cho cấp số nhân (uₙ) có u₂=6, u₅=162 (q>0). q bằng", options: ["A. 2", "B. 3", "C. 4", "D. 6"], correct: 1, explanation: "q=3." },
-  { text: "Cho cấp số nhân (uₙ) có u₃=12, u₆=96. Tổng S₆ bằng", options: ["A. 189", "B. 378", "C. 126", "D. 252"], correct: 0, explanation: "S₆=189." },
-  { text: "Cho cấp số nhân u₁=3, q=-2. u₅ bằng", options: ["A. -6", "B. -5", "C. 48", "D. -24"], correct: 2, explanation: "u₅=48." },
-  { text: "Cho cấp số nhân u₁=2, q=3. u₂₀₁₉ bằng", options: ["A. 2·3²⁰¹⁸", "B. 3·2²⁰¹⁸", "C. 2·3²⁰¹⁹", "D. 3·2²⁰¹⁹"], correct: 0, explanation: "2·3²⁰¹⁸." },
-  { text: "Cấp số nhân u₁=3, q=2, Sₙ=21, tìm n", options: ["A. 10", "B. 3", "C. 7", "D. Không"], correct: 1, explanation: "n=3." },
-  { text: "Cấp số nhân uₙ=3ⁿ, công bội q bằng", options: ["A. -3", "B. 1/3", "C. ±3", "D. 3"], correct: 3, explanation: "q=3." },
-  { text: "Cấp số nhân u₁=2, u₆=486, q bằng", options: ["A. 3", "B. 5", "C. 3/2", "D. 2/3"], correct: 0, explanation: "q=3." },
-  { text: "CSN q>1, u₂=-3, u₁+u₂+u₃=-13. Tìm u₁,q", options: ["A. u₁=1,q=3", "B. u₁=-1,q=-3", "C. u₁=-1,q=3", "D. u₁=1,q=-3"], correct: 2, explanation: "u₁=-1,q=3." },
-  { text: "CSN u₄-u₂=54, u₅-u₃=108. Tìm u₁,q", options: ["A. u₁=9,q=2", "B. u₁=9,q=-2", "C. u₁=-9,q=-2", "D. u₁=-9,q=2"], correct: 0, explanation: "u₁=9,q=2." },
-  { text: "CSN u₄+u₆=-540, u₃+u₅=180. Tính S₂₁", options: ["A. ½(3²¹+1)", "B. 3²¹-1", "C. 1-3²¹", "D. -½(3²¹+1)"], correct: 0, explanation: "S₂₁=(3²¹+1)/2." },
-  { text: "Vi khuẩn tăng gấp đôi, sau 5p có 64000. Hỏi sau bao lâu có 2048000?", options: ["A. 10", "B. 11", "C. 26", "D. 50"], correct: 0, explanation: "t=10 phút." }
-];
-
-const PASSWORD = "tamduc";
-const STORAGE_KEY = "quiz_full";
-const TUTORIAL_KEY = "quiz_tutorial_seen";
-
-let answers = new Array(40).fill(null);
-let flags = new Array(40).fill(false);
-let submitted = false;
-let current = 0;
-let start = null;
-
-function save() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify({ answers, flags, submitted, current, start, savedAt: Date.now() }));
+  `;
+  renderTopicSelector();
+  renderNavGrid();
+  renderCurrentQuestion();
+  updateProgress();
+  startTimer();
+  attachQuizEvents();
 }
-function load() {
-  const raw = localStorage.getItem(STORAGE_KEY);
-  if (!raw) return false;
-  try {
-    const data = JSON.parse(raw);
-    if (data.savedAt && Date.now() - data.savedAt > 7*86400000) { localStorage.removeItem(STORAGE_KEY); return false; }
-    answers = data.answers || new Array(40).fill(null);
-    flags = data.flags || new Array(40).fill(false);
-    submitted = data.submitted || false;
-    current = data.current || 0;
-    start = data.start || null;
-    return true;
-  } catch(e) { return false; }
-}
-function clearSaved() { localStorage.removeItem(STORAGE_KEY); }
 
-function renderNav() {
+function renderTopicSelector() {
+  const topicContainer = document.getElementById('topicButtons');
+  topicContainer.innerHTML = '';
+  topics.forEach(topic => {
+    const btn = document.createElement('button');
+    btn.textContent = topic.name;
+    btn.className = 'topic-btn';
+    if (currentTopic && currentTopic.id === topic.id) btn.classList.add('active');
+    btn.onclick = () => {
+      if (submitted) return;
+      currentTopic = topic;
+      currentPart = topic.parts[0];
+      currentQuestions = currentPart.questions;
+      resetQuizState();
+      renderQuiz();
+    };
+    topicContainer.appendChild(btn);
+  });
+  const partContainer = document.getElementById('partButtons');
+  partContainer.innerHTML = '';
+  if (currentTopic) {
+    currentTopic.parts.forEach(part => {
+      const btn = document.createElement('button');
+      btn.textContent = part.name;
+      btn.className = 'part-btn';
+      if (currentPart && currentPart.id === part.id) btn.classList.add('active');
+      btn.onclick = () => {
+        if (submitted) return;
+        currentPart = part;
+        currentQuestions = part.questions;
+        resetQuizState();
+        renderQuiz();
+      };
+      partContainer.appendChild(btn);
+    });
+  }
+}
+
+function resetQuizState() {
+  submitted = false;
+  currentIndex = 0;
+  userAnswers = new Array(currentQuestions.length).fill(null);
+  flags = new Array(currentQuestions.length).fill(false);
+  startTime = Date.now();
+  clearLocalState();
+}
+
+function renderNavGrid() {
   const nav = document.getElementById('navGrid');
   nav.innerHTML = '';
-  for (let i=0; i<40; i++) {
+  for (let i = 0; i < currentQuestions.length; i++) {
     const btn = document.createElement('button');
-    btn.textContent = i+1;
+    btn.textContent = (i+1).toString();
     btn.className = 'nav-btn';
-    if (answers[i] !== null) btn.classList.add('answered');
+    if (userAnswers[i] !== null) btn.classList.add('answered');
+    if (i === currentIndex) btn.classList.add('active');
     if (flags[i]) btn.classList.add('flagged');
-    if (i === current) btn.classList.add('active');
-    // Tooltip
-    let tooltip = '';
-    if (answers[i] !== null) tooltip = '✅ Đã trả lời';
-    else tooltip = '❌ Chưa trả lời';
-    if (flags[i]) tooltip += ' (🏁 Có cờ)';
-    btn.setAttribute('data-tooltip', tooltip);
-    btn.onclick = () => { if (!submitted) { current = i; renderQ(); updateNavActive(); save(); } };
+    btn.onclick = () => { if (!submitted) { currentIndex = i; renderCurrentQuestion(); updateNavActive(); saveLocalState(); } };
     nav.appendChild(btn);
   }
 }
 function updateNavActive() {
-  document.querySelectorAll('.nav-btn').forEach((btn, i) => {
-    if (i === current) btn.classList.add('active');
-    else btn.classList.remove('active');
+  const btns = document.querySelectorAll('.nav-btn');
+  btns.forEach((btn, idx) => {
+    if (idx === currentIndex) btn.classList.add('active'); else btn.classList.remove('active');
+    if (userAnswers[idx] !== null) btn.classList.add('answered'); else btn.classList.remove('answered');
+    if (flags[idx]) btn.classList.add('flagged'); else btn.classList.remove('flagged');
   });
 }
-
 function toggleFlag() {
   if (submitted) return;
-  flags[current] = !flags[current];
-  renderNav();
-  const fb = document.getElementById('flagButton');
-  if (fb) fb.innerHTML = flags[current] ? '🏁 Bỏ cờ' : '🚩 Gắn cờ';
-  save();
+  flags[currentIndex] = !flags[currentIndex];
+  renderCurrentQuestion();
+  updateNavActive();
+  saveLocalState();
 }
-
-function renderQ() {
-  const q = questions[current];
-  const cont = document.getElementById('currentQuestion');
-  cont.innerHTML = `
+function renderCurrentQuestion() {
+  const q = currentQuestions[currentIndex];
+  const container = document.getElementById('currentQuestion');
+  const selected = userAnswers[currentIndex];
+  const isFlagged = flags[currentIndex];
+  container.innerHTML = `
     <div class="question-card">
-      <div class="question-number">Câu ${current+1}</div>
+      <div class="question-header">
+        <div class="question-number">Câu ${currentIndex+1}</div>
+        <button class="flag-btn" id="flagBtn">${isFlagged ? '🚩' : '🏁'}</button>
+      </div>
       <div class="question-text">${q.text}</div>
-      <div class="options" id="opts">
+      <div class="options" id="options-container">
         ${q.options.map((opt, idx) => `
           <label class="option">
-            <input type="radio" name="opt" value="${idx}" ${answers[current] === idx ? 'checked' : ''} ${submitted ? 'disabled' : ''}>
+            <input type="radio" name="current" value="${idx}" ${selected === idx ? 'checked' : ''} ${submitted ? 'disabled' : ''}>
             <span>${opt}</span>
           </label>
         `).join('')}
       </div>
-      ${!submitted ? `<div><button class="flag-button" id="flagButton">${flags[current] ? '🏁 Bỏ cờ' : '🚩 Gắn cờ'}</button></div>` : ''}
-      <div class="answer-result" id="ansRes"></div>
+      <div class="answer-result" id="answer-result-current"></div>
     </div>
   `;
   if (!submitted) {
-    const fb = document.getElementById('flagButton');
-    if (fb) fb.onclick = toggleFlag;
-    document.querySelectorAll('#opts input').forEach(r => {
-      r.onchange = (e) => {
-        answers[current] = parseInt(e.target.value);
+    document.querySelectorAll('#options-container input').forEach(radio => {
+      radio.addEventListener('change', (e) => {
+        userAnswers[currentIndex] = parseInt(e.target.value);
         updateProgress();
-        renderNav();
-        save();
-      };
+        updateNavActive();
+        saveLocalState();
+      });
     });
+    const flagBtn = document.getElementById('flagBtn');
+    if (flagBtn) flagBtn.onclick = toggleFlag;
+  } else showResultForCurrent();
+}
+function showResultForCurrent() {
+  const q = currentQuestions[currentIndex];
+  const choice = userAnswers[currentIndex];
+  const resultDiv = document.getElementById('answer-result-current');
+  const correctLetter = String.fromCharCode(65+q.correct);
+  if (choice !== null) {
+    const isCorrect = (choice === q.correct);
+    resultDiv.className = isCorrect ? 'answer-result correct' : 'answer-result wrong';
+    resultDiv.innerHTML = isCorrect ? `<strong>✅ Đúng</strong><div class="explanation">${q.explanation}</div>` : `<strong>❌ Sai. Đáp án đúng: ${correctLetter}</strong><div class="explanation">${q.explanation}</div>`;
   } else {
-    const resDiv = document.getElementById('ansRes');
-    const user = answers[current];
-    const isCor = user === q.correct;
-    const correctLetter = String.fromCharCode(65 + q.correct);
-    if (user !== null) {
-      resDiv.className = isCor ? 'answer-result correct' : 'answer-result wrong';
-      resDiv.innerHTML = isCor ? `<strong>✅ Đáp án đúng: ${correctLetter}</strong><div class="explanation">${q.explanation}</div>` : `<strong>❌ Sai. Đáp án đúng: ${correctLetter}</strong><div class="explanation">${q.explanation}</div>`;
-    } else {
-      resDiv.className = 'answer-result wrong';
-      resDiv.innerHTML = `<strong>⚠️ Chưa trả lời. Đáp án đúng: ${correctLetter}</strong><div class="explanation">${q.explanation}</div>`;
-    }
-    resDiv.style.display = 'block';
+    resultDiv.className = 'answer-result wrong';
+    resultDiv.innerHTML = `<strong>⚠️ Chưa trả lời. Đáp án đúng: ${correctLetter}</strong><div class="explanation">${q.explanation}</div>`;
   }
+  resultDiv.style.display = 'block';
 }
-
 function updateProgress() {
-  const answered = answers.filter(a => a !== null).length;
-  const p = Math.round(answered/40*100);
-  document.getElementById('answeredPercent').innerText = p+'%';
-  document.getElementById('progressFill').style.width = p+'%';
+  const answered = userAnswers.filter(a => a !== null).length;
+  const percent = Math.round((answered/currentQuestions.length)*100);
+  document.getElementById('answeredPercent').innerText = `${percent}%`;
+  document.getElementById('progressFill').style.width = `${percent}%`;
 }
-
-function getTime() {
-  if (!start) return '00:00';
-  const s = Math.floor((Date.now() - start)/1000);
-  return `${Math.floor(s/60)}`.padStart(2,'0')+':'+`${s%60}`.padStart(2,'0');
+function startTimer() { if (timerInterval) clearInterval(timerInterval); if (!startTime) startTime = Date.now(); timerInterval = setInterval(()=>{}, 1000); }
+function stopTimer() { if (timerInterval) clearInterval(timerInterval); timerInterval = null; }
+function saveLocalState() {
+  const state = { userAnswers, flags, currentIndex, startTime, submitted };
+  localStorage.setItem(`quiz_state_${currentStudent.username}_${currentTopic.id}_${currentPart.id}`, JSON.stringify(state));
 }
-
-function submit() {
+function loadLocalState() {
+  const saved = localStorage.getItem(`quiz_state_${currentStudent.username}_${currentTopic.id}_${currentPart.id}`);
+  if (!saved) return false;
+  try {
+    const state = JSON.parse(saved);
+    userAnswers = state.userAnswers || new Array(currentQuestions.length).fill(null);
+    flags = state.flags || new Array(currentQuestions.length).fill(false);
+    currentIndex = state.currentIndex || 0;
+    startTime = state.startTime || null;
+    submitted = state.submitted || false;
+    return true;
+  } catch(e) { return false; }
+}
+function clearLocalState() { localStorage.removeItem(`quiz_state_${currentStudent.username}_${currentTopic.id}_${currentPart.id}`); }
+function submitQuiz() {
   if (submitted) return;
-  const unanswered = answers.filter(a => a === null).length;
-  if (unanswered > 0 && !confirm(`Còn ${unanswered} câu chưa làm. Nộp không?`)) return;
+  stopTimer();
+  let correctCount = 0;
+  for (let i=0; i<currentQuestions.length; i++) if (userAnswers[i] === currentQuestions[i].correct) correctCount++;
+  const total = currentQuestions.length;
+  const percent = Math.round((correctCount/total)*100);
   submitted = true;
-  const correct = answers.reduce((c, a, i) => c + (a === questions[i].correct ? 1 : 0), 0);
-  const total = 40;
-  const percent = Math.round(correct/40*100);
-  const time = getTime();
-  renderQ();
-  const sumDiv = document.getElementById('resultSummary');
-  sumDiv.style.display = 'block';
-  sumDiv.innerHTML = `
+  document.querySelectorAll('#options-container input').forEach(r => r.disabled = true);
+  showResultForCurrent();
+  const summaryDiv = document.getElementById('resultSummary');
+  summaryDiv.style.display = 'block';
+  summaryDiv.innerHTML = `
     <h3>📊 KẾT QUẢ</h3>
     <div class="result-stats">
-      <div class="stat"><div class="stat-value" style="color:var(--correct-color)">${correct}</div><div class="stat-label">Đúng</div></div>
-      <div class="stat"><div class="stat-value" style="color:var(--wrong-color)">${total-correct}</div><div class="stat-label">Sai</div></div>
+      <div class="stat"><div class="stat-value">${correctCount}</div><div class="stat-label">Đúng</div></div>
+      <div class="stat"><div class="stat-value">${total-correctCount}</div><div class="stat-label">Sai</div></div>
       <div class="stat"><div class="stat-value">${percent}%</div><div class="stat-label">Tỷ lệ</div></div>
-      <div class="stat"><div class="stat-value">${time}</div><div class="stat-label">Thời gian</div></div>
     </div>
-    <button class="btn btn-secondary" id="retry">🔁 Làm lại</button>
+    <button class="btn btn-secondary" id="retryBtn">🔁 Làm lại</button>
   `;
-  document.getElementById('retry').onclick = () => reset();
-  document.querySelectorAll('#opts input').forEach(r => r.disabled = true);
-  if (percent >= 80) canvasConfetti({ particleCount:200, spread:100, origin:{y:0.6} });
-  if (correct === total) canvasConfetti({ particleCount:500, spread:120, origin:{y:0.5} });
-  renderNav();
-  save();
+  document.getElementById('retryBtn').onclick = () => resetQuiz();
+  saveStudentResult(currentStudent.username, currentTopic.id, currentPart.id, {
+    fullname: currentStudent.fullname,
+    score: correctCount,
+    total: total,
+    percent: percent,
+    answers: userAnswers,
+    time: Math.round((Date.now() - (startTime||Date.now()))/1000),
+    submitted: true
+  });
+  if (percent >= 80) canvasConfetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
+  if (correctCount === total) canvasConfetti({ particleCount: 500, spread: 120, origin: { y: 0.5 } });
+  saveLocalState();
 }
-
-function reset() {
-  if (!confirm('Xóa toàn bộ và làm lại?')) return;
-  answers.fill(null);
-  flags.fill(false);
-  submitted = false;
-  current = 0;
-  start = Date.now();
-  renderNav();
-  renderQ();
+function resetQuiz() {
+  userAnswers.fill(null); flags.fill(false); submitted = false; currentIndex = 0; startTime = Date.now();
+  clearLocalState(); renderNavGrid(); renderCurrentQuestion();
   document.getElementById('resultSummary').style.display = 'none';
-  updateProgress();
-  clearSaved();
-  save();
+  updateProgress(); startTimer();
 }
+function nextQuestion() { if (currentIndex < currentQuestions.length-1) { currentIndex++; renderCurrentQuestion(); updateNavActive(); saveLocalState(); } }
+function prevQuestion() { if (currentIndex > 0) { currentIndex--; renderCurrentQuestion(); updateNavActive(); saveLocalState(); } }
 
-function init() {
-  const ok = load();
-  if (!ok) {
-    answers.fill(null);
-    flags.fill(false);
-    submitted = false;
-    current = 0;
-    start = Date.now();
-  }
-  renderNav();
-  renderQ();
-  updateProgress();
-  if (submitted) {
-    const correct = answers.reduce((c, a, i) => c + (a === questions[i].correct ? 1 : 0), 0);
-    const total = 40;
-    const percent = Math.round(correct/40*100);
-    const time = getTime();
-    const sumDiv = document.getElementById('resultSummary');
-    sumDiv.style.display = 'block';
-    sumDiv.innerHTML = `
-      <h3>📊 KẾT QUẢ</h3>
-      <div class="result-stats">
-        <div class="stat"><div class="stat-value" style="color:var(--correct-color)">${correct}</div><div class="stat-label">Đúng</div></div>
-        <div class="stat"><div class="stat-value" style="color:var(--wrong-color)">${total-correct}</div><div class="stat-label">Sai</div></div>
-        <div class="stat"><div class="stat-value">${percent}%</div><div class="stat-label">Tỷ lệ</div></div>
-        <div class="stat"><div class="stat-value">${time}</div><div class="stat-label">Thời gian</div></div>
+// ========== ĐỔI MẬT KHẨU ==========
+function showChangePasswordModal() {
+  let modal = document.getElementById('changePwdModal');
+  if (!modal) {
+    modal = document.createElement('div');
+    modal.id = 'changePwdModal';
+    modal.className = 'modal';
+    modal.innerHTML = `
+      <div class="modal-content">
+        <h3>🔑 Đổi mật khẩu</h3>
+        <input type="password" id="oldPwd" placeholder="Mật khẩu cũ">
+        <input type="password" id="newPwd1" placeholder="Mật khẩu mới">
+        <input type="password" id="newPwd2" placeholder="Xác nhận mật khẩu mới">
+        <div class="modal-buttons">
+          <button class="btn btn-secondary" id="cancelPwdBtn">Hủy</button>
+          <button class="btn btn-primary" id="confirmPwdBtn">Xác nhận</button>
+        </div>
       </div>
-      <button class="btn btn-secondary" id="retry">🔁 Làm lại</button>
     `;
-    document.getElementById('retry').onclick = () => reset();
+    document.body.appendChild(modal);
   }
+  modal.classList.add('show');
+  document.getElementById('oldPwd').value = '';
+  document.getElementById('newPwd1').value = '';
+  document.getElementById('newPwd2').value = '';
+  const confirmHandler = () => {
+    const old = document.getElementById('oldPwd').value;
+    const new1 = document.getElementById('newPwd1').value;
+    const new2 = document.getElementById('newPwd2').value;
+    if (!old || !new1 || !new2) { alert('Vui lòng nhập đầy đủ thông tin'); return; }
+    if (new1 !== new2) { alert('Mật khẩu mới không khớp'); return; }
+    let users = loadUsers();
+    const user = users.find(u => u.username === currentStudent.username);
+    if (!user || user.password !== old) { alert('Mật khẩu cũ không đúng'); return; }
+    user.password = new1;
+    saveUsers(users);
+    alert('Đổi mật khẩu thành công! Vui lòng đăng nhập lại.');
+    modal.classList.remove('show');
+    window.location.reload();
+  };
+  const cancelHandler = () => modal.classList.remove('show');
+  const confirmBtn = document.getElementById('confirmPwdBtn');
+  const cancelBtn = document.getElementById('cancelPwdBtn');
+  confirmBtn.onclick = confirmHandler;
+  cancelBtn.onclick = cancelHandler;
+}
+function attachQuizEvents() {
+  document.getElementById('prevBtn').onclick = prevQuestion;
+  document.getElementById('nextBtn').onclick = nextQuestion;
+  document.getElementById('submitBtn').onclick = submitQuiz;
+  document.getElementById('resetBtn').onclick = resetQuiz;
+  document.getElementById('changePwdBtn').onclick = showChangePasswordModal;
+  document.getElementById('logoutBtn').onclick = () => window.location.reload();
 }
 
-// Login portal
-document.getElementById('loginBtn').onclick = () => {
-  const pwd = document.getElementById('passwordInput').value;
-  if (pwd === PASSWORD) {
-    document.getElementById('login-screen').classList.add('exit');
-    setTimeout(() => {
-      document.getElementById('login-screen').style.display = 'none';
-      document.getElementById('themeToggle').classList.add('show');
-      document.getElementById('quiz-app').classList.add('visible');
-      init();
-      // Kiểm tra đã xem hướng dẫn chưa
-      const tutorialSeen = localStorage.getItem(TUTORIAL_KEY);
-      if (!tutorialSeen) {
-        document.getElementById('tutorialModal').classList.add('active');
-      }
-    }, 780);
-  } else {
-    const err = document.getElementById('loginError');
-    err.textContent = 'Sai mật khẩu!';
-    err.style.animation = 'none';
-    void err.offsetWidth;
-    err.style.animation = 'shake 0.4s ease';
-    setTimeout(() => err.textContent = '', 1500);
+// ========== ADMIN DASHBOARD ==========
+function renderAdminDashboard() {
+  let users = loadUsers();
+  const container = document.getElementById('app-container');
+  container.innerHTML = `
+    <div class="admin-wrapper">
+      <div class="logout-btn" style="text-align:right"><button class="btn btn-secondary" id="adminLogoutBtn">🚪 Đăng xuất</button></div>
+      <div class="admin-tabs">
+        <button class="tab-btn active" data-tab="students">📋 Quản lý học sinh</button>
+        <button class="tab-btn" data-tab="scores">📊 Bảng điểm</button>
+      </div>
+      <div id="tab-students" class="tab-content active">
+        <h3>Danh sách học sinh</h3>
+        <button class="btn btn-primary" id="addStudentBtn" style="margin-bottom:15px">➕ Thêm học sinh</button>
+        <table class="admin-table" id="studentTable">
+          <thead><tr><th>Mã số</th><th>Họ tên</th><th>Mật khẩu</th><th>Thao tác</th></tr></thead>
+          <tbody id="studentTableBody"></tbody>
+        </table>
+      </div>
+      <div id="tab-scores" class="tab-content">
+        <h3>Bảng điểm theo chuyên đề và phần</h3>
+        <div style="margin-bottom:15px">
+          <select id="topicSelectAdmin">
+            ${topics.map(t => `<option value="${t.id}">${t.name}</option>`).join('')}
+          </select>
+          <select id="partSelectAdmin">
+            <option value="class">Bài tập trên lớp</option>
+            <option value="home">Bài tập về nhà</option>
+          </select>
+          <button id="refreshScoresBtn" class="btn btn-secondary">Xem điểm</button>
+        </div>
+        <table class="admin-table" id="scoreTable">
+          <thead><tr><th>Mã số</th><th>Họ tên</th><th>Điểm</th><th>Tỷ lệ</th><th>Thời gian nộp</th></tr></thead>
+          <tbody id="scoreTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  `;
+  function renderStudentTable() {
+    const usersList = loadUsers().filter(u => u.role === 'student');
+    const tbody = document.getElementById('studentTableBody');
+    tbody.innerHTML = '';
+    usersList.forEach(u => {
+      const row = tbody.insertRow();
+      row.insertCell(0).innerText = u.username;
+      row.insertCell(1).innerText = u.fullname;
+      row.insertCell(2).innerHTML = `<input type="text" value="${u.password}" style="width:80px" class="edit-pwd" data-username="${u.username}">`;
+      const actions = row.insertCell(3);
+      const saveBtn = document.createElement('button'); saveBtn.innerText = '💾 Lưu'; saveBtn.className = 'btn btn-secondary'; saveBtn.style.marginRight='5px'; saveBtn.style.padding='4px 8px';
+      const delBtn = document.createElement('button'); delBtn.innerText = '🗑️ Xóa'; delBtn.className = 'btn btn-danger'; delBtn.style.padding='4px 8px';
+      actions.appendChild(saveBtn); actions.appendChild(delBtn);
+      saveBtn.onclick = () => { const newPwd = row.cells[2].querySelector('input').value; updateStudentPassword(u.username, newPwd); renderStudentTable(); alert('Đã cập nhật mật khẩu'); };
+      delBtn.onclick = () => { if(confirm(`Xóa học sinh ${u.fullname}?`)) deleteStudent(u.username); };
+    });
   }
-};
-document.getElementById('passwordInput').addEventListener('keypress', e => { if (e.key === 'Enter') document.getElementById('loginBtn').click(); });
-document.getElementById('nextBtn').onclick = () => { if (current < 39) { current++; renderQ(); updateNavActive(); save(); } };
-document.getElementById('prevBtn').onclick = () => { if (current > 0) { current--; renderQ(); updateNavActive(); save(); } };
-document.getElementById('submitBtn').onclick = submit;
-document.getElementById('resetBtn').onclick = reset;
-document.getElementById('closeModalBtn').onclick = () => {
-  document.getElementById('tutorialModal').classList.remove('active');
-  localStorage.setItem(TUTORIAL_KEY, 'true');
-};
+  function renderScoreTable() {
+    const topicId = document.getElementById('topicSelectAdmin').value;
+    const partId = document.getElementById('partSelectAdmin').value;
+    const results = getAllResultsForTopic(parseInt(topicId), partId);
+    const usersList = loadUsers().filter(u => u.role === 'student');
+    const tbody = document.getElementById('scoreTableBody');
+    tbody.innerHTML = '';
+    for (let u of usersList) {
+      const res = results[u.username];
+      const row = tbody.insertRow();
+      row.insertCell(0).innerText = u.username;
+      row.insertCell(1).innerText = u.fullname;
+      if (res) {
+        row.insertCell(2).innerText = `${res.score}/${res.total}`;
+        row.insertCell(3).innerText = `${res.percent}%`;
+        row.insertCell(4).innerText = res.timestamp || '';
+      } else {
+        row.insertCell(2).innerText = 'Chưa làm';
+        row.insertCell(3).innerText = '0%';
+        row.insertCell(4).innerText = '';
+      }
+    }
+  }
+  function updateStudentPassword(username, newPwd) {
+    let users = loadUsers();
+    const idx = users.findIndex(u => u.username === username);
+    if (idx !== -1) { users[idx].password = newPwd; saveUsers(users); }
+  }
+  function deleteStudent(username) {
+    let users = loadUsers();
+    users = users.filter(u => u.username !== username);
+    saveUsers(users);
+    const allResults = JSON.parse(localStorage.getItem('quiz_results') || '{}');
+    delete allResults[username];
+    localStorage.setItem('quiz_results', JSON.stringify(allResults));
+    renderStudentTable();
+  }
+  const addBtn = document.getElementById('addStudentBtn');
+  addBtn.onclick = () => {
+    let newId = prompt('Nhập mã số học sinh (VD: 2608003):');
+    if (!newId) return;
+    let users = loadUsers();
+    if (users.some(u => u.username === newId)) { alert('Mã số đã tồn tại!'); return; }
+    let fullname = prompt('Nhập họ tên học sinh:');
+    if (!fullname) fullname = newId;
+    let password = prompt('Nhập mật khẩu mặc định (VD: 123):') || '123';
+    users.push({ id: newId, username: newId, password: password, fullname: fullname, role: 'student' });
+    saveUsers(users);
+    renderStudentTable();
+  };
+  const tabs = document.querySelectorAll('.tab-btn');
+  tabs.forEach(btn => {
+    btn.onclick = () => {
+      tabs.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+      document.getElementById(`tab-${btn.dataset.tab}`).classList.add('active');
+      if (btn.dataset.tab === 'scores') renderScoreTable();
+      else renderStudentTable();
+    };
+  });
+  document.getElementById('refreshScoresBtn').onclick = renderScoreTable;
+  renderStudentTable();
+  renderScoreTable();
+  document.getElementById('adminLogoutBtn').onclick = () => window.location.reload();
+}
 
-// Dark mode
-const toggleTheme = document.getElementById('themeToggle');
-toggleTheme.onclick = () => {
+// ========== XỬ LÝ ĐĂNG NHẬP ==========
+const loginScreen = document.getElementById('login-screen');
+const appContainer = document.getElementById('app-container');
+const loginBtn = document.getElementById('loginBtn');
+const loginError = document.getElementById('loginError');
+function doLogin() {
+  const username = document.getElementById('loginUsername').value.trim();
+  const password = document.getElementById('loginPassword').value.trim();
+  const users = loadUsers();
+  const user = users.find(u => u.username === username && u.password === password);
+  if (!user) {
+    loginError.style.display = 'block';
+    loginError.textContent = 'Sai tên đăng nhập hoặc mật khẩu!';
+    setTimeout(() => loginError.style.display = 'none', 2000);
+    return;
+  }
+  loginScreen.classList.add('exit');
+  setTimeout(() => {
+    loginScreen.style.display = 'none';
+    document.getElementById('themeToggle').classList.add('show');
+    appContainer.classList.add('visible');
+    if (user.role === 'student') {
+      currentStudent = user;
+      currentTopic = topics[0];
+      currentPart = currentTopic.parts[0];
+      currentQuestions = currentPart.questions;
+      loadLocalState();
+      renderQuiz();
+    } else if (user.role === 'admin') {
+      renderAdminDashboard();
+    }
+  }, 780);
+}
+loginBtn.onclick = doLogin;
+document.getElementById('loginUsername').addEventListener('keypress', e => { if (e.key === 'Enter') doLogin(); });
+document.getElementById('loginPassword').addEventListener('keypress', e => { if (e.key === 'Enter') doLogin(); });
+
+// Dark mode & portal light
+const themeToggle = document.getElementById('themeToggle');
+themeToggle.onclick = () => {
   const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
   document.documentElement.setAttribute('data-theme', isDark ? '' : 'dark');
-  toggleTheme.textContent = isDark ? '🌙' : '☀️';
+  themeToggle.textContent = isDark ? '🌙' : '☀️';
 };
-if (typeof canvasConfetti === 'undefined') {
-  const s = document.createElement('script');
-  s.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1';
-  document.head.appendChild(s);
-}
-document.addEventListener('mousemove', e => {
-  const light = document.getElementById('portalLight');
-  light.style.left = e.clientX + 'px';
-  light.style.top = e.clientY + 'px';
-});
+document.addEventListener('mousemove', e => { const light = document.getElementById('portalLight'); if(light) { light.style.left = e.clientX + 'px'; light.style.top = e.clientY + 'px'; } });
+if (typeof canvasConfetti === 'undefined') { const script = document.createElement('script'); script.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1'; document.head.appendChild(script); }
 </script>
 </body>
 </html>
