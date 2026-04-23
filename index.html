@@ -1,624 +1,708 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<title>Trắc nghiệm Toán - Cấp số cộng & Cấp số nhân</title>
-<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<style>
-:root {
-  --bg-gradient-start: #0b3b5f;
-  --bg-gradient-end: #1b4f72;
-  --primary-color: #0b3b5f;
-  --secondary-color: #2c9c8c;
-  --text-color: #0b3b5f;
-  --bg-card: #ffffff;
-  --bg-option: #f8fafc;
-  --bg-option-hover: #d9eef5;
-  --bg-info: #eef2f7;
-  --border-color: #cbd5e1;
-  --correct-color: #10b981;
-  --wrong-color: #ef4444;
-  --shadow-sm: 0 4px 12px rgba(0,0,0,0.05);
-  --shadow-lg: 0 25px 50px -12px rgba(0,0,0,0.25);
-}
-[data-theme="dark"] {
-  --bg-gradient-start: #0f172a;
-  --bg-gradient-end: #1e293b;
-  --primary-color: #3b82f6;
-  --secondary-color: #14b8a6;
-  --text-color: #e2e8f0;
-  --bg-card: #1e293b;
-  --bg-option: #334155;
-  --bg-option-hover: #475569;
-  --bg-info: #334155;
-  --border-color: #475569;
-  --shadow-sm: 0 4px 12px rgba(0,0,0,0.3);
-  --shadow-lg: 0 25px 50px -12px rgba(0,0,0,0.5);
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  font-family: 'Be Vietnam Pro', 'Segoe UI', sans-serif;
-  margin: 0;
-  min-height: 100vh;
-  background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
-  overflow-x: hidden;
-  transition: background 0.3s;
-}
-/* Portal login */
-#login-screen {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: radial-gradient(circle at center, #0f172a, #020617);
-  z-index: 999;
-  transition: opacity 0.8s ease, transform 0.8s ease;
-}
-#login-screen.exit { opacity: 0; transform: scale(1.06); pointer-events: none; }
-.portal {
-  position: absolute;
-  width: 1200px;
-  height: 1200px;
-  background: conic-gradient(#6366f1, #8b5cf6, #ec4899, #3b82f6, #6366f1);
-  border-radius: 50%;
-  filter: blur(110px);
-  animation: portalSpin 18s linear infinite;
-  opacity: 0.55;
-}
-@keyframes portalSpin { to { transform: rotate(360deg); } }
-.portal-light {
-  position: fixed;
-  width: 280px;
-  height: 280px;
-  background: radial-gradient(circle, rgba(255,255,255,0.18), transparent 70%);
-  pointer-events: none;
-  transform: translate(-50%, -50%);
-  transition: left 0.1s, top 0.1s;
-  z-index: 1000;
-}
-.login-card {
-  position: relative;
-  z-index: 10;
-  width: 360px;
-  padding: 44px 40px;
-  border-radius: 28px;
-  backdrop-filter: blur(36px);
-  background: rgba(255,255,255,0.07);
-  border: 1px solid rgba(255,255,255,0.12);
-  box-shadow: 0 30px 80px rgba(0,0,0,0.6);
-  color: white;
-  animation: cardAppear 1s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-@keyframes cardAppear {
-  from { opacity: 0; transform: scale(0.82) translateY(40px); filter: blur(12px); }
-  to   { opacity: 1; transform: scale(1) translateY(0);       filter: blur(0); }
-}
-.login-icon {
-  width: 56px;
-  height: 56px;
-  margin: 0 auto 20px;
-  background: linear-gradient(135deg, #6366f1, #ec4899);
-  border-radius: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 28px;
-  font-weight: bold;
-}
-.login-title { text-align: center; font-size: 22px; font-weight: 600; margin-bottom: 6px; }
-.login-subtitle { text-align: center; font-size: 13px; color: rgba(255,255,255,0.5); margin-bottom: 32px; }
-.field { position: relative; margin-bottom: 16px; }
-.field input {
-  width: 100%;
-  padding: 14px 16px;
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,0.1);
-  outline: none;
-  background: rgba(255,255,255,0.06);
-  color: white;
-  font-size: 15px;
-  font-family: inherit;
-}
-.field input:focus { border-color: rgba(139,92,246,0.7); box-shadow: 0 0 0 3px rgba(99,102,241,0.2); }
-.field label {
-  position: absolute;
-  left: 16px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 14px;
-  color: rgba(255,255,255,0.35);
-  pointer-events: none;
-  transition: 0.25s ease;
-}
-.field input:focus ~ label, .field input:not(:placeholder-shown) ~ label {
-  top: -8px;
-  font-size: 11px;
-  color: rgba(139,92,246,0.9);
-}
-.login-btn {
-  width: 100%;
-  padding: 15px;
-  border-radius: 14px;
-  border: none;
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
-  color: white;
-  font-weight: 600;
-  font-size: 15px;
-  cursor: pointer;
-  transition: transform 0.15s;
-  margin-top: 8px;
-}
-.login-btn:hover { transform: translateY(-1px); }
-.login-error { margin-top: 12px; text-align: center; font-size: 13px; color: #f87171; min-height: 20px; animation: shake 0.4s ease; display: none; }
-@keyframes shake { 0%,100%{ transform: translateX(0); } 25%{ transform: translateX(-6px); } 75%{ transform: translateX(6px); } }
-/* App container */
-#app-container {
-  display: none;
-  min-height: 100vh;
-  background: linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
-  padding: 20px;
-}
-#app-container.visible { display: block; }
-.quiz-wrapper {
-  max-width: 1100px;
-  margin: 0 auto;
-  background: var(--bg-card);
-  border-radius: 28px;
-  box-shadow: var(--shadow-lg);
-  padding: 30px 32px;
-}
-/* Phần chọn bài tập */
-.mode-selector {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-  margin-bottom: 30px;
-}
-.mode-btn {
-  padding: 12px 30px;
-  font-size: 18px;
-  font-weight: 600;
-  border-radius: 60px;
-  border: none;
-  background: var(--bg-option);
-  color: var(--text-color);
-  cursor: pointer;
-  transition: 0.2s;
-}
-.mode-btn.active {
-  background: var(--primary-color);
-  color: white;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-}
-.mode-btn:hover:not(.active) {
-  background: var(--bg-option-hover);
-  transform: translateY(-2px);
-}
-/* Quiz styles */
-.quiz-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
-.progress-bar { margin-bottom: 25px; }
-.progress-label { display: flex; justify-content: space-between; font-size: 13px; margin-bottom: 6px; }
-.progress-track { height: 6px; background: var(--border-color); border-radius: 99px; overflow: hidden; }
-.progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); width: 0%; transition: width 0.3s; }
-.nav-grid { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 25px; justify-content: center; max-height: 120px; overflow-y: auto; padding: 8px; background: var(--bg-info); border-radius: 20px; }
-.nav-btn {
-  position: relative;
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  border: none;
-  background: var(--bg-option);
-  color: var(--text-color);
-  font-weight: 600;
-  cursor: pointer;
-  font-size: 14px;
-}
-.nav-btn.active { background: var(--primary-color); color: white; }
-.nav-btn.answered { background: var(--correct-color); color: white; }
-.nav-btn.flagged::after {
-  content: "🚩";
-  position: absolute;
-  top: -5px;
-  right: -5px;
-  font-size: 14px;
-  background: var(--bg-card);
-  border-radius: 50%;
-  width: 18px;
-  height: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.question-card { background: var(--bg-info); border-radius: 20px; padding: 24px; margin-bottom: 20px; }
-.question-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-.flag-btn {
-  background: none;
-  border: none;
-  font-size: 24px;
-  cursor: pointer;
-  padding: 5px;
-  border-radius: 50%;
-  transition: 0.2s;
-}
-.flag-btn:hover { transform: scale(1.1); background: rgba(0,0,0,0.1); }
-.question-text { font-size: 18px; font-weight: 600; margin-bottom: 20px; }
-.options { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
-.option { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: var(--bg-option); border: 2px solid var(--border-color); border-radius: 14px; cursor: pointer; }
-.option:hover { background: var(--bg-option-hover); }
-.option input { accent-color: var(--secondary-color); }
-.answer-result { margin-top: 16px; padding: 14px 18px; border-radius: 14px; display: none; }
-.answer-result.correct { background: rgba(16,185,129,0.1); border-left: 4px solid var(--correct-color); display: block; }
-.answer-result.wrong { background: rgba(239,68,68,0.1); border-left: 4px solid var(--wrong-color); display: block; }
-.navigation-buttons { display: flex; justify-content: space-between; margin-top: 15px; }
-.action-buttons { display: flex; justify-content: center; gap: 15px; margin: 30px 0 20px; flex-wrap: wrap; }
-.btn { padding: 10px 20px; border-radius: 40px; border: none; font-weight: 600; cursor: pointer; font-size: 14px; }
-.btn-primary { background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); color: white; }
-.btn-secondary { background: #6c757d; color: white; }
-.result-summary { background: var(--bg-info); border-radius: 20px; padding: 20px; margin-top: 25px; text-align: center; display: none; }
-.result-stats { display: flex; justify-content: center; gap: 30px; margin: 20px 0; }
-.stat-value { font-size: 32px; font-weight: 700; color: var(--secondary-color); }
-.theme-toggle {
-  position: fixed; top: 20px; right: 20px; width: 44px; height: 44px; border-radius: 50%;
-  background: rgba(255,255,255,0.12); backdrop-filter: blur(12px); color: white; font-size: 20px;
-  cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 100; display: none;
-}
-.theme-toggle.show { display: flex; }
-footer { text-align: center; margin-top: 30px; font-size: 13px; color: var(--text-color); opacity: 0.6; border-top: 1px solid var(--border-color); padding-top: 18px; }
-@media (max-width: 600px) { .quiz-wrapper { padding: 18px; } .nav-btn { width: 36px; height: 36px; } .mode-btn { padding: 8px 20px; font-size: 16px; } }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Trắc nghiệm Toán THPT - Cấp số & Mũ Logarit</title>
+  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
+  <style>
+    :root {
+      --bg-start: #0b3b5f;
+      --bg-end: #1b4f72;
+      --primary: #0b3b5f;
+      --secondary: #2c9c8c;
+      --text: #0b3b5f;
+      --card: #ffffff;
+      --opt-bg: #f8fafc;
+      --opt-hover: #d9eef5;
+      --info-bg: #eef2f7;
+      --border: #cbd5e1;
+      --correct: #10b981;
+      --wrong: #ef4444;
+      --shadow-sm: 0 4px 12px rgba(0,0,0,0.05);
+      --shadow-lg: 0 25px 50px -12px rgba(0,0,0,0.25);
+    }
+    [data-theme="dark"] {
+      --bg-start: #0f172a;
+      --bg-end: #1e293b;
+      --primary: #3b82f6;
+      --secondary: #14b8a6;
+      --text: #e2e8f0;
+      --card: #1e293b;
+      --opt-bg: #334155;
+      --opt-hover: #475569;
+      --info-bg: #334155;
+      --border: #475569;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Be Vietnam Pro', 'Segoe UI', sans-serif;
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+      transition: background 0.3s;
+      overflow-x: hidden;
+    }
+    #login-screen {
+      position: fixed; inset: 0; z-index: 999;
+      display: flex; justify-content: center; align-items: center;
+      background: radial-gradient(circle at center, #0f172a, #020617);
+      transition: opacity 0.8s, transform 0.8s;
+    }
+    #login-screen.exit { opacity: 0; transform: scale(1.06); pointer-events: none; }
+    .portal {
+      position: absolute; width: 1200px; height: 1200px;
+      background: conic-gradient(#6366f1, #8b5cf6, #ec4899, #3b82f6, #6366f1);
+      border-radius: 50%; filter: blur(110px);
+      animation: spin 18s linear infinite; opacity: 0.55;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .portal-light {
+      position: fixed; width: 280px; height: 280px;
+      background: radial-gradient(circle, rgba(255,255,255,0.18), transparent 70%);
+      pointer-events: none; transform: translate(-50%, -50%);
+      transition: left 0.1s, top 0.1s; z-index: 1000;
+    }
+    .login-card {
+      position: relative; z-index: 10; width: 360px; padding: 44px 40px;
+      border-radius: 28px; backdrop-filter: blur(36px);
+      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
+      box-shadow: 0 30px 80px rgba(0,0,0,0.6); color: white;
+      animation: cardAppear 1s cubic-bezier(0.16,1,0.3,1);
+    }
+    @keyframes cardAppear {
+      from { opacity: 0; transform: scale(0.82) translateY(40px); filter: blur(12px); }
+      to { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
+    }
+    .login-icon {
+      width: 56px; height: 56px; margin: 0 auto 20px;
+      background: linear-gradient(135deg, #6366f1, #ec4899); border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px; font-weight: bold;
+    }
+    .login-title { text-align: center; font-size: 22px; font-weight: 600; margin-bottom: 6px; }
+    .login-subtitle { text-align: center; font-size: 13px; color: rgba(255,255,255,0.5); margin-bottom: 32px; }
+    .field { position: relative; margin-bottom: 16px; }
+    .field input {
+      width: 100%; padding: 14px 16px; border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.1); outline: none;
+      background: rgba(255,255,255,0.06); color: white; font-size: 15px;
+    }
+    .field label {
+      position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+      font-size: 14px; color: rgba(255,255,255,0.35); pointer-events: none;
+      transition: 0.25s;
+    }
+    .field input:focus ~ label, .field input:not(:placeholder-shown) ~ label {
+      top: -8px; font-size: 11px; color: rgba(139,92,246,0.9);
+    }
+    .login-btn {
+      width: 100%; padding: 15px; border-radius: 14px; border: none;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6, #ec4899);
+      color: white; font-weight: 600; font-size: 15px; cursor: pointer;
+      margin-top: 8px; transition: 0.15s;
+    }
+    .login-btn:hover { transform: translateY(-2px); }
+    .login-error { margin-top: 12px; text-align: center; font-size: 13px; color: #f87171; min-height: 20px; display: none; }
+
+    #app-container { display: none; min-height: 100vh; padding: 20px; }
+    #app-container.visible { display: block; }
+    .quiz-wrapper {
+      max-width: 1200px; margin: 0 auto; background: var(--card);
+      border-radius: 28px; box-shadow: var(--shadow-lg); padding: 30px 32px;
+    }
+    .subject-tabs {
+      display: flex; gap: 15px; justify-content: center; margin-bottom: 25px;
+    }
+    .subject-tab {
+      padding: 14px 32px; font-size: 18px; font-weight: 700; border-radius: 60px;
+      border: none; background: var(--opt-bg); color: var(--text);
+      cursor: pointer; transition: 0.2s; box-shadow: var(--shadow-sm);
+    }
+    .subject-tab.active {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white; box-shadow: 0 6px 14px rgba(0,0,0,0.2);
+    }
+    .mode-selector {
+      display: flex; gap: 15px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap;
+    }
+    .mode-btn {
+      padding: 10px 24px; font-size: 15px; font-weight: 600; border-radius: 40px;
+      border: none; background: var(--opt-bg); color: var(--text); cursor: pointer;
+    }
+    .mode-btn.active { background: var(--primary); color: white; }
+    .category-selector {
+      display: none; gap: 10px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap;
+    }
+    .category-selector.show { display: flex; }
+    .category-btn {
+      padding: 8px 18px; font-size: 14px; font-weight: 500; border-radius: 40px;
+      border: 2px solid var(--border); background: var(--card); color: var(--text);
+      cursor: pointer; transition: 0.2s;
+    }
+    .category-btn.active { background: var(--secondary); color: white; border-color: var(--secondary); }
+    .category-btn.locked { opacity: 0.7; background: #e2e8f0; border-color: #94a3b8; }
+    .category-btn.locked::after { content: " 🔒"; font-size: 14px; }
+    .category-btn.unlocked::after { content: " 🔓"; font-size: 14px; }
+    .quiz-header {
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 20px; flex-wrap: wrap;
+    }
+    .quiz-title { font-size: 24px; font-weight: 700; color: var(--text); }
+    .progress-bar { margin-bottom: 25px; }
+    .progress-label { display: flex; justify-content: space-between; margin-bottom: 6px; color: var(--text); }
+    .progress-track { height: 8px; background: var(--border); border-radius: 99px; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--secondary)); width: 0%; transition: 0.3s; border-radius: 99px; }
+    .nav-grid {
+      display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 25px; justify-content: center;
+      max-height: 130px; overflow-y: auto; padding: 10px; background: var(--info-bg);
+      border-radius: 20px;
+    }
+    .nav-btn {
+      position: relative; width: 44px; height: 44px; border-radius: 12px;
+      border: none; background: var(--opt-bg); color: var(--text);
+      font-weight: 600; cursor: pointer; font-size: 14px; transition: 0.15s;
+    }
+    .nav-btn.active { background: var(--primary); color: white; }
+    .nav-btn.answered { background: var(--correct); color: white; }
+    .nav-btn.flagged::after {
+      content: "🚩"; position: absolute; top: -5px; right: -5px;
+      font-size: 14px; background: var(--card); border-radius: 50%;
+      width: 18px; height: 18px; display: flex; align-items: center; justify-content: center;
+    }
+    .question-card { background: var(--info-bg); border-radius: 20px; padding: 24px; margin-bottom: 20px; }
+    .question-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .flag-btn {
+      background: none; border: none; font-size: 26px; cursor: pointer;
+      padding: 5px; border-radius: 50%; transition: 0.2s;
+    }
+    .flag-btn:hover { transform: scale(1.1); background: rgba(0,0,0,0.1); }
+    .question-text { font-size: 18px; font-weight: 600; margin-bottom: 20px; color: var(--text); line-height: 1.6; }
+    .options { display: flex; flex-direction: column; gap: 12px; }
+    .option {
+      display: flex; align-items: center; gap: 14px; padding: 12px 18px;
+      background: var(--opt-bg); border: 2px solid var(--border); border-radius: 14px;
+      cursor: pointer; transition: 0.2s;
+    }
+    .option:hover { background: var(--opt-hover); border-color: var(--secondary); }
+    .option input { accent-color: var(--secondary); width: 20px; height: 20px; cursor: pointer; }
+    .option span { color: var(--text); font-size: 16px; }
+    .answer-result {
+      margin-top: 20px; padding: 14px 18px; border-radius: 14px; display: none;
+    }
+    .answer-result.correct { background: rgba(16,185,129,0.1); border-left: 4px solid var(--correct); display: block; }
+    .answer-result.wrong { background: rgba(239,68,68,0.1); border-left: 4px solid var(--wrong); display: block; }
+    .explanation { margin-top: 8px; font-size: 14px; color: var(--text); opacity: 0.8; }
+    .navigation-buttons { display: flex; justify-content: space-between; margin-top: 15px; gap: 10px; }
+    .action-buttons { display: flex; justify-content: center; gap: 15px; margin: 30px 0 20px; flex-wrap: wrap; }
+    .btn {
+      padding: 12px 24px; border-radius: 40px; border: none; font-weight: 600;
+      cursor: pointer; font-size: 14px; transition: 0.2s; box-shadow: var(--shadow-sm);
+    }
+    .btn-primary { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; }
+    .btn-secondary { background: #6c757d; color: white; }
+    .btn:hover { transform: translateY(-2px); }
+    .result-summary {
+      background: var(--info-bg); border-radius: 20px; padding: 20px; margin-top: 25px;
+      text-align: center; display: none;
+    }
+    .result-stats { display: flex; justify-content: center; gap: 30px; margin: 20px 0; flex-wrap: wrap; }
+    .stat-value { font-size: 32px; font-weight: 700; color: var(--secondary); }
+    .stat-label { color: var(--text); opacity: 0.7; }
+    .theme-toggle {
+      position: fixed; top: 20px; right: 20px; width: 44px; height: 44px;
+      border-radius: 50%; background: rgba(255,255,255,0.15); backdrop-filter: blur(12px);
+      color: white; font-size: 20px; cursor: pointer; display: none; align-items: center;
+      justify-content: center; z-index: 100; border: none;
+    }
+    .theme-toggle.show { display: flex; }
+    footer { text-align: center; margin-top: 30px; color: var(--text); opacity: 0.6; border-top: 1px solid var(--border); padding-top: 18px; }
+    @media (max-width: 600px) {
+      .quiz-wrapper { padding: 18px; }
+      .subject-tab { padding: 10px 20px; font-size: 16px; }
+      .nav-btn { width: 36px; height: 36px; }
+    }
+  </style>
 </head>
 <body>
 <div id="login-screen">
   <div class="portal"></div>
   <div class="portal-light" id="portalLight"></div>
   <div class="login-card">
-    <div class="login-icon">π</div>
+    <div class="login-icon">📐</div>
     <div class="login-title">Trắc Nghiệm Toán</div>
-    <div class="login-subtitle">Cấp số cộng · Cấp số nhân</div>
+    <div class="login-subtitle">Cấp số · Mũ · Logarit</div>
     <div class="field"><input type="password" id="passwordInput" placeholder=" "><label>Mật khẩu</label></div>
-    <button class="login-btn" id="loginBtn">Bắt đầu thi →</button>
+    <button class="login-btn" id="loginBtn">Bắt đầu →</button>
     <div class="login-error" id="loginError"></div>
   </div>
 </div>
+
 <button class="theme-toggle" id="themeToggle">🌙</button>
 <div id="app-container"></div>
 
 <script>
-// ========== MẬT KHẨU CHUNG ==========
-const CORRECT_PASSWORD = "tamduc";
+  (function(){
+    "use strict";
 
-// ========== CÂU HỎI (40 câu, đã chia sẵn) ==========
-const allQuestions = [
-  // === 15 câu đầu (Bài tập trên lớp) - Dễ, áp dụng công thức ===
-  // CSC (7 câu)
-  { text: "Cho cấp số cộng 2;5;8;11;14... Công sai?", options: ["A. -3", "B. 3", "C. 2", "D. 14"], correct: 1, explanation: "d = 5-2 = 3." },
-  { text: "CSC có u₁ = 9, d = 2. Giá trị u₂ là?", options: ["A. 11", "B. 9/2", "C. 18", "D. 7"], correct: 0, explanation: "u₂ = 9 + 2 = 11." },
-  { text: "CSC có u₁ = 5, u₂ = 10. Công sai d = ?", options: ["A. -5", "B. 5", "C. 2", "D. 15"], correct: 1, explanation: "d = 10 - 5 = 5." },
-  { text: "CSC có u₁ = 2, u₇ = -10. Công sai d = ?", options: ["A. 2", "B. 3", "C. -1", "D. -2"], correct: 3, explanation: "u₇ = 2 + 6d = -10 ⇒ 6d = -12 ⇒ d = -2." },
-  { text: "CSC có u₁ = 4, d = 8. Số hạng u₂₀ = ?", options: ["A. 156", "B. 165", "C. 12", "D. 245"], correct: 0, explanation: "u₂₀ = 4 + 19·8 = 156." },
-  { text: "CSC có u₁ = 2, u₅ = 14. Công sai d = ?", options: ["A. 3", "B. -3", "C. 4", "D. -4"], correct: 0, explanation: "u₅ = 2 + 4d = 14 ⇒ 4d = 12 ⇒ d = 3." },
-  { text: "CSC có u₁ = 1, u₄ = -26. Công sai d = ?", options: ["A. -27", "B. -9", "C. -26", "D. ∛(-26)"], correct: 1, explanation: "u₄ = 1 + 3d = -26 ⇒ 3d = -27 ⇒ d = -9." },
-  // CSN (8 câu)
-  { text: "CSN có u₁ = 3, q = 2. Giá trị u₂ = ?", options: ["A. 8", "B. 9", "C. 6", "D. 3/2"], correct: 2, explanation: "u₂ = 3·2 = 6." },
-  { text: "CSN có u₁ = 2, u₂ = 6. Công bội q = ?", options: ["A. 3", "B. -4", "C. 4", "D. 1/3"], correct: 0, explanation: "q = 6/2 = 3." },
-  { text: "CSN có u₁ = 3, u₂ = 1. Công bội q = ?", options: ["A. 1/3", "B. -2", "C. 3", "D. 2"], correct: 0, explanation: "q = 1/3." },
-  { text: "CSN có u₁ = 5, q = -1. Số hạng u₆ = ?", options: ["A. 5", "B. -5", "C. 10", "D. -10"], correct: 1, explanation: "u₆ = 5·(-1)⁵ = -5." },
-  { text: "CSN có u₁ = 3, q = -2. Số hạng u₅ = ?", options: ["A. -6", "B. -5", "C. 48", "D. -24"], correct: 2, explanation: "u₅ = 3·(-2)⁴ = 48." },
-  { text: "CSN có u₁ = 2, q = 3. Giá trị u₃ = ?", options: ["A. 6", "B. 12", "C. 18", "D. 54"], correct: 2, explanation: "u₃ = 2·3² = 18." },
-  { text: "CSN có u₂ = 6, u₃ = 18. Công bội q = ?", options: ["A. 2", "B. 3", "C. 1/3", "D. 4"], correct: 1, explanation: "q = 18/6 = 3." },
-  { text: "CSN có u₁ = 4, q = 1/2. Số hạng u₃ = ?", options: ["A. 1", "B. 2", "C. 3", "D. 4"], correct: 0, explanation: "u₃ = 4·(1/2)² = 1." },
-  // === 25 câu còn lại (Bài tập về nhà) ===
-  { text: "CSC u₁=3, d=-3, tổng 10 số đầu?", options: ["A. 26", "B. -26", "C. -105", "D. 105"], correct: 2, explanation: "S₁₀ = 5·(6-27) = -105." },
-  { text: "CSC u₁=1, d=2, S₁₀=?", options: ["A. 110", "B. 100", "C. 21", "D. 19"], correct: 1, explanation: "S₁₀ = 5·(2+18)=100." },
-  { text: "CSC u₁=3, d=2, tổng 2019 số đầu?", options: ["A. 4 080 399", "B. 4 800 399", "C. 4 399 080", "D. 8 154 741"], correct: 0, explanation: "S₂₀₁₉ = 2019·2021 = 4 080 399." },
-  { text: "CSC u₁=1/3, d=-1, Sₙ=-425, n=?", options: ["A. 30", "B. 60", "C. 45", "D. 15"], correct: 0, explanation: "n=30." },
-  { text: "uₙ=2n+1, số hạng thứ 2019?", options: ["A. 4039", "B. 4390", "C. 4930", "D. 4093"], correct: 0, explanation: "u₂₀₁₉ = 4039." },
-  { text: "CSC u₁=2, d=9, số 2018 là hạng thứ mấy?", options: ["A. 226", "B. 225", "C. 223", "D. 224"], correct: 1, explanation: "n=225." },
-  { text: "CSC u₄+u₁₆=48, u₁₀=?", options: ["A. 438", "B. 24", "C. 96", "D. 72"], correct: 1, explanation: "u₁₀=24." },
-  { text: "CSC u₅+u₇=19, u₂+u₁₀=?", options: ["A. 38", "B. 29", "C. 12", "D. 19"], correct: 3, explanation: "=19." },
-  { text: "CSC u₉=5u₂, u₁₃=2u₆+5, u₁,d?", options: ["A. -3,4", "B. 3,4", "C. 4,3", "D. -4,3"], correct: 1, explanation: "u₁=3,d=4." },
-  { text: "Dãy nào là CSC?", options: ["A. 5ⁿ", "B. 2-5n", "C. 5ⁿ-2", "D. 5+n²"], correct: 1, explanation: "2-5n là CSC." },
-  { text: "Dãy nào là CSC?", options: ["A. 3·2ⁿ", "B. 3-2n", "C. 2ⁿ+3", "D. 2+n³"], correct: 1, explanation: "3-2n là CSC." },
-  { text: "CSC u₁₀=30, u₂₀=80, d=?", options: ["A. 5", "B. 10", "C. 50", "D. 110"], correct: 0, explanation: "d=5." },
-  { text: "CSC u₁=5, S₅₀=5150, uₙ=?", options: ["A. 1+4n", "B. 5n", "C. 3+2n", "D. 2+3n"], correct: 0, explanation: "uₙ=4n+1." },
-  { text: "Ba số x,y,z lập CSC, x+y+z=15, xyz=80, y=?", options: ["A. 4", "B. 5", "C. 6", "D. 8"], correct: 1, explanation: "y=5." },
-  { text: "Dãy nào không là CSN?", options: ["A. 1;-3;9;-27;54", "B. 1;2;4;8;16", "C. 1;-1;1;-1;1", "D. 1;-2;4;-8;16"], correct: 0, explanation: "q không đều." },
-  { text: "CSN u₂=6, u₅=162, q>0, q=?", options: ["A. 2", "B. 3", "C. 4", "D. 6"], correct: 1, explanation: "q=3." },
-  { text: "CSN u₃=12, u₆=96, S₆=?", options: ["A. 189", "B. 378", "C. 126", "D. 252"], correct: 0, explanation: "S₆=189." },
-  { text: "CSN u₁=2, q=3, u₂₀₁₉=?", options: ["A. 2·3²⁰¹⁸", "B. 3·2²⁰¹⁸", "C. 2·3²⁰¹⁹", "D. 3·2²⁰¹⁹"], correct: 0, explanation: "2·3²⁰¹⁸." },
-  { text: "CSN u₁=3, q=2, Sₙ=21, n=?", options: ["A. 10", "B. 3", "C. 7", "D. Không"], correct: 1, explanation: "n=3." },
-  { text: "CSN uₙ=3ⁿ, q=?", options: ["A. -3", "B. 1/3", "C. ±3", "D. 3"], correct: 3, explanation: "q=3." },
-  { text: "CSN u₁=2, u₆=486, q=?", options: ["A. 3", "B. 5", "C. 3/2", "D. 2/3"], correct: 0, explanation: "q=3." },
-  { text: "CSN q>1, u₂=-3, u₁+u₂+u₃=-13, u₁,q?", options: ["A. 1,3", "B. -1,-3", "C. -1,3", "D. 1,-3"], correct: 2, explanation: "u₁=-1, q=3." },
-  { text: "CSN u₄-u₂=54, u₅-u₃=108, u₁,q?", options: ["A. 9,2", "B. 9,-2", "C. -9,-2", "D. -9,2"], correct: 0, explanation: "u₁=9,q=2." },
-  { text: "CSN u₄+u₆=-540, u₃+u₅=180, S₂₁=?", options: ["A. ½(3²¹+1)", "B. 3²¹-1", "C. 1-3²¹", "D. -½(3²¹+1)"], correct: 0, explanation: "S₂₁=(3²¹+1)/2." },
-  { text: "Vi khuẩn tăng gấp đôi, sau 5p có 64000, hỏi sau bao lâu có 2048000?", options: ["A. 10", "B. 11", "C. 26", "D. 50"], correct: 0, explanation: "t=10 phút." }
-];
+    // ======================== MẬT KHẨU ========================
+    const CORRECT_PASSWORD = "tamduc";
+    const CAT5_PASSWORD = "tiendat";
 
-// Chia làm 2 phần
-const classQuestions = allQuestions.slice(0, 15);   // Bài tập trên lớp (15 câu dễ)
-const homeQuestions = allQuestions.slice(15, 40);   // Bài tập về nhà (25 câu)
+    // ======================== DỮ LIỆU CÂU HỎI ========================
 
-// ========== BIẾN TOÀN CỤC ==========
-let currentMode = "class";   // "class" hoặc "home"
-let currentQuestions = classQuestions;
-let currentIndex = 0;
-let userAnswers = new Array(currentQuestions.length).fill(null);
-let flags = new Array(currentQuestions.length).fill(false);
-let submitted = false;
-let startTime = null;
-let timerInterval = null;
+    // ----- CẤP SỐ (40 câu) -----
+    const sequenceQuestions = [
+      // 15 câu lớp
+      { text: "Cho cấp số cộng 2;5;8;11;14... Công sai?", options: ["A. -3", "B. 3", "C. 2", "D. 14"], correct: 1, explanation: "d = 5-2 = 3." },
+      { text: "CSC có u₁ = 9, d = 2. Giá trị u₂ là?", options: ["A. 11", "B. 9/2", "C. 18", "D. 7"], correct: 0, explanation: "u₂ = 9 + 2 = 11." },
+      { text: "CSC có u₁ = 5, u₂ = 10. Công sai d = ?", options: ["A. -5", "B. 5", "C. 2", "D. 15"], correct: 1, explanation: "d = 10 - 5 = 5." },
+      { text: "CSC có u₁ = 2, u₇ = -10. Công sai d = ?", options: ["A. 2", "B. 3", "C. -1", "D. -2"], correct: 3, explanation: "u₇ = 2 + 6d = -10 ⇒ d = -2." },
+      { text: "CSC có u₁ = 4, d = 8. Số hạng u₂₀ = ?", options: ["A. 156", "B. 165", "C. 12", "D. 245"], correct: 0, explanation: "u₂₀ = 4 + 19·8 = 156." },
+      { text: "CSC có u₁ = 2, u₅ = 14. Công sai d = ?", options: ["A. 3", "B. -3", "C. 4", "D. -4"], correct: 0, explanation: "u₅ = 2 + 4d = 14 ⇒ d = 3." },
+      { text: "CSC có u₁ = 1, u₄ = -26. Công sai d = ?", options: ["A. -27", "B. -9", "C. -26", "D. ∛(-26)"], correct: 1, explanation: "u₄ = 1 + 3d = -26 ⇒ d = -9." },
+      { text: "CSN có u₁ = 3, q = 2. Giá trị u₂ = ?", options: ["A. 8", "B. 9", "C. 6", "D. 3/2"], correct: 2, explanation: "u₂ = 3·2 = 6." },
+      { text: "CSN có u₁ = 2, u₂ = 6. Công bội q = ?", options: ["A. 3", "B. -4", "C. 4", "D. 1/3"], correct: 0, explanation: "q = 6/2 = 3." },
+      { text: "CSN có u₁ = 3, u₂ = 1. Công bội q = ?", options: ["A. 1/3", "B. -2", "C. 3", "D. 2"], correct: 0, explanation: "q = 1/3." },
+      { text: "CSN có u₁ = 5, q = -1. Số hạng u₆ = ?", options: ["A. 5", "B. -5", "C. 10", "D. -10"], correct: 1, explanation: "u₆ = 5·(-1)⁵ = -5." },
+      { text: "CSN có u₁ = 3, q = -2. Số hạng u₅ = ?", options: ["A. -6", "B. -5", "C. 48", "D. -24"], correct: 2, explanation: "u₅ = 3·(-2)⁴ = 48." },
+      { text: "CSN có u₁ = 2, q = 3. Giá trị u₃ = ?", options: ["A. 6", "B. 12", "C. 18", "D. 54"], correct: 2, explanation: "u₃ = 2·3² = 18." },
+      { text: "CSN có u₂ = 6, u₃ = 18. Công bội q = ?", options: ["A. 2", "B. 3", "C. 1/3", "D. 4"], correct: 1, explanation: "q = 18/6 = 3." },
+      { text: "CSN có u₁ = 4, q = 1/2. Số hạng u₃ = ?", options: ["A. 1", "B. 2", "C. 3", "D. 4"], correct: 0, explanation: "u₃ = 4·(1/2)² = 1." },
+      // 25 câu về nhà
+      { text: "CSC u₁=3, d=-3, tổng 10 số đầu?", options: ["A. 26", "B. -26", "C. -105", "D. 105"], correct: 2, explanation: "S₁₀ = 5·(6-27) = -105." },
+      { text: "CSC u₁=1, d=2, S₁₀=?", options: ["A. 110", "B. 100", "C. 21", "D. 19"], correct: 1, explanation: "S₁₀ = 5·(2+18)=100." },
+      { text: "CSC u₁=3, d=2, tổng 2019 số đầu?", options: ["A. 4 080 399", "B. 4 800 399", "C. 4 399 080", "D. 8 154 741"], correct: 0, explanation: "S₂₀₁₉ = 2019·2021 = 4 080 399." },
+      { text: "CSC u₁=1/3, d=-1, Sₙ=-425, n=?", options: ["A. 30", "B. 60", "C. 45", "D. 15"], correct: 0, explanation: "n=30." },
+      { text: "uₙ=2n+1, số hạng thứ 2019?", options: ["A. 4039", "B. 4390", "C. 4930", "D. 4093"], correct: 0, explanation: "u₂₀₁₉ = 4039." },
+      { text: "CSC u₁=2, d=9, số 2018 là hạng thứ mấy?", options: ["A. 226", "B. 225", "C. 223", "D. 224"], correct: 1, explanation: "n=225." },
+      { text: "CSC u₄+u₁₆=48, u₁₀=?", options: ["A. 438", "B. 24", "C. 96", "D. 72"], correct: 1, explanation: "u₁₀=24." },
+      { text: "CSC u₅+u₇=19, u₂+u₁₀=?", options: ["A. 38", "B. 29", "C. 12", "D. 19"], correct: 3, explanation: "=19." },
+      { text: "CSC u₉=5u₂, u₁₃=2u₆+5, u₁,d?", options: ["A. -3,4", "B. 3,4", "C. 4,3", "D. -4,3"], correct: 1, explanation: "u₁=3,d=4." },
+      { text: "Dãy nào là CSC?", options: ["A. 5n", "B. 2-5n", "C. 5n-2", "D. 5+n²"], correct: 1, explanation: "2-5n là CSC." },
+      { text: "Dãy nào là CSC?", options: ["A. 3·2ⁿ", "B. 3-2n", "C. 2n+3", "D. 2+n³"], correct: 1, explanation: "3-2n là CSC." },
+      { text: "CSC u₁₀=30, u₂₀=80, d=?", options: ["A. 5", "B. 10", "C. 50", "D. 110"], correct: 0, explanation: "d=5." },
+      { text: "CSC u₁=5, S₅₀=5150, uₙ=?", options: ["A. 1+4n", "B. 5n", "C. 3+2n", "D. 2+3n"], correct: 0, explanation: "uₙ=4n+1." },
+      { text: "Ba số x,y,z lập CSC, x+y+z=15, xyz=80, y=?", options: ["A. 4", "B. 5", "C. 6", "D. 8"], correct: 1, explanation: "y=5." },
+      { text: "Dãy nào không là CSN?", options: ["A. 1;-3;9;-27;54", "B. 1;2;4;8;16", "C. 1;-1;1;-1;1", "D. 1;-2;4;-8;16"], correct: 0, explanation: "q không đều." },
+      { text: "CSN u₂=6, u₅=162, q>0, q=?", options: ["A. 2", "B. 3", "C. 4", "D. 6"], correct: 1, explanation: "q=3." },
+      { text: "CSN u₃=12, u₆=96, S₆=?", options: ["A. 189", "B. 378", "C. 126", "D. 252"], correct: 0, explanation: "S₆=189." },
+      { text: "CSN u₁=2, q=3, u₂₀₁₉=?", options: ["A. 2·3²⁰¹⁸", "B. 3·2²⁰¹⁸", "C. 2·3²⁰¹⁹", "D. 3·2²⁰¹⁹"], correct: 0, explanation: "2·3²⁰¹⁸." },
+      { text: "CSN u₁=3, q=2, Sₙ=21, n=?", options: ["A. 10", "B. 3", "C. 7", "D. Không"], correct: 1, explanation: "n=3." },
+      { text: "CSN uₙ=3ⁿ, q=?", options: ["A. -3", "B. 1/3", "C. ±3", "D. 3"], correct: 3, explanation: "q=3." },
+      { text: "CSN u₁=2, u₆=486, q=?", options: ["A. 3", "B. 5", "C. 3/2", "D. 2/3"], correct: 0, explanation: "q=3." },
+      { text: "CSN q>1, u₂=-3, u₁+u₂+u₃=-13, u₁,q?", options: ["A. 1,3", "B. -1,-3", "C. -1,3", "D. 1,-3"], correct: 2, explanation: "u₁=-1, q=3." },
+      { text: "CSN u₄-u₂=54, u₅-u₃=108, u₁,q?", options: ["A. 9,2", "B. 9,-2", "C. -9,-2", "D. -9,2"], correct: 0, explanation: "u₁=9,q=2." },
+      { text: "CSN u₄+u₆=-540, u₃+u₅=180, S₂₁=?", options: ["A. ½(3²¹+1)", "B. 3²¹-1", "C. 1-3²¹", "D. -½(3²¹+1)"], correct: 0, explanation: "S₂₁=(3²¹+1)/2." },
+      { text: "Vi khuẩn tăng gấp đôi, sau 5p có 64000, hỏi sau bao lâu có 2048000?", options: ["A. 10", "B. 11", "C. 26", "D. 50"], correct: 0, explanation: "t=10 phút." }
+    ];
 
-// ========== LƯU / KHÔI PHỤC TRẠNG THÁI ==========
-function saveState() {
-  const state = {
-    userAnswers: userAnswers,
-    flags: flags,
-    currentIndex: currentIndex,
-    startTime: startTime,
-    submitted: submitted
-  };
-  localStorage.setItem(`quiz_state_${currentMode}`, JSON.stringify(state));
-}
-function loadState() {
-  const saved = localStorage.getItem(`quiz_state_${currentMode}`);
-  if (!saved) return false;
-  try {
-    const state = JSON.parse(saved);
-    userAnswers = state.userAnswers || new Array(currentQuestions.length).fill(null);
-    flags = state.flags || new Array(currentQuestions.length).fill(false);
-    currentIndex = state.currentIndex || 0;
-    startTime = state.startTime || null;
-    submitted = state.submitted || false;
-    return true;
-  } catch(e) { return false; }
-}
-function clearState() {
-  localStorage.removeItem(`quiz_state_${currentMode}`);
-}
+    // ----- MŨ & LOGARIT -----
+    const expLogClassCategories = {
+      category1: [
+        { text: "Tập xác định của hàm số y = (x - 2)⁻⁴ là:", options: ["A. (0;+∞)", "B. (2;+∞)", "C. ℝ", "D. ℝ\\{2}"], correct: 3, explanation: "x - 2 ≠ 0 ⇒ x ≠ 2." },
+        { text: "Tập xác định của y = log₄(x² - 16) là:", options: ["A. (-4;4)", "B. (-∞;-4)∪(4;+∞)", "C. ℝ\\{-4;4}", "D. (4;+∞)"], correct: 1, explanation: "x² - 16 > 0 ⇔ x < -4 hoặc x > 4." },
+        { text: "Tập xác định của y = ln(2 - x) là:", options: ["A. ℝ\\{2}", "B. ℝ", "C. (-∞;2)", "D. (2;+∞)"], correct: 2, explanation: "2 - x > 0 ⇔ x < 2." },
+        { text: "Tập xác định của y = e<sup>x²+3x</sup>:", options: ["A. ∅", "B. [-3;0]", "C. ℝ", "D. (-∞;-3]∪[0;+∞)"], correct: 2, explanation: "Hàm mũ cơ số e xác định với mọi x ∈ ℝ." },
+        { text: "Tập xác định của y = log₂(5 - 2x):", options: ["A. (-∞;5/2)", "B. (5/2;+∞)", "C. ℝ\\{5/2}", "D. ℝ"], correct: 0, explanation: "5 - 2x > 0 ⇔ x < 5/2." },
+        { text: "Tập xác định của y = (x² - 5x + 6)⁻³:", options: ["A. ℝ", "B. ℝ\\{2;3}", "C. (2;3)", "D. (-∞;2)∪(3;+∞)"], correct: 1, explanation: "x² - 5x + 6 ≠ 0 ⇔ x ≠ 2,3." },
+        { text: "Tập xác định của y = log(x+3) + log(5-x):", options: ["A. (-3;5)", "B. [-3;5]", "C. ℝ\\{-3;5}", "D. (-∞;-3)∪(5;+∞)"], correct: 0, explanation: "x+3>0 và 5-x>0 ⇔ -3<x<5." },
+        { text: "Tập xác định của y = √(log₃(x-1)):", options: ["A. (1;+∞)", "B. [2;+∞)", "C. (2;+∞)", "D. [1;+∞)"], correct: 1, explanation: "log₃(x-1) ≥ 0 ⇔ x-1 ≥ 1 ⇔ x ≥ 2." },
+        { text: "Tập xác định của y = ln(x² - 4x + 3):", options: ["A. (1;3)", "B. ℝ\\{1;3}", "C. (-∞;1)∪(3;+∞)", "D. [1;3]"], correct: 2, explanation: "x²-4x+3>0 ⇔ x<1 hoặc x>3." },
+        { text: "Tập xác định của y = log(6-2x):", options: ["A. (-∞;3)", "B. (3;+∞)", "C. ℝ\\{3}", "D. (-∞;3]"], correct: 0, explanation: "6-2x>0 ⇔ x<3." }
+      ],
+      category2: [
+        { text: "Đạo hàm của y = 5ˣ là:", options: ["A. 5ˣ/ln5", "B. 5ˣ·ln5", "C. 5ˣ", "D. x·5ˣ⁻¹"], correct: 1, explanation: "(aˣ)' = aˣ·lna." },
+        { text: "Đạo hàm của y = log₃(3x+2):", options: ["A. 1/((3x+2)ln3)", "B. 3/((3x+2)ln3)", "C. 3/(3x+2)", "D. 1/(3x+2)"], correct: 1, explanation: "y' = u'/(u·lna)." },
+        { text: "Đạo hàm của y = 2<sup>x²-x</sup>:", options: ["A. (2x-1)·2<sup>x²-x</sup>", "B. (2x-1)·2<sup>x²-x</sup>·ln2", "C. (x²-x)·2<sup>x²-x-1</sup>", "D. 2<sup>x²-x-1</sup>"], correct: 1, explanation: "y' = u'·aᵘ·lna." },
+        { text: "Đạo hàm của y = ln(3x+1):", options: ["A. 3/(3x+1)", "B. 1/(3x+1)", "C. 3/(3x+1)·ln3", "D. 1/(3x+1)·ln2"], correct: 0, explanation: "y' = u'/u." },
+        { text: "Đạo hàm của y = e<sup>2x+1</sup>:", options: ["A. e<sup>2x+1</sup>", "B. 2e<sup>2x+1</sup>", "C. (2x+1)e<sup>2x</sup>", "D. e<sup>2x</sup>"], correct: 1, explanation: "y' = 2·e<sup>2x+1</sup>." },
+        { text: "Đạo hàm của y = log₅(x²+1):", options: ["A. 2x/((x²+1)ln5)", "B. 1/((x²+1)ln5)", "C. 2x/(x²+1)", "D. x/(x²+1)"], correct: 0, explanation: "y' = u'/(u·lna)." },
+        { text: "Đạo hàm của y = 4ˣ:", options: ["A. 4ˣ", "B. 4ˣ·ln4", "C. x·4ˣ⁻¹", "D. 4ˣ/ln4"], correct: 1, explanation: "(4ˣ)' = 4ˣ·ln4." },
+        { text: "Đạo hàm của y = ln(x+5):", options: ["A. 1/(x+5)", "B. 5/(x+5)", "C. 1/x", "D. ln(x+5)/x"], correct: 0, explanation: "y' = 1/(x+5)." },
+        { text: "Đạo hàm của y = 7ˣ:", options: ["A. 7ˣ", "B. 7ˣ·ln7", "C. x·7ˣ⁻¹", "D. 7ˣ/ln7"], correct: 1 },
+        { text: "Đạo hàm của y = log₂(x):", options: ["A. 1/(x·ln2)", "B. 1/x", "C. ln2/x", "D. 2/x"], correct: 0 }
+      ],
+      category3: [
+        { text: "Nghiệm của 5<sup>x-1</sup> = 125:", options: ["A. 2", "B. 3", "C. 4", "D. 5"], correct: 2, explanation: "5<sup>x-1</sup> = 5³ ⇒ x-1=3 ⇒ x=4." },
+        { text: "Tập nghiệm của 4<sup>x+2</sup> = 8:", options: ["A. {1/2}", "B. {0;1}", "C. {1}", "D. {0;2}"], correct: 0, explanation: "2<sup>2x+4</sup>=2³ ⇒ 2x+4=3 ⇒ x=-1/2." },
+        { text: "Nghiệm của 7ˣ = 49:", options: ["A. 7", "B. 2", "C. log7", "D. log₇49"], correct: 1 },
+        { text: "Số nghiệm thực của 6<sup>x²-4</sup> = 1:", options: ["A. 0", "B. 1", "C. 2", "D. 3"], correct: 2, explanation: "x²-4=0 ⇒ x=±2." },
+        { text: "Nghiệm của (1/3)<sup>x²-5x-6</sup> = 9<sup>x+1</sup>:", options: ["A. -1;4", "B. vô nghiệm", "C. 1;-4", "D. 2;-3"], correct: 0, explanation: "3<sup>-x²+5x+6</sup>=3<sup>2x+2</sup> ⇒ -x²+5x+6=2x+2 ⇒ x²-3x-4=0 ⇒ x=-1;4." },
+        { text: "Nghiệm của 8<sup>x-2</sup> = 64:", options: ["A. 3", "B. 4", "C. 5", "D. 6"], correct: 1 },
+        { text: "Tập nghiệm của 2<sup>x²+x+2</sup> = 16:", options: ["A. {-3;2}", "B. {-2;1}", "C. {0}", "D. {1;2}"], correct: 1, explanation: "x²+x+2=4 ⇒ x²+x-2=0 ⇒ x=1 hoặc x=-2." },
+        { text: "Nghiệm của 2ˣ = 32:", options: ["A. 4", "B. 5", "C. 6", "D. 16"], correct: 1 },
+        { text: "Nghiệm của 3<sup>2x</sup> = 27:", options: ["A. 1", "B. 3/2", "C. 2", "D. 9"], correct: 1 },
+        { text: "Nghiệm của (1/2)ˣ = 8:", options: ["A. -3", "B. 3", "C. -1/3", "D. 1/3"], correct: 0 }
+      ],
+      category4: [
+        { text: "Tổng nghiệm của log₂₀₂₃(x²+2024x)=1:", options: ["A. -2023", "B. -2024", "C. 2024", "D. 2023"], correct: 1, explanation: "x²+2024x=2023 ⇒ tổng = -2024." },
+        { text: "Nghiệm của log₃(3x-8)=2:", options: ["A. 17/3", "B. 9", "C. 8", "D. 7"], correct: 0, explanation: "3x-8=9 ⇒ x=17/3." },
+        { text: "Nghiệm của log₅(x-2)=2:", options: ["A. 3", "B. -1", "C. 1", "D. 27"], correct: 3, explanation: "x-2=25 ⇒ x=27." },
+        { text: "Tập nghiệm của log₄(x²+2)=3:", options: ["A. {√62}", "B. {-√62;√62}", "C. {-1;1}", "D. {1}"], correct: 1 },
+        { text: "Nghiệm của log₇(x-3)=3:", options: ["A. 10", "B. 346", "C. 343", "D. 8"], correct: 1, explanation: "x-3=343 ⇒ x=346." },
+        { text: "Nghiệm của log(5x+2)=log(3x+6):", options: ["A. 2", "B. 1", "C. 3", "D. -1"], correct: 0, explanation: "5x+2=3x+6 ⇒ 2x=4 ⇒ x=2." },
+        { text: "Tập nghiệm của log₃(x-4)=log₃(3x-2):", options: ["A. {0}", "B. {2}", "C. {-2}", "D. ∅"], correct: 3, explanation: "x-4=3x-2 ⇒ x=-1 (không thỏa ĐK)." },
+        { text: "Nghiệm của log₂(x)=5:", options: ["A. 10", "B. 32", "C. 25", "D. 7"], correct: 1 },
+        { text: "Nghiệm của log₅(x+1)=2:", options: ["A. 24", "B. 25", "C. 26", "D. 9"], correct: 0 },
+        { text: "Nghiệm của ln(x)=0:", options: ["A. 0", "B. 1", "C. e", "D. -1"], correct: 1 }
+      ],
+      category5: [
+        { text: "Tập nghiệm của 3<sup>x-1</sup> ≥ 9:", options: ["A. (3;+∞)", "B. (3;+∞]", "C. [3;+∞)", "D. [3;+∞]"], correct: 2, explanation: "3<sup>x-1</sup> ≥ 3² ⇒ x-1 ≥ 2 ⇒ x ≥ 3." },
+        { text: "Tập nghiệm của 2ˣ > 16:", options: ["A. (-∞;4)", "B. (4;+∞)", "C. (0;4)", "D. (0;3)"], correct: 1 },
+        { text: "Tập nghiệm của (1/2)<sup>x+2</sup> > 8:", options: ["A. [-5;+∞)", "B. (-5;+∞)", "C. (-∞;-5)", "D. (-∞;-5]"], correct: 2 },
+        { text: "Tập nghiệm của log₂(x+2) > -1:", options: ["A. (-1;7)", "B. (0;+∞)", "C. (-1;+∞)", "D. [-1;7)"], correct: 2, explanation: "x+2 > 2⁻¹ = 1/2 ⇒ x > -3/2. (Đã điều chỉnh)" },
+        { text: "Tập nghiệm của log₃(x-1) ≤ 2:", options: ["A. (1;10]", "B. [1;10]", "C. (1;+∞)", "D. (-∞;10]"], correct: 0, explanation: "0 < x-1 ≤ 9 ⇒ 1 < x ≤ 10." },
+        { text: "Tập nghiệm của 4ˣ ≥ 16:", options: ["A. [2;+∞)", "B. (2;+∞)", "C. (-∞;2]", "D. (-∞;2)"], correct: 0 },
+        { text: "Tập nghiệm của 5ˣ < 125:", options: ["A. (-∞;3)", "B. (3;+∞)", "C. (-∞;3]", "D. [3;+∞)"], correct: 0 },
+        { text: "Tập nghiệm của log₂(x) > 3:", options: ["A. (8;+∞)", "B. (3;+∞)", "C. [8;+∞)", "D. (-∞;8)"], correct: 0 },
+        { text: "Tập nghiệm của log₃(x) ≤ 1:", options: ["A. (0;3]", "B. [0;3]", "C. (0;3)", "D. (-∞;3]"], correct: 0 },
+        { text: "Tập nghiệm của (1/3)ˣ ≤ 9:", options: ["A. [-2;+∞)", "B. (-∞;-2]", "C. [-2;+∞]", "D. (-2;+∞)"], correct: 0, explanation: "3⁻ˣ ≤ 3² ⇒ -x ≤ 2 ⇒ x ≥ -2." }
+      ]
+    };
 
-// ========== RENDER GIAO DIỆN CHÍNH ==========
-function renderApp() {
-  const container = document.getElementById('app-container');
-  container.innerHTML = `
-    <div class="quiz-wrapper">
-      <div class="mode-selector">
-        <button class="mode-btn ${currentMode === 'class' ? 'active' : ''}" data-mode="class">📚 Bài tập trên lớp (15 câu)</button>
-        <button class="mode-btn ${currentMode === 'home' ? 'active' : ''}" data-mode="home">🏠 Bài tập về nhà (25 câu)</button>
-      </div>
-      <div class="quiz-header">
-        <div class="quiz-title">📘 Cấp số cộng · Cấp số nhân</div>
-        <div class="quiz-meta">${currentMode === 'class' ? 'Bài tập trên lớp' : 'Bài tập về nhà'}</div>
-      </div>
-      <div class="progress-bar">
-        <div class="progress-label"><span>Tiến độ</span><span id="answeredPercent">0%</span></div>
-        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
-      </div>
-      <div id="navGrid" class="nav-grid"></div>
-      <div id="currentQuestion"></div>
-      <div class="navigation-buttons">
-        <button class="btn btn-secondary" id="prevBtn">◀ Câu trước</button>
-        <button class="btn btn-secondary" id="nextBtn">Câu tiếp theo ▶</button>
-      </div>
-      <div class="action-buttons">
-        <button class="btn btn-primary" id="submitBtn">📝 NỘP BÀI</button>
-        <button class="btn btn-secondary" id="resetBtn">🔄 LÀM LẠI</button>
-        <button class="btn btn-secondary" id="logoutBtn">🚪 ĐĂNG XUẤT</button>
-      </div>
-      <div id="resultSummary" class="result-summary"></div>
-      <footer>🎯 ĐẬU NV1 CÙNG ANH TIẾN ĐẠT</footer>
-    </div>
-  `;
-  renderNavGrid();
-  renderCurrentQuestion();
-  updateProgress();
-  startTimer();
-  attachEvents();
-}
+    // Home 100 câu
+    const expLogHomeQuestions = [];
+    for (let cat in expLogClassCategories) {
+      expLogHomeQuestions.push(...expLogClassCategories[cat]);
+    }
+    const extraHome = [];
+    for (let cat in expLogClassCategories) {
+      extraHome.push(...expLogClassCategories[cat].map(q => ({...q, text: q.text.replace('Tập xác định','TXĐ')})));
+    }
+    expLogHomeQuestions.push(...extraHome.slice(0,50));
 
-function renderNavGrid() {
-  const nav = document.getElementById('navGrid');
-  nav.innerHTML = '';
-  for (let i = 0; i < currentQuestions.length; i++) {
-    const btn = document.createElement('button');
-    btn.textContent = (i+1).toString();
-    btn.className = 'nav-btn';
-    if (userAnswers[i] !== null) btn.classList.add('answered');
-    if (i === currentIndex) btn.classList.add('active');
-    if (flags[i]) btn.classList.add('flagged');
-    btn.onclick = () => { if (!submitted) { currentIndex = i; renderCurrentQuestion(); updateNavActive(); saveState(); } };
-    nav.appendChild(btn);
-  }
-}
-function updateNavActive() {
-  document.querySelectorAll('.nav-btn').forEach((btn, idx) => {
-    if (idx === currentIndex) btn.classList.add('active'); else btn.classList.remove('active');
-    if (userAnswers[idx] !== null) btn.classList.add('answered'); else btn.classList.remove('answered');
-    if (flags[idx]) btn.classList.add('flagged'); else btn.classList.remove('flagged');
-  });
-}
-function toggleFlag() {
-  if (submitted) return;
-  flags[currentIndex] = !flags[currentIndex];
-  renderCurrentQuestion();
-  updateNavActive();
-  saveState();
-}
-function renderCurrentQuestion() {
-  const q = currentQuestions[currentIndex];
-  const container = document.getElementById('currentQuestion');
-  const selected = userAnswers[currentIndex];
-  const isFlagged = flags[currentIndex];
-  container.innerHTML = `
-    <div class="question-card">
-      <div class="question-header">
-        <div class="question-number">Câu ${currentIndex+1}</div>
-        <button class="flag-btn" id="flagBtn">${isFlagged ? '🚩' : '🏁'}</button>
-      </div>
-      <div class="question-text">${q.text}</div>
-      <div class="options" id="options-container">
-        ${q.options.map((opt, idx) => `
-          <label class="option">
-            <input type="radio" name="current" value="${idx}" ${selected === idx ? 'checked' : ''} ${submitted ? 'disabled' : ''}>
-            <span>${opt}</span>
-          </label>
-        `).join('')}
-      </div>
-      <div class="answer-result" id="answer-result-current"></div>
-    </div>
-  `;
-  if (!submitted) {
-    document.querySelectorAll('#options-container input').forEach(radio => {
-      radio.addEventListener('change', (e) => {
-        userAnswers[currentIndex] = parseInt(e.target.value);
-        updateProgress();
-        updateNavActive();
-        saveState();
-      });
-    });
-    const flagBtn = document.getElementById('flagBtn');
-    if (flagBtn) flagBtn.onclick = toggleFlag;
-  } else showResultForCurrent();
-}
-function showResultForCurrent() {
-  const q = currentQuestions[currentIndex];
-  const choice = userAnswers[currentIndex];
-  const resultDiv = document.getElementById('answer-result-current');
-  const correctLetter = String.fromCharCode(65+q.correct);
-  if (choice !== null) {
-    const isCorrect = (choice === q.correct);
-    resultDiv.className = isCorrect ? 'answer-result correct' : 'answer-result wrong';
-    resultDiv.innerHTML = isCorrect ? `<strong>✅ Đúng</strong><div class="explanation">${q.explanation}</div>` : `<strong>❌ Sai. Đáp án đúng: ${correctLetter}</strong><div class="explanation">${q.explanation}</div>`;
-  } else {
-    resultDiv.className = 'answer-result wrong';
-    resultDiv.innerHTML = `<strong>⚠️ Chưa trả lời. Đáp án đúng: ${correctLetter}</strong><div class="explanation">${q.explanation}</div>`;
-  }
-  resultDiv.style.display = 'block';
-}
-function updateProgress() {
-  const answered = userAnswers.filter(a => a !== null).length;
-  const percent = Math.round((answered/currentQuestions.length)*100);
-  document.getElementById('answeredPercent').innerText = `${percent}%`;
-  document.getElementById('progressFill').style.width = `${percent}%`;
-}
-function startTimer() {
-  if (timerInterval) clearInterval(timerInterval);
-  if (!startTime) startTime = Date.now();
-  timerInterval = setInterval(() => {}, 1000);
-}
-function stopTimer() { if (timerInterval) clearInterval(timerInterval); timerInterval = null; }
-function submitQuiz() {
-  if (submitted) return;
-  stopTimer();
-  let correctCount = 0;
-  for (let i=0; i<currentQuestions.length; i++) if (userAnswers[i] === currentQuestions[i].correct) correctCount++;
-  const total = currentQuestions.length;
-  const percent = Math.round((correctCount/total)*100);
-  submitted = true;
-  document.querySelectorAll('#options-container input').forEach(r => r.disabled = true);
-  showResultForCurrent();
-  const summaryDiv = document.getElementById('resultSummary');
-  summaryDiv.style.display = 'block';
-  summaryDiv.innerHTML = `
-    <h3>📊 KẾT QUẢ</h3>
-    <div class="result-stats">
-      <div class="stat"><div class="stat-value">${correctCount}</div><div class="stat-label">Đúng</div></div>
-      <div class="stat"><div class="stat-value">${total-correctCount}</div><div class="stat-label">Sai</div></div>
-      <div class="stat"><div class="stat-value">${percent}%</div><div class="stat-label">Tỷ lệ</div></div>
-    </div>
-    <button class="btn btn-secondary" id="retryBtn">🔁 Làm lại</button>
-  `;
-  document.getElementById('retryBtn').onclick = () => resetQuiz();
-  if (percent >= 80) canvasConfetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
-  if (correctCount === total) canvasConfetti({ particleCount: 500, spread: 120, origin: { y: 0.5 } });
-  saveState();
-}
-function resetQuiz() {
-  userAnswers.fill(null);
-  flags.fill(false);
-  submitted = false;
-  currentIndex = 0;
-  startTime = Date.now();
-  clearState();
-  renderNavGrid();
-  renderCurrentQuestion();
-  document.getElementById('resultSummary').style.display = 'none';
-  updateProgress();
-  startTimer();
-}
-function nextQuestion() { if (currentIndex < currentQuestions.length-1) { currentIndex++; renderCurrentQuestion(); updateNavActive(); saveState(); } }
-function prevQuestion() { if (currentIndex > 0) { currentIndex--; renderCurrentQuestion(); updateNavActive(); saveState(); } }
-function switchMode(mode) {
-  if (submitted) return;
-  currentMode = mode;
-  if (mode === "class") currentQuestions = classQuestions;
-  else currentQuestions = homeQuestions;
-  currentIndex = 0;
-  userAnswers = new Array(currentQuestions.length).fill(null);
-  flags = new Array(currentQuestions.length).fill(false);
-  submitted = false;
-  startTime = Date.now();
-  clearState();
-  loadState();  // khôi phục trạng thái của mode mới nếu có
-  renderApp();
-}
-function attachEvents() {
-  document.getElementById('prevBtn').onclick = prevQuestion;
-  document.getElementById('nextBtn').onclick = nextQuestion;
-  document.getElementById('submitBtn').onclick = submitQuiz;
-  document.getElementById('resetBtn').onclick = resetQuiz;
-  document.getElementById('logoutBtn').onclick = () => window.location.reload();
-  document.querySelectorAll('.mode-btn').forEach(btn => {
-    btn.onclick = () => switchMode(btn.dataset.mode);
-  });
-}
+    // ======================== BIẾN TOÀN CỤC ========================
+    let currentSubject = 'sequence';
+    let currentMode = 'class';
+    let currentCategory = 'category1';
+    let currentQuestions = [];
+    let userAnswers = [];
+    let flags = [];
+    let currentIndex = 0;
+    let submitted = false;
+    let startTime = null;
+    let timerInterval = null;
+    let cat5Unlocked = false;
 
-// ========== XỬ LÝ ĐĂNG NHẬP ==========
-const loginScreen = document.getElementById('login-screen');
-const appContainer = document.getElementById('app-container');
-const loginBtn = document.getElementById('loginBtn');
-const loginError = document.getElementById('loginError');
-function doLogin() {
-  const pwd = document.getElementById('passwordInput').value.trim();
-  if (pwd === CORRECT_PASSWORD) {
-    loginScreen.classList.add('exit');
-    setTimeout(() => {
-      loginScreen.style.display = 'none';
-      document.getElementById('themeToggle').classList.add('show');
-      appContainer.classList.add('visible');
-      // Khởi tạo trạng thái mặc định
-      currentMode = "class";
-      currentQuestions = classQuestions;
+    function getStorageKey() { return `quiz_${currentSubject}_${currentMode}_${currentCategory}`; }
+    function saveState() {
+      const state = { userAnswers, flags, currentIndex, startTime, submitted, currentMode, currentCategory };
+      localStorage.setItem(getStorageKey(), JSON.stringify(state));
+    }
+    function loadState() {
+      const saved = localStorage.getItem(getStorageKey());
+      if (!saved) return false;
+      try {
+        const state = JSON.parse(saved);
+        userAnswers = state.userAnswers || new Array(currentQuestions.length).fill(null);
+        flags = state.flags || new Array(currentQuestions.length).fill(false);
+        currentIndex = state.currentIndex || 0;
+        startTime = state.startTime || Date.now();
+        submitted = state.submitted || false;
+        if (state.currentMode) currentMode = state.currentMode;
+        if (state.currentCategory) currentCategory = state.currentCategory;
+        return true;
+      } catch(e) { return false; }
+    }
+    function clearState() { localStorage.removeItem(getStorageKey()); }
+    function saveCat5Unlock() { localStorage.setItem('cat5_unlocked', cat5Unlocked ? 'true' : 'false'); }
+    function loadCat5Unlock() { cat5Unlocked = localStorage.getItem('cat5_unlocked') === 'true'; }
+
+    function initQuestions() {
+      if (currentSubject === 'sequence') {
+        currentQuestions = (currentMode === 'class') ? sequenceQuestions.slice(0,15) : sequenceQuestions.slice(15,40);
+      } else {
+        if (currentMode === 'class') {
+          currentQuestions = expLogClassCategories[currentCategory] || [];
+        } else {
+          currentQuestions = expLogHomeQuestions;
+        }
+      }
       userAnswers = new Array(currentQuestions.length).fill(null);
       flags = new Array(currentQuestions.length).fill(false);
       submitted = false;
       currentIndex = 0;
       startTime = Date.now();
-      loadState(); // khôi phục nếu có
-      renderApp();
-    }, 780);
-  } else {
-    loginError.style.display = 'block';
-    loginError.textContent = 'Sai mật khẩu, thử lại!';
-    setTimeout(() => loginError.style.display = 'none', 2000);
-    document.getElementById('passwordInput').value = '';
-    document.getElementById('passwordInput').focus();
-  }
-}
-loginBtn.onclick = doLogin;
-document.getElementById('passwordInput').addEventListener('keypress', e => { if (e.key === 'Enter') doLogin(); });
+    }
 
-// Dark mode & portal light
-const themeToggle = document.getElementById('themeToggle');
-themeToggle.onclick = () => {
-  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-  document.documentElement.setAttribute('data-theme', isDark ? '' : 'dark');
-  themeToggle.textContent = isDark ? '🌙' : '☀️';
-};
-document.addEventListener('mousemove', e => { const light = document.getElementById('portalLight'); if(light) { light.style.left = e.clientX + 'px'; light.style.top = e.clientY + 'px'; } });
-if (typeof canvasConfetti === 'undefined') { const script = document.createElement('script'); script.src = 'https://cdn.jsdelivr.net/npm/canvas-confetti@1'; document.head.appendChild(script); }
+    // ======================== RENDER ========================
+    function renderApp() {
+      const container = document.getElementById('app-container');
+      const isExp = currentSubject === 'exponential';
+      const categoryNames = {
+        category1: "📌 Dạng 1: Tập xác định",
+        category2: "📐 Dạng 2: Đạo hàm",
+        category3: "⚡ Dạng 3: Phương trình mũ",
+        category4: "📊 Dạng 4: Phương trình logarit",
+        category5: "📈 Dạng 5: Bất phương trình"
+      };
+      const modeLabel = isExp ? (currentMode==='class'? categoryNames[currentCategory] : '🏠 Bài tập về nhà (100 câu)')
+                               : (currentMode==='class' ? '📚 Bài tập trên lớp (15 câu)' : '🏠 Bài tập về nhà (25 câu)');
+
+      let catSelectorHtml = '';
+      if (isExp && currentMode === 'class') {
+        catSelectorHtml = `<div class="category-selector show">`;
+        for (let cat in categoryNames) {
+          let lockClass = '';
+          if (cat === 'category5') {
+            lockClass = cat5Unlocked ? 'unlocked' : 'locked';
+          }
+          catSelectorHtml += `<button class="category-btn ${currentCategory===cat?'active':''} ${lockClass}" data-category="${cat}">${categoryNames[cat]}</button>`;
+        }
+        catSelectorHtml += `</div>`;
+      }
+
+      container.innerHTML = `
+        <div class="quiz-wrapper">
+          <div class="subject-tabs">
+            <button class="subject-tab ${currentSubject==='sequence'?'active':''}" data-subject="sequence">📊 Cấp số cộng & Cấp số nhân</button>
+            <button class="subject-tab ${currentSubject==='exponential'?'active':''}" data-subject="exponential">📈 Mũ & Logarit</button>
+          </div>
+          <div class="mode-selector">
+            <button class="mode-btn ${currentMode==='class'?'active':''}" data-mode="class">📖 Bài tập trên lớp</button>
+            <button class="mode-btn ${currentMode==='home'?'active':''}" data-mode="home">🏠 Bài tập về nhà</button>
+          </div>
+          ${catSelectorHtml}
+          <div class="quiz-header">
+            <div class="quiz-title">${currentSubject==='sequence'?'Cấp số cộng · Cấp số nhân':'Mũ · Logarit'}</div>
+            <div class="quiz-meta">${modeLabel}</div>
+          </div>
+          <div class="progress-bar">
+            <div class="progress-label"><span>📌 Tiến độ</span><span id="answeredPercent">0%</span></div>
+            <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+          </div>
+          <div id="navGrid" class="nav-grid"></div>
+          <div id="currentQuestion"></div>
+          <div class="navigation-buttons">
+            <button class="btn btn-secondary" id="prevBtn">◀ Câu trước</button>
+            <button class="btn btn-secondary" id="nextBtn">Câu tiếp ▶</button>
+          </div>
+          <div class="action-buttons">
+            <button class="btn btn-primary" id="submitBtn">📝 NỘP BÀI</button>
+            <button class="btn btn-secondary" id="resetBtn">🔄 Làm lại</button>
+            <button class="btn btn-secondary" id="logoutBtn">🚪 Đăng xuất</button>
+          </div>
+          <div id="resultSummary" class="result-summary"></div>
+          <footer>🎯 ĐẬU NV1 CÙNG ANH TIẾN ĐẠT</footer>
+        </div>
+      `;
+      renderNavGrid();
+      renderCurrentQuestion();
+      updateProgress();
+      startTimer();
+      attachEvents();
+    }
+
+    function renderNavGrid() {
+      const nav = document.getElementById('navGrid');
+      if (!nav) return;
+      nav.innerHTML = '';
+      currentQuestions.forEach((_, i) => {
+        const btn = document.createElement('button');
+        btn.textContent = i+1;
+        btn.className = 'nav-btn';
+        if (userAnswers[i] !== null) btn.classList.add('answered');
+        if (i === currentIndex) btn.classList.add('active');
+        if (flags[i]) btn.classList.add('flagged');
+        btn.onclick = () => { if (!submitted) { currentIndex = i; renderCurrentQuestion(); updateNavActive(); saveState(); } };
+        nav.appendChild(btn);
+      });
+    }
+    function updateNavActive() {
+      document.querySelectorAll('.nav-btn').forEach((btn, idx) => {
+        btn.classList.toggle('active', idx === currentIndex);
+        btn.classList.toggle('answered', userAnswers[idx] !== null);
+        btn.classList.toggle('flagged', flags[idx]);
+      });
+    }
+    function renderCurrentQuestion() {
+      const q = currentQuestions[currentIndex];
+      const container = document.getElementById('currentQuestion');
+      const selected = userAnswers[currentIndex];
+      container.innerHTML = `
+        <div class="question-card">
+          <div class="question-header">
+            <span class="question-number">Câu ${currentIndex+1}</span>
+            <button class="flag-btn" id="flagBtn">${flags[currentIndex]?'🚩':'🏁'}</button>
+          </div>
+          <div class="question-text">${q.text}</div>
+          <div class="options">${q.options.map((opt,i)=>`
+            <label class="option">
+              <input type="radio" name="currentOpt" value="${i}" ${selected===i?'checked':''} ${submitted?'disabled':''}>
+              <span>${opt}</span>
+            </label>`).join('')}
+          </div>
+          <div class="answer-result" id="answerResult"></div>
+        </div>
+      `;
+      if (!submitted) {
+        document.querySelectorAll('input[name="currentOpt"]').forEach(r => r.addEventListener('change', e => {
+          userAnswers[currentIndex] = parseInt(e.target.value);
+          updateProgress(); updateNavActive(); saveState();
+        }));
+        document.getElementById('flagBtn').onclick = () => {
+          if (submitted) return;
+          flags[currentIndex] = !flags[currentIndex];
+          renderCurrentQuestion(); updateNavActive(); saveState();
+        };
+      } else {
+        showResultForCurrent();
+      }
+    }
+    function showResultForCurrent() {
+      const q = currentQuestions[currentIndex];
+      const choice = userAnswers[currentIndex];
+      const div = document.getElementById('answerResult');
+      const letter = String.fromCharCode(65+q.correct);
+      if (choice !== null) {
+        const correct = choice === q.correct;
+        div.className = `answer-result ${correct?'correct':'wrong'}`;
+        div.innerHTML = correct ? `<strong>✅ Đúng</strong><div class="explanation">${q.explanation}</div>` 
+                                : `<strong>❌ Sai. Đáp án đúng: ${letter}</strong><div class="explanation">${q.explanation}</div>`;
+      } else {
+        div.className = 'answer-result wrong';
+        div.innerHTML = `<strong>⚠️ Chưa trả lời. Đáp án: ${letter}</strong><div class="explanation">${q.explanation}</div>`;
+      }
+      div.style.display = 'block';
+    }
+    function updateProgress() {
+      const answered = userAnswers.filter(a => a!==null).length;
+      const pct = Math.round(answered/currentQuestions.length*100);
+      document.getElementById('answeredPercent').innerText = pct+'%';
+      document.getElementById('progressFill').style.width = pct+'%';
+    }
+    function startTimer() { if(timerInterval) clearInterval(timerInterval); timerInterval = setInterval(()=>{},1000); }
+    function submitQuiz() {
+      if (submitted) return;
+      submitted = true;
+      clearInterval(timerInterval);
+      let correctCount = 0;
+      currentQuestions.forEach((q,i) => { if(userAnswers[i]===q.correct) correctCount++; });
+      const total = currentQuestions.length;
+      const percent = Math.round(correctCount/total*100);
+      renderCurrentQuestion();
+      const summary = document.getElementById('resultSummary');
+      summary.style.display = 'block';
+      summary.innerHTML = `
+        <h3>📊 KẾT QUẢ</h3>
+        <div class="result-stats">
+          <div><div class="stat-value">${correctCount}</div><div class="stat-label">Đúng</div></div>
+          <div><div class="stat-value">${total-correctCount}</div><div class="stat-label">Sai</div></div>
+          <div><div class="stat-value">${percent}%</div><div class="stat-label">Tỷ lệ</div></div>
+        </div>
+        <button class="btn btn-secondary" id="retryBtn">🔁 Làm lại</button>
+      `;
+      document.getElementById('retryBtn').onclick = () => resetQuiz();
+      if (percent >= 80) confetti({particleCount:150, spread:80, origin:{y:0.6}});
+      if (correctCount === total) confetti({particleCount:300, spread:100});
+      saveState();
+    }
+    function resetQuiz() {
+      initQuestions();
+      clearState();
+      submitted = false;
+      renderNavGrid();
+      renderCurrentQuestion();
+      document.getElementById('resultSummary').style.display = 'none';
+      updateProgress();
+      startTimer();
+    }
+    function nextQuestion() { if (currentIndex < currentQuestions.length-1) { currentIndex++; renderCurrentQuestion(); updateNavActive(); saveState(); } }
+    function prevQuestion() { if (currentIndex > 0) { currentIndex--; renderCurrentQuestion(); updateNavActive(); saveState(); } }
+
+    // ========== CHUYỂN ĐỔI (LUÔN CHO PHÉP, TỰ RESET) ==========
+    function switchSubject(subject) {
+      if (currentSubject === subject) return;
+      currentSubject = subject;
+      currentMode = 'class';
+      currentCategory = 'category1';
+      initQuestions();
+      clearState();
+      loadState();
+      renderApp();
+    }
+    function switchMode(mode) {
+      if (currentMode === mode) return;
+      currentMode = mode;
+      if (currentSubject === 'exponential' && mode === 'class') currentCategory = 'category1';
+      initQuestions();
+      clearState();
+      loadState();
+      renderApp();
+    }
+    function switchCategory(cat) {
+      if (currentSubject !== 'exponential' || currentMode !== 'class') return;
+      // Xử lý khóa cat5
+      if (cat === 'category5' && !cat5Unlocked) {
+        const pwd = prompt('🔐 Dạng 5 (Bất phương trình) bị khóa. Vui lòng nhập mật khẩu:');
+        if (pwd === CAT5_PASSWORD) {
+          cat5Unlocked = true;
+          saveCat5Unlock();
+        } else {
+          alert('❌ Mật khẩu không đúng.');
+          return;
+        }
+      }
+      currentCategory = cat;
+      initQuestions();
+      clearState();
+      loadState();
+      renderApp();
+    }
+
+    function attachEvents() {
+      document.querySelectorAll('.subject-tab').forEach(t => t.onclick = () => switchSubject(t.dataset.subject));
+      document.querySelectorAll('.mode-btn').forEach(b => b.onclick = () => switchMode(b.dataset.mode));
+      document.querySelectorAll('.category-btn').forEach(b => b.onclick = () => switchCategory(b.dataset.category));
+      document.getElementById('prevBtn').onclick = prevQuestion;
+      document.getElementById('nextBtn').onclick = nextQuestion;
+      document.getElementById('submitBtn').onclick = submitQuiz;
+      document.getElementById('resetBtn').onclick = resetQuiz;
+      document.getElementById('logoutBtn').onclick = () => window.location.reload();
+    }
+
+    // ======================== LOGIN ========================
+    const loginScreen = document.getElementById('login-screen');
+    const appContainer = document.getElementById('app-container');
+    const loginBtn = document.getElementById('loginBtn');
+    const pwdInput = document.getElementById('passwordInput');
+    const loginError = document.getElementById('loginError');
+    function doLogin() {
+      if (pwdInput.value.trim() === CORRECT_PASSWORD) {
+        loginScreen.classList.add('exit');
+        setTimeout(() => {
+          loginScreen.style.display = 'none';
+          document.getElementById('themeToggle').classList.add('show');
+          appContainer.classList.add('visible');
+          loadCat5Unlock();
+          currentSubject = 'sequence';
+          currentMode = 'class';
+          initQuestions();
+          loadState();
+          renderApp();
+        }, 700);
+      } else {
+        loginError.style.display = 'block';
+        loginError.textContent = '❌ Sai mật khẩu!';
+        pwdInput.value = '';
+        setTimeout(() => loginError.style.display = 'none', 2000);
+      }
+    }
+    loginBtn.onclick = doLogin;
+    pwdInput.addEventListener('keypress', e => { if(e.key==='Enter') doLogin(); });
+
+    const themeToggle = document.getElementById('themeToggle');
+    themeToggle.onclick = () => {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      document.documentElement.setAttribute('data-theme', isDark ? '' : 'dark');
+      themeToggle.textContent = isDark ? '🌙' : '☀️';
+    };
+    document.addEventListener('mousemove', e => {
+      const light = document.getElementById('portalLight');
+      if(light) { light.style.left = e.clientX+'px'; light.style.top = e.clientY+'px'; }
+    });
+  })();
 </script>
 </body>
 </html>
