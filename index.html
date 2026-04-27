@@ -1,708 +1,783 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-  <title>Trắc nghiệm Toán THPT - Cấp số & Mũ Logarit</title>
-  <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
-  <style>
-    :root {
-      --bg-start: #0b3b5f;
-      --bg-end: #1b4f72;
-      --primary: #0b3b5f;
-      --secondary: #2c9c8c;
-      --text: #0b3b5f;
-      --card: #ffffff;
-      --opt-bg: #f8fafc;
-      --opt-hover: #d9eef5;
-      --info-bg: #eef2f7;
-      --border: #cbd5e1;
-      --correct: #10b981;
-      --wrong: #ef4444;
-      --shadow-sm: 0 4px 12px rgba(0,0,0,0.05);
-      --shadow-lg: 0 25px 50px -12px rgba(0,0,0,0.25);
-    }
-    [data-theme="dark"] {
-      --bg-start: #0f172a;
-      --bg-end: #1e293b;
-      --primary: #3b82f6;
-      --secondary: #14b8a6;
-      --text: #e2e8f0;
-      --card: #1e293b;
-      --opt-bg: #334155;
-      --opt-hover: #475569;
-      --info-bg: #334155;
-      --border: #475569;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Be Vietnam Pro', 'Segoe UI', sans-serif;
-      min-height: 100vh;
-      background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
-      transition: background 0.3s;
-      overflow-x: hidden;
-    }
-    #login-screen {
-      position: fixed; inset: 0; z-index: 999;
-      display: flex; justify-content: center; align-items: center;
-      background: radial-gradient(circle at center, #0f172a, #020617);
-      transition: opacity 0.8s, transform 0.8s;
-    }
-    #login-screen.exit { opacity: 0; transform: scale(1.06); pointer-events: none; }
-    .portal {
-      position: absolute; width: 1200px; height: 1200px;
-      background: conic-gradient(#6366f1, #8b5cf6, #ec4899, #3b82f6, #6366f1);
-      border-radius: 50%; filter: blur(110px);
-      animation: spin 18s linear infinite; opacity: 0.55;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .portal-light {
-      position: fixed; width: 280px; height: 280px;
-      background: radial-gradient(circle, rgba(255,255,255,0.18), transparent 70%);
-      pointer-events: none; transform: translate(-50%, -50%);
-      transition: left 0.1s, top 0.1s; z-index: 1000;
-    }
-    .login-card {
-      position: relative; z-index: 10; width: 360px; padding: 44px 40px;
-      border-radius: 28px; backdrop-filter: blur(36px);
-      background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
-      box-shadow: 0 30px 80px rgba(0,0,0,0.6); color: white;
-      animation: cardAppear 1s cubic-bezier(0.16,1,0.3,1);
-    }
-    @keyframes cardAppear {
-      from { opacity: 0; transform: scale(0.82) translateY(40px); filter: blur(12px); }
-      to { opacity: 1; transform: scale(1) translateY(0); filter: blur(0); }
-    }
-    .login-icon {
-      width: 56px; height: 56px; margin: 0 auto 20px;
-      background: linear-gradient(135deg, #6366f1, #ec4899); border-radius: 16px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 28px; font-weight: bold;
-    }
-    .login-title { text-align: center; font-size: 22px; font-weight: 600; margin-bottom: 6px; }
-    .login-subtitle { text-align: center; font-size: 13px; color: rgba(255,255,255,0.5); margin-bottom: 32px; }
-    .field { position: relative; margin-bottom: 16px; }
-    .field input {
-      width: 100%; padding: 14px 16px; border-radius: 14px;
-      border: 1px solid rgba(255,255,255,0.1); outline: none;
-      background: rgba(255,255,255,0.06); color: white; font-size: 15px;
-    }
-    .field label {
-      position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
-      font-size: 14px; color: rgba(255,255,255,0.35); pointer-events: none;
-      transition: 0.25s;
-    }
-    .field input:focus ~ label, .field input:not(:placeholder-shown) ~ label {
-      top: -8px; font-size: 11px; color: rgba(139,92,246,0.9);
-    }
-    .login-btn {
-      width: 100%; padding: 15px; border-radius: 14px; border: none;
-      background: linear-gradient(135deg, #6366f1, #8b5cf6, #ec4899);
-      color: white; font-weight: 600; font-size: 15px; cursor: pointer;
-      margin-top: 8px; transition: 0.15s;
-    }
-    .login-btn:hover { transform: translateY(-2px); }
-    .login-error { margin-top: 12px; text-align: center; font-size: 13px; color: #f87171; min-height: 20px; display: none; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chuyên đề 10: Phép Đếm - Hoán Vị - Chỉnh Hợp - Tổ Hợp</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f5f7fb;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+            --primary: #2563eb;
+            --correct: #16a34a;
+            --wrong: #dc2626;
+            --explain-bg: #fffbeb;
+            --explain-border: #f59e0b;
+            --shadow: 0 4px 24px rgba(0,0,0,0.06);
+            --radius: 16px;
+            --transition: 0.2s ease;
+        }
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .quiz-wrapper {
+            max-width: 850px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 30px 35px 40px;
+        }
+        .header-title {
+            text-align: center;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #e8f0fe;
+            padding-bottom: 18px;
+        }
+        .header-title h1 {
+            color: #1a73e8;
+            font-weight: 700;
+            font-size: 1.8rem;
+            margin-bottom: 4px;
+        }
+        .header-title .subtitle {
+            color: #64748b;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+        }
+        .student-info {
+            display: flex;
+            justify-content: space-between;
+            background: #f8fafc;
+            padding: 12px 18px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            color: #475569;
+            margin-top: 15px;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .scoreboard {
+            position: sticky;
+            top: 15px;
+            z-index: 999;
+            background: #1e293b;
+            color: #f1f5f9;
+            padding: 12px 24px;
+            border-radius: 50px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+            font-weight: 600;
+            font-size: 0.95rem;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .scoreboard span b {
+            font-size: 1.2rem;
+            margin-left: 4px;
+        }
+        .scoreboard .correct-score { color: #4ade80; }
+        .scoreboard .wrong-score { color: #f87171; }
+        .scoreboard .progress-score { color: #facc15; }
 
-    #app-container { display: none; min-height: 100vh; padding: 20px; }
-    #app-container.visible { display: block; }
-    .quiz-wrapper {
-      max-width: 1200px; margin: 0 auto; background: var(--card);
-      border-radius: 28px; box-shadow: var(--shadow-lg); padding: 30px 32px;
-    }
-    .subject-tabs {
-      display: flex; gap: 15px; justify-content: center; margin-bottom: 25px;
-    }
-    .subject-tab {
-      padding: 14px 32px; font-size: 18px; font-weight: 700; border-radius: 60px;
-      border: none; background: var(--opt-bg); color: var(--text);
-      cursor: pointer; transition: 0.2s; box-shadow: var(--shadow-sm);
-    }
-    .subject-tab.active {
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      color: white; box-shadow: 0 6px 14px rgba(0,0,0,0.2);
-    }
-    .mode-selector {
-      display: flex; gap: 15px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap;
-    }
-    .mode-btn {
-      padding: 10px 24px; font-size: 15px; font-weight: 600; border-radius: 40px;
-      border: none; background: var(--opt-bg); color: var(--text); cursor: pointer;
-    }
-    .mode-btn.active { background: var(--primary); color: white; }
-    .category-selector {
-      display: none; gap: 10px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap;
-    }
-    .category-selector.show { display: flex; }
-    .category-btn {
-      padding: 8px 18px; font-size: 14px; font-weight: 500; border-radius: 40px;
-      border: 2px solid var(--border); background: var(--card); color: var(--text);
-      cursor: pointer; transition: 0.2s;
-    }
-    .category-btn.active { background: var(--secondary); color: white; border-color: var(--secondary); }
-    .category-btn.locked { opacity: 0.7; background: #e2e8f0; border-color: #94a3b8; }
-    .category-btn.locked::after { content: " 🔒"; font-size: 14px; }
-    .category-btn.unlocked::after { content: " 🔓"; font-size: 14px; }
-    .quiz-header {
-      display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 20px; flex-wrap: wrap;
-    }
-    .quiz-title { font-size: 24px; font-weight: 700; color: var(--text); }
-    .progress-bar { margin-bottom: 25px; }
-    .progress-label { display: flex; justify-content: space-between; margin-bottom: 6px; color: var(--text); }
-    .progress-track { height: 8px; background: var(--border); border-radius: 99px; }
-    .progress-fill { height: 100%; background: linear-gradient(90deg, var(--primary), var(--secondary)); width: 0%; transition: 0.3s; border-radius: 99px; }
-    .nav-grid {
-      display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 25px; justify-content: center;
-      max-height: 130px; overflow-y: auto; padding: 10px; background: var(--info-bg);
-      border-radius: 20px;
-    }
-    .nav-btn {
-      position: relative; width: 44px; height: 44px; border-radius: 12px;
-      border: none; background: var(--opt-bg); color: var(--text);
-      font-weight: 600; cursor: pointer; font-size: 14px; transition: 0.15s;
-    }
-    .nav-btn.active { background: var(--primary); color: white; }
-    .nav-btn.answered { background: var(--correct); color: white; }
-    .nav-btn.flagged::after {
-      content: "🚩"; position: absolute; top: -5px; right: -5px;
-      font-size: 14px; background: var(--card); border-radius: 50%;
-      width: 18px; height: 18px; display: flex; align-items: center; justify-content: center;
-    }
-    .question-card { background: var(--info-bg); border-radius: 20px; padding: 24px; margin-bottom: 20px; }
-    .question-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
-    .flag-btn {
-      background: none; border: none; font-size: 26px; cursor: pointer;
-      padding: 5px; border-radius: 50%; transition: 0.2s;
-    }
-    .flag-btn:hover { transform: scale(1.1); background: rgba(0,0,0,0.1); }
-    .question-text { font-size: 18px; font-weight: 600; margin-bottom: 20px; color: var(--text); line-height: 1.6; }
-    .options { display: flex; flex-direction: column; gap: 12px; }
-    .option {
-      display: flex; align-items: center; gap: 14px; padding: 12px 18px;
-      background: var(--opt-bg); border: 2px solid var(--border); border-radius: 14px;
-      cursor: pointer; transition: 0.2s;
-    }
-    .option:hover { background: var(--opt-hover); border-color: var(--secondary); }
-    .option input { accent-color: var(--secondary); width: 20px; height: 20px; cursor: pointer; }
-    .option span { color: var(--text); font-size: 16px; }
-    .answer-result {
-      margin-top: 20px; padding: 14px 18px; border-radius: 14px; display: none;
-    }
-    .answer-result.correct { background: rgba(16,185,129,0.1); border-left: 4px solid var(--correct); display: block; }
-    .answer-result.wrong { background: rgba(239,68,68,0.1); border-left: 4px solid var(--wrong); display: block; }
-    .explanation { margin-top: 8px; font-size: 14px; color: var(--text); opacity: 0.8; }
-    .navigation-buttons { display: flex; justify-content: space-between; margin-top: 15px; gap: 10px; }
-    .action-buttons { display: flex; justify-content: center; gap: 15px; margin: 30px 0 20px; flex-wrap: wrap; }
-    .btn {
-      padding: 12px 24px; border-radius: 40px; border: none; font-weight: 600;
-      cursor: pointer; font-size: 14px; transition: 0.2s; box-shadow: var(--shadow-sm);
-    }
-    .btn-primary { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; }
-    .btn-secondary { background: #6c757d; color: white; }
-    .btn:hover { transform: translateY(-2px); }
-    .result-summary {
-      background: var(--info-bg); border-radius: 20px; padding: 20px; margin-top: 25px;
-      text-align: center; display: none;
-    }
-    .result-stats { display: flex; justify-content: center; gap: 30px; margin: 20px 0; flex-wrap: wrap; }
-    .stat-value { font-size: 32px; font-weight: 700; color: var(--secondary); }
-    .stat-label { color: var(--text); opacity: 0.7; }
-    .theme-toggle {
-      position: fixed; top: 20px; right: 20px; width: 44px; height: 44px;
-      border-radius: 50%; background: rgba(255,255,255,0.15); backdrop-filter: blur(12px);
-      color: white; font-size: 20px; cursor: pointer; display: none; align-items: center;
-      justify-content: center; z-index: 100; border: none;
-    }
-    .theme-toggle.show { display: flex; }
-    footer { text-align: center; margin-top: 30px; color: var(--text); opacity: 0.6; border-top: 1px solid var(--border); padding-top: 18px; }
-    @media (max-width: 600px) {
-      .quiz-wrapper { padding: 18px; }
-      .subject-tab { padding: 10px 20px; font-size: 16px; }
-      .nav-btn { width: 36px; height: 36px; }
-    }
-  </style>
+        .question-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 14px;
+            padding: 22px 24px;
+            margin-bottom: 28px;
+            transition: var(--transition);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+        }
+        .question-card:hover {
+            box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+        }
+        .question-number {
+            font-weight: 700;
+            color: #2563eb;
+            font-size: 1rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .question-number .badge-type {
+            font-size: 0.7rem;
+            background: #eff6ff;
+            color: #1e40af;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        .question-text {
+            font-weight: 600;
+            font-size: 1.05rem;
+            margin-bottom: 16px;
+            color: #1e293b;
+            line-height: 1.5;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .option-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            text-align: left;
+            padding: 12px 18px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            background: #fafbfc;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            font-size: 1rem;
+            color: #334155;
+            position: relative;
+        }
+        .option-btn:hover:not([disabled]) {
+            background: #eff6ff;
+            border-color: #3b82f6;
+            transform: translateY(-1px);
+        }
+        .option-btn .opt-label {
+            font-weight: 700;
+            color: #64748b;
+            font-size: 0.9rem;
+            min-width: 24px;
+        }
+        .option-btn.correct {
+            background: #dcfce7 !important;
+            border-color: #16a34a !important;
+            color: #15803d;
+            font-weight: 600;
+        }
+        .option-btn.correct .opt-label {
+            color: #15803d;
+        }
+        .option-btn.wrong {
+            background: #fee2e2 !important;
+            border-color: #dc2626 !important;
+            color: #991b1b;
+            font-weight: 600;
+        }
+        .option-btn.wrong .opt-label {
+            color: #991b1b;
+        }
+        .option-btn[disabled] {
+            cursor: default;
+            opacity: 0.85;
+        }
+
+        .explanation-box {
+            display: none;
+            margin-top: 18px;
+            padding: 18px 20px;
+            border-radius: 12px;
+            background: var(--explain-bg);
+            border-left: 5px solid var(--explain-border);
+        }
+        .explanation-box .exp-section {
+            margin-bottom: 12px;
+        }
+        .explanation-box .exp-section:last-child {
+            margin-bottom: 0;
+        }
+        .exp-label {
+            font-weight: 700;
+            color: #b45309;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .exp-content {
+            color: #44403c;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .reset-btn-container {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .reset-btn {
+            padding: 10px 28px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            background: white;
+            border: 2px solid #cbd5e1;
+            color: #475569;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .reset-btn:hover {
+            background: #f1f5f9;
+            border-color: #64748b;
+        }
+
+        @media (max-width: 600px) {
+            .quiz-wrapper {
+                padding: 20px 18px;
+            }
+            .question-card {
+                padding: 16px;
+            }
+            .option-btn {
+                padding: 10px 14px;
+                font-size: 0.9rem;
+            }
+            .scoreboard {
+                font-size: 0.8rem;
+                padding: 10px 16px;
+                gap: 6px;
+            }
+        }
+    </style>
 </head>
 <body>
-<div id="login-screen">
-  <div class="portal"></div>
-  <div class="portal-light" id="portalLight"></div>
-  <div class="login-card">
-    <div class="login-icon">📐</div>
-    <div class="login-title">Trắc Nghiệm Toán</div>
-    <div class="login-subtitle">Cấp số · Mũ · Logarit</div>
-    <div class="field"><input type="password" id="passwordInput" placeholder=" "><label>Mật khẩu</label></div>
-    <button class="login-btn" id="loginBtn">Bắt đầu →</button>
-    <div class="login-error" id="loginError"></div>
-  </div>
-</div>
-
-<button class="theme-toggle" id="themeToggle">🌙</button>
-<div id="app-container"></div>
-
-<script>
-  (function(){
-    "use strict";
-
-    // ======================== MẬT KHẨU ========================
-    const CORRECT_PASSWORD = "tamduc";
-    const CAT5_PASSWORD = "tiendat";
-
-    // ======================== DỮ LIỆU CÂU HỎI ========================
-
-    // ----- CẤP SỐ (40 câu) -----
-    const sequenceQuestions = [
-      // 15 câu lớp
-      { text: "Cho cấp số cộng 2;5;8;11;14... Công sai?", options: ["A. -3", "B. 3", "C. 2", "D. 14"], correct: 1, explanation: "d = 5-2 = 3." },
-      { text: "CSC có u₁ = 9, d = 2. Giá trị u₂ là?", options: ["A. 11", "B. 9/2", "C. 18", "D. 7"], correct: 0, explanation: "u₂ = 9 + 2 = 11." },
-      { text: "CSC có u₁ = 5, u₂ = 10. Công sai d = ?", options: ["A. -5", "B. 5", "C. 2", "D. 15"], correct: 1, explanation: "d = 10 - 5 = 5." },
-      { text: "CSC có u₁ = 2, u₇ = -10. Công sai d = ?", options: ["A. 2", "B. 3", "C. -1", "D. -2"], correct: 3, explanation: "u₇ = 2 + 6d = -10 ⇒ d = -2." },
-      { text: "CSC có u₁ = 4, d = 8. Số hạng u₂₀ = ?", options: ["A. 156", "B. 165", "C. 12", "D. 245"], correct: 0, explanation: "u₂₀ = 4 + 19·8 = 156." },
-      { text: "CSC có u₁ = 2, u₅ = 14. Công sai d = ?", options: ["A. 3", "B. -3", "C. 4", "D. -4"], correct: 0, explanation: "u₅ = 2 + 4d = 14 ⇒ d = 3." },
-      { text: "CSC có u₁ = 1, u₄ = -26. Công sai d = ?", options: ["A. -27", "B. -9", "C. -26", "D. ∛(-26)"], correct: 1, explanation: "u₄ = 1 + 3d = -26 ⇒ d = -9." },
-      { text: "CSN có u₁ = 3, q = 2. Giá trị u₂ = ?", options: ["A. 8", "B. 9", "C. 6", "D. 3/2"], correct: 2, explanation: "u₂ = 3·2 = 6." },
-      { text: "CSN có u₁ = 2, u₂ = 6. Công bội q = ?", options: ["A. 3", "B. -4", "C. 4", "D. 1/3"], correct: 0, explanation: "q = 6/2 = 3." },
-      { text: "CSN có u₁ = 3, u₂ = 1. Công bội q = ?", options: ["A. 1/3", "B. -2", "C. 3", "D. 2"], correct: 0, explanation: "q = 1/3." },
-      { text: "CSN có u₁ = 5, q = -1. Số hạng u₆ = ?", options: ["A. 5", "B. -5", "C. 10", "D. -10"], correct: 1, explanation: "u₆ = 5·(-1)⁵ = -5." },
-      { text: "CSN có u₁ = 3, q = -2. Số hạng u₅ = ?", options: ["A. -6", "B. -5", "C. 48", "D. -24"], correct: 2, explanation: "u₅ = 3·(-2)⁴ = 48." },
-      { text: "CSN có u₁ = 2, q = 3. Giá trị u₃ = ?", options: ["A. 6", "B. 12", "C. 18", "D. 54"], correct: 2, explanation: "u₃ = 2·3² = 18." },
-      { text: "CSN có u₂ = 6, u₃ = 18. Công bội q = ?", options: ["A. 2", "B. 3", "C. 1/3", "D. 4"], correct: 1, explanation: "q = 18/6 = 3." },
-      { text: "CSN có u₁ = 4, q = 1/2. Số hạng u₃ = ?", options: ["A. 1", "B. 2", "C. 3", "D. 4"], correct: 0, explanation: "u₃ = 4·(1/2)² = 1." },
-      // 25 câu về nhà
-      { text: "CSC u₁=3, d=-3, tổng 10 số đầu?", options: ["A. 26", "B. -26", "C. -105", "D. 105"], correct: 2, explanation: "S₁₀ = 5·(6-27) = -105." },
-      { text: "CSC u₁=1, d=2, S₁₀=?", options: ["A. 110", "B. 100", "C. 21", "D. 19"], correct: 1, explanation: "S₁₀ = 5·(2+18)=100." },
-      { text: "CSC u₁=3, d=2, tổng 2019 số đầu?", options: ["A. 4 080 399", "B. 4 800 399", "C. 4 399 080", "D. 8 154 741"], correct: 0, explanation: "S₂₀₁₉ = 2019·2021 = 4 080 399." },
-      { text: "CSC u₁=1/3, d=-1, Sₙ=-425, n=?", options: ["A. 30", "B. 60", "C. 45", "D. 15"], correct: 0, explanation: "n=30." },
-      { text: "uₙ=2n+1, số hạng thứ 2019?", options: ["A. 4039", "B. 4390", "C. 4930", "D. 4093"], correct: 0, explanation: "u₂₀₁₉ = 4039." },
-      { text: "CSC u₁=2, d=9, số 2018 là hạng thứ mấy?", options: ["A. 226", "B. 225", "C. 223", "D. 224"], correct: 1, explanation: "n=225." },
-      { text: "CSC u₄+u₁₆=48, u₁₀=?", options: ["A. 438", "B. 24", "C. 96", "D. 72"], correct: 1, explanation: "u₁₀=24." },
-      { text: "CSC u₅+u₇=19, u₂+u₁₀=?", options: ["A. 38", "B. 29", "C. 12", "D. 19"], correct: 3, explanation: "=19." },
-      { text: "CSC u₉=5u₂, u₁₃=2u₆+5, u₁,d?", options: ["A. -3,4", "B. 3,4", "C. 4,3", "D. -4,3"], correct: 1, explanation: "u₁=3,d=4." },
-      { text: "Dãy nào là CSC?", options: ["A. 5n", "B. 2-5n", "C. 5n-2", "D. 5+n²"], correct: 1, explanation: "2-5n là CSC." },
-      { text: "Dãy nào là CSC?", options: ["A. 3·2ⁿ", "B. 3-2n", "C. 2n+3", "D. 2+n³"], correct: 1, explanation: "3-2n là CSC." },
-      { text: "CSC u₁₀=30, u₂₀=80, d=?", options: ["A. 5", "B. 10", "C. 50", "D. 110"], correct: 0, explanation: "d=5." },
-      { text: "CSC u₁=5, S₅₀=5150, uₙ=?", options: ["A. 1+4n", "B. 5n", "C. 3+2n", "D. 2+3n"], correct: 0, explanation: "uₙ=4n+1." },
-      { text: "Ba số x,y,z lập CSC, x+y+z=15, xyz=80, y=?", options: ["A. 4", "B. 5", "C. 6", "D. 8"], correct: 1, explanation: "y=5." },
-      { text: "Dãy nào không là CSN?", options: ["A. 1;-3;9;-27;54", "B. 1;2;4;8;16", "C. 1;-1;1;-1;1", "D. 1;-2;4;-8;16"], correct: 0, explanation: "q không đều." },
-      { text: "CSN u₂=6, u₅=162, q>0, q=?", options: ["A. 2", "B. 3", "C. 4", "D. 6"], correct: 1, explanation: "q=3." },
-      { text: "CSN u₃=12, u₆=96, S₆=?", options: ["A. 189", "B. 378", "C. 126", "D. 252"], correct: 0, explanation: "S₆=189." },
-      { text: "CSN u₁=2, q=3, u₂₀₁₉=?", options: ["A. 2·3²⁰¹⁸", "B. 3·2²⁰¹⁸", "C. 2·3²⁰¹⁹", "D. 3·2²⁰¹⁹"], correct: 0, explanation: "2·3²⁰¹⁸." },
-      { text: "CSN u₁=3, q=2, Sₙ=21, n=?", options: ["A. 10", "B. 3", "C. 7", "D. Không"], correct: 1, explanation: "n=3." },
-      { text: "CSN uₙ=3ⁿ, q=?", options: ["A. -3", "B. 1/3", "C. ±3", "D. 3"], correct: 3, explanation: "q=3." },
-      { text: "CSN u₁=2, u₆=486, q=?", options: ["A. 3", "B. 5", "C. 3/2", "D. 2/3"], correct: 0, explanation: "q=3." },
-      { text: "CSN q>1, u₂=-3, u₁+u₂+u₃=-13, u₁,q?", options: ["A. 1,3", "B. -1,-3", "C. -1,3", "D. 1,-3"], correct: 2, explanation: "u₁=-1, q=3." },
-      { text: "CSN u₄-u₂=54, u₅-u₃=108, u₁,q?", options: ["A. 9,2", "B. 9,-2", "C. -9,-2", "D. -9,2"], correct: 0, explanation: "u₁=9,q=2." },
-      { text: "CSN u₄+u₆=-540, u₃+u₅=180, S₂₁=?", options: ["A. ½(3²¹+1)", "B. 3²¹-1", "C. 1-3²¹", "D. -½(3²¹+1)"], correct: 0, explanation: "S₂₁=(3²¹+1)/2." },
-      { text: "Vi khuẩn tăng gấp đôi, sau 5p có 64000, hỏi sau bao lâu có 2048000?", options: ["A. 10", "B. 11", "C. 26", "D. 50"], correct: 0, explanation: "t=10 phút." }
-    ];
-
-    // ----- MŨ & LOGARIT -----
-    const expLogClassCategories = {
-      category1: [
-        { text: "Tập xác định của hàm số y = (x - 2)⁻⁴ là:", options: ["A. (0;+∞)", "B. (2;+∞)", "C. ℝ", "D. ℝ\\{2}"], correct: 3, explanation: "x - 2 ≠ 0 ⇒ x ≠ 2." },
-        { text: "Tập xác định của y = log₄(x² - 16) là:", options: ["A. (-4;4)", "B. (-∞;-4)∪(4;+∞)", "C. ℝ\\{-4;4}", "D. (4;+∞)"], correct: 1, explanation: "x² - 16 > 0 ⇔ x < -4 hoặc x > 4." },
-        { text: "Tập xác định của y = ln(2 - x) là:", options: ["A. ℝ\\{2}", "B. ℝ", "C. (-∞;2)", "D. (2;+∞)"], correct: 2, explanation: "2 - x > 0 ⇔ x < 2." },
-        { text: "Tập xác định của y = e<sup>x²+3x</sup>:", options: ["A. ∅", "B. [-3;0]", "C. ℝ", "D. (-∞;-3]∪[0;+∞)"], correct: 2, explanation: "Hàm mũ cơ số e xác định với mọi x ∈ ℝ." },
-        { text: "Tập xác định của y = log₂(5 - 2x):", options: ["A. (-∞;5/2)", "B. (5/2;+∞)", "C. ℝ\\{5/2}", "D. ℝ"], correct: 0, explanation: "5 - 2x > 0 ⇔ x < 5/2." },
-        { text: "Tập xác định của y = (x² - 5x + 6)⁻³:", options: ["A. ℝ", "B. ℝ\\{2;3}", "C. (2;3)", "D. (-∞;2)∪(3;+∞)"], correct: 1, explanation: "x² - 5x + 6 ≠ 0 ⇔ x ≠ 2,3." },
-        { text: "Tập xác định của y = log(x+3) + log(5-x):", options: ["A. (-3;5)", "B. [-3;5]", "C. ℝ\\{-3;5}", "D. (-∞;-3)∪(5;+∞)"], correct: 0, explanation: "x+3>0 và 5-x>0 ⇔ -3<x<5." },
-        { text: "Tập xác định của y = √(log₃(x-1)):", options: ["A. (1;+∞)", "B. [2;+∞)", "C. (2;+∞)", "D. [1;+∞)"], correct: 1, explanation: "log₃(x-1) ≥ 0 ⇔ x-1 ≥ 1 ⇔ x ≥ 2." },
-        { text: "Tập xác định của y = ln(x² - 4x + 3):", options: ["A. (1;3)", "B. ℝ\\{1;3}", "C. (-∞;1)∪(3;+∞)", "D. [1;3]"], correct: 2, explanation: "x²-4x+3>0 ⇔ x<1 hoặc x>3." },
-        { text: "Tập xác định của y = log(6-2x):", options: ["A. (-∞;3)", "B. (3;+∞)", "C. ℝ\\{3}", "D. (-∞;3]"], correct: 0, explanation: "6-2x>0 ⇔ x<3." }
-      ],
-      category2: [
-        { text: "Đạo hàm của y = 5ˣ là:", options: ["A. 5ˣ/ln5", "B. 5ˣ·ln5", "C. 5ˣ", "D. x·5ˣ⁻¹"], correct: 1, explanation: "(aˣ)' = aˣ·lna." },
-        { text: "Đạo hàm của y = log₃(3x+2):", options: ["A. 1/((3x+2)ln3)", "B. 3/((3x+2)ln3)", "C. 3/(3x+2)", "D. 1/(3x+2)"], correct: 1, explanation: "y' = u'/(u·lna)." },
-        { text: "Đạo hàm của y = 2<sup>x²-x</sup>:", options: ["A. (2x-1)·2<sup>x²-x</sup>", "B. (2x-1)·2<sup>x²-x</sup>·ln2", "C. (x²-x)·2<sup>x²-x-1</sup>", "D. 2<sup>x²-x-1</sup>"], correct: 1, explanation: "y' = u'·aᵘ·lna." },
-        { text: "Đạo hàm của y = ln(3x+1):", options: ["A. 3/(3x+1)", "B. 1/(3x+1)", "C. 3/(3x+1)·ln3", "D. 1/(3x+1)·ln2"], correct: 0, explanation: "y' = u'/u." },
-        { text: "Đạo hàm của y = e<sup>2x+1</sup>:", options: ["A. e<sup>2x+1</sup>", "B. 2e<sup>2x+1</sup>", "C. (2x+1)e<sup>2x</sup>", "D. e<sup>2x</sup>"], correct: 1, explanation: "y' = 2·e<sup>2x+1</sup>." },
-        { text: "Đạo hàm của y = log₅(x²+1):", options: ["A. 2x/((x²+1)ln5)", "B. 1/((x²+1)ln5)", "C. 2x/(x²+1)", "D. x/(x²+1)"], correct: 0, explanation: "y' = u'/(u·lna)." },
-        { text: "Đạo hàm của y = 4ˣ:", options: ["A. 4ˣ", "B. 4ˣ·ln4", "C. x·4ˣ⁻¹", "D. 4ˣ/ln4"], correct: 1, explanation: "(4ˣ)' = 4ˣ·ln4." },
-        { text: "Đạo hàm của y = ln(x+5):", options: ["A. 1/(x+5)", "B. 5/(x+5)", "C. 1/x", "D. ln(x+5)/x"], correct: 0, explanation: "y' = 1/(x+5)." },
-        { text: "Đạo hàm của y = 7ˣ:", options: ["A. 7ˣ", "B. 7ˣ·ln7", "C. x·7ˣ⁻¹", "D. 7ˣ/ln7"], correct: 1 },
-        { text: "Đạo hàm của y = log₂(x):", options: ["A. 1/(x·ln2)", "B. 1/x", "C. ln2/x", "D. 2/x"], correct: 0 }
-      ],
-      category3: [
-        { text: "Nghiệm của 5<sup>x-1</sup> = 125:", options: ["A. 2", "B. 3", "C. 4", "D. 5"], correct: 2, explanation: "5<sup>x-1</sup> = 5³ ⇒ x-1=3 ⇒ x=4." },
-        { text: "Tập nghiệm của 4<sup>x+2</sup> = 8:", options: ["A. {1/2}", "B. {0;1}", "C. {1}", "D. {0;2}"], correct: 0, explanation: "2<sup>2x+4</sup>=2³ ⇒ 2x+4=3 ⇒ x=-1/2." },
-        { text: "Nghiệm của 7ˣ = 49:", options: ["A. 7", "B. 2", "C. log7", "D. log₇49"], correct: 1 },
-        { text: "Số nghiệm thực của 6<sup>x²-4</sup> = 1:", options: ["A. 0", "B. 1", "C. 2", "D. 3"], correct: 2, explanation: "x²-4=0 ⇒ x=±2." },
-        { text: "Nghiệm của (1/3)<sup>x²-5x-6</sup> = 9<sup>x+1</sup>:", options: ["A. -1;4", "B. vô nghiệm", "C. 1;-4", "D. 2;-3"], correct: 0, explanation: "3<sup>-x²+5x+6</sup>=3<sup>2x+2</sup> ⇒ -x²+5x+6=2x+2 ⇒ x²-3x-4=0 ⇒ x=-1;4." },
-        { text: "Nghiệm của 8<sup>x-2</sup> = 64:", options: ["A. 3", "B. 4", "C. 5", "D. 6"], correct: 1 },
-        { text: "Tập nghiệm của 2<sup>x²+x+2</sup> = 16:", options: ["A. {-3;2}", "B. {-2;1}", "C. {0}", "D. {1;2}"], correct: 1, explanation: "x²+x+2=4 ⇒ x²+x-2=0 ⇒ x=1 hoặc x=-2." },
-        { text: "Nghiệm của 2ˣ = 32:", options: ["A. 4", "B. 5", "C. 6", "D. 16"], correct: 1 },
-        { text: "Nghiệm của 3<sup>2x</sup> = 27:", options: ["A. 1", "B. 3/2", "C. 2", "D. 9"], correct: 1 },
-        { text: "Nghiệm của (1/2)ˣ = 8:", options: ["A. -3", "B. 3", "C. -1/3", "D. 1/3"], correct: 0 }
-      ],
-      category4: [
-        { text: "Tổng nghiệm của log₂₀₂₃(x²+2024x)=1:", options: ["A. -2023", "B. -2024", "C. 2024", "D. 2023"], correct: 1, explanation: "x²+2024x=2023 ⇒ tổng = -2024." },
-        { text: "Nghiệm của log₃(3x-8)=2:", options: ["A. 17/3", "B. 9", "C. 8", "D. 7"], correct: 0, explanation: "3x-8=9 ⇒ x=17/3." },
-        { text: "Nghiệm của log₅(x-2)=2:", options: ["A. 3", "B. -1", "C. 1", "D. 27"], correct: 3, explanation: "x-2=25 ⇒ x=27." },
-        { text: "Tập nghiệm của log₄(x²+2)=3:", options: ["A. {√62}", "B. {-√62;√62}", "C. {-1;1}", "D. {1}"], correct: 1 },
-        { text: "Nghiệm của log₇(x-3)=3:", options: ["A. 10", "B. 346", "C. 343", "D. 8"], correct: 1, explanation: "x-3=343 ⇒ x=346." },
-        { text: "Nghiệm của log(5x+2)=log(3x+6):", options: ["A. 2", "B. 1", "C. 3", "D. -1"], correct: 0, explanation: "5x+2=3x+6 ⇒ 2x=4 ⇒ x=2." },
-        { text: "Tập nghiệm của log₃(x-4)=log₃(3x-2):", options: ["A. {0}", "B. {2}", "C. {-2}", "D. ∅"], correct: 3, explanation: "x-4=3x-2 ⇒ x=-1 (không thỏa ĐK)." },
-        { text: "Nghiệm của log₂(x)=5:", options: ["A. 10", "B. 32", "C. 25", "D. 7"], correct: 1 },
-        { text: "Nghiệm của log₅(x+1)=2:", options: ["A. 24", "B. 25", "C. 26", "D. 9"], correct: 0 },
-        { text: "Nghiệm của ln(x)=0:", options: ["A. 0", "B. 1", "C. e", "D. -1"], correct: 1 }
-      ],
-      category5: [
-        { text: "Tập nghiệm của 3<sup>x-1</sup> ≥ 9:", options: ["A. (3;+∞)", "B. (3;+∞]", "C. [3;+∞)", "D. [3;+∞]"], correct: 2, explanation: "3<sup>x-1</sup> ≥ 3² ⇒ x-1 ≥ 2 ⇒ x ≥ 3." },
-        { text: "Tập nghiệm của 2ˣ > 16:", options: ["A. (-∞;4)", "B. (4;+∞)", "C. (0;4)", "D. (0;3)"], correct: 1 },
-        { text: "Tập nghiệm của (1/2)<sup>x+2</sup> > 8:", options: ["A. [-5;+∞)", "B. (-5;+∞)", "C. (-∞;-5)", "D. (-∞;-5]"], correct: 2 },
-        { text: "Tập nghiệm của log₂(x+2) > -1:", options: ["A. (-1;7)", "B. (0;+∞)", "C. (-1;+∞)", "D. [-1;7)"], correct: 2, explanation: "x+2 > 2⁻¹ = 1/2 ⇒ x > -3/2. (Đã điều chỉnh)" },
-        { text: "Tập nghiệm của log₃(x-1) ≤ 2:", options: ["A. (1;10]", "B. [1;10]", "C. (1;+∞)", "D. (-∞;10]"], correct: 0, explanation: "0 < x-1 ≤ 9 ⇒ 1 < x ≤ 10." },
-        { text: "Tập nghiệm của 4ˣ ≥ 16:", options: ["A. [2;+∞)", "B. (2;+∞)", "C. (-∞;2]", "D. (-∞;2)"], correct: 0 },
-        { text: "Tập nghiệm của 5ˣ < 125:", options: ["A. (-∞;3)", "B. (3;+∞)", "C. (-∞;3]", "D. [3;+∞)"], correct: 0 },
-        { text: "Tập nghiệm của log₂(x) > 3:", options: ["A. (8;+∞)", "B. (3;+∞)", "C. [8;+∞)", "D. (-∞;8)"], correct: 0 },
-        { text: "Tập nghiệm của log₃(x) ≤ 1:", options: ["A. (0;3]", "B. [0;3]", "C. (0;3)", "D. (-∞;3]"], correct: 0 },
-        { text: "Tập nghiệm của (1/3)ˣ ≤ 9:", options: ["A. [-2;+∞)", "B. (-∞;-2]", "C. [-2;+∞]", "D. (-2;+∞)"], correct: 0, explanation: "3⁻ˣ ≤ 3² ⇒ -x ≤ 2 ⇒ x ≥ -2." }
-      ]
-    };
-
-    // Home 100 câu
-    const expLogHomeQuestions = [];
-    for (let cat in expLogClassCategories) {
-      expLogHomeQuestions.push(...expLogClassCategories[cat]);
-    }
-    const extraHome = [];
-    for (let cat in expLogClassCategories) {
-      extraHome.push(...expLogClassCategories[cat].map(q => ({...q, text: q.text.replace('Tập xác định','TXĐ')})));
-    }
-    expLogHomeQuestions.push(...extraHome.slice(0,50));
-
-    // ======================== BIẾN TOÀN CỤC ========================
-    let currentSubject = 'sequence';
-    let currentMode = 'class';
-    let currentCategory = 'category1';
-    let currentQuestions = [];
-    let userAnswers = [];
-    let flags = [];
-    let currentIndex = 0;
-    let submitted = false;
-    let startTime = null;
-    let timerInterval = null;
-    let cat5Unlocked = false;
-
-    function getStorageKey() { return `quiz_${currentSubject}_${currentMode}_${currentCategory}`; }
-    function saveState() {
-      const state = { userAnswers, flags, currentIndex, startTime, submitted, currentMode, currentCategory };
-      localStorage.setItem(getStorageKey(), JSON.stringify(state));
-    }
-    function loadState() {
-      const saved = localStorage.getItem(getStorageKey());
-      if (!saved) return false;
-      try {
-        const state = JSON.parse(saved);
-        userAnswers = state.userAnswers || new Array(currentQuestions.length).fill(null);
-        flags = state.flags || new Array(currentQuestions.length).fill(false);
-        currentIndex = state.currentIndex || 0;
-        startTime = state.startTime || Date.now();
-        submitted = state.submitted || false;
-        if (state.currentMode) currentMode = state.currentMode;
-        if (state.currentCategory) currentCategory = state.currentCategory;
-        return true;
-      } catch(e) { return false; }
-    }
-    function clearState() { localStorage.removeItem(getStorageKey()); }
-    function saveCat5Unlock() { localStorage.setItem('cat5_unlocked', cat5Unlocked ? 'true' : 'false'); }
-    function loadCat5Unlock() { cat5Unlocked = localStorage.getItem('cat5_unlocked') === 'true'; }
-
-    function initQuestions() {
-      if (currentSubject === 'sequence') {
-        currentQuestions = (currentMode === 'class') ? sequenceQuestions.slice(0,15) : sequenceQuestions.slice(15,40);
-      } else {
-        if (currentMode === 'class') {
-          currentQuestions = expLogClassCategories[currentCategory] || [];
-        } else {
-          currentQuestions = expLogHomeQuestions;
-        }
-      }
-      userAnswers = new Array(currentQuestions.length).fill(null);
-      flags = new Array(currentQuestions.length).fill(false);
-      submitted = false;
-      currentIndex = 0;
-      startTime = Date.now();
-    }
-
-    // ======================== RENDER ========================
-    function renderApp() {
-      const container = document.getElementById('app-container');
-      const isExp = currentSubject === 'exponential';
-      const categoryNames = {
-        category1: "📌 Dạng 1: Tập xác định",
-        category2: "📐 Dạng 2: Đạo hàm",
-        category3: "⚡ Dạng 3: Phương trình mũ",
-        category4: "📊 Dạng 4: Phương trình logarit",
-        category5: "📈 Dạng 5: Bất phương trình"
-      };
-      const modeLabel = isExp ? (currentMode==='class'? categoryNames[currentCategory] : '🏠 Bài tập về nhà (100 câu)')
-                               : (currentMode==='class' ? '📚 Bài tập trên lớp (15 câu)' : '🏠 Bài tập về nhà (25 câu)');
-
-      let catSelectorHtml = '';
-      if (isExp && currentMode === 'class') {
-        catSelectorHtml = `<div class="category-selector show">`;
-        for (let cat in categoryNames) {
-          let lockClass = '';
-          if (cat === 'category5') {
-            lockClass = cat5Unlocked ? 'unlocked' : 'locked';
-          }
-          catSelectorHtml += `<button class="category-btn ${currentCategory===cat?'active':''} ${lockClass}" data-category="${cat}">${categoryNames[cat]}</button>`;
-        }
-        catSelectorHtml += `</div>`;
-      }
-
-      container.innerHTML = `
-        <div class="quiz-wrapper">
-          <div class="subject-tabs">
-            <button class="subject-tab ${currentSubject==='sequence'?'active':''}" data-subject="sequence">📊 Cấp số cộng & Cấp số nhân</button>
-            <button class="subject-tab ${currentSubject==='exponential'?'active':''}" data-subject="exponential">📈 Mũ & Logarit</button>
-          </div>
-          <div class="mode-selector">
-            <button class="mode-btn ${currentMode==='class'?'active':''}" data-mode="class">📖 Bài tập trên lớp</button>
-            <button class="mode-btn ${currentMode==='home'?'active':''}" data-mode="home">🏠 Bài tập về nhà</button>
-          </div>
-          ${catSelectorHtml}
-          <div class="quiz-header">
-            <div class="quiz-title">${currentSubject==='sequence'?'Cấp số cộng · Cấp số nhân':'Mũ · Logarit'}</div>
-            <div class="quiz-meta">${modeLabel}</div>
-          </div>
-          <div class="progress-bar">
-            <div class="progress-label"><span>📌 Tiến độ</span><span id="answeredPercent">0%</span></div>
-            <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
-          </div>
-          <div id="navGrid" class="nav-grid"></div>
-          <div id="currentQuestion"></div>
-          <div class="navigation-buttons">
-            <button class="btn btn-secondary" id="prevBtn">◀ Câu trước</button>
-            <button class="btn btn-secondary" id="nextBtn">Câu tiếp ▶</button>
-          </div>
-          <div class="action-buttons">
-            <button class="btn btn-primary" id="submitBtn">📝 NỘP BÀI</button>
-            <button class="btn btn-secondary" id="resetBtn">🔄 Làm lại</button>
-            <button class="btn btn-secondary" id="logoutBtn">🚪 Đăng xuất</button>
-          </div>
-          <div id="resultSummary" class="result-summary"></div>
-          <footer>🎯 ĐẬU NV1 CÙNG ANH TIẾN ĐẠT</footer>
+    <div class="quiz-wrapper">
+        <div class="header-title">
+            <h1>📐 CHỦ ĐỀ 10: PHÉP ĐẾM - TỔ HỢP</h1>
+            <div class="subtitle">Hệ Thống Giáo Dục Tâm Đức</div>
+            <div class="student-info">
+                <span>👤 Họ và tên: .......................................................</span>
+                <span>📚 Lớp: ........................</span>
+            </div>
         </div>
-      `;
-      renderNavGrid();
-      renderCurrentQuestion();
-      updateProgress();
-      startTimer();
-      attachEvents();
-    }
 
-    function renderNavGrid() {
-      const nav = document.getElementById('navGrid');
-      if (!nav) return;
-      nav.innerHTML = '';
-      currentQuestions.forEach((_, i) => {
-        const btn = document.createElement('button');
-        btn.textContent = i+1;
-        btn.className = 'nav-btn';
-        if (userAnswers[i] !== null) btn.classList.add('answered');
-        if (i === currentIndex) btn.classList.add('active');
-        if (flags[i]) btn.classList.add('flagged');
-        btn.onclick = () => { if (!submitted) { currentIndex = i; renderCurrentQuestion(); updateNavActive(); saveState(); } };
-        nav.appendChild(btn);
-      });
-    }
-    function updateNavActive() {
-      document.querySelectorAll('.nav-btn').forEach((btn, idx) => {
-        btn.classList.toggle('active', idx === currentIndex);
-        btn.classList.toggle('answered', userAnswers[idx] !== null);
-        btn.classList.toggle('flagged', flags[idx]);
-      });
-    }
-    function renderCurrentQuestion() {
-      const q = currentQuestions[currentIndex];
-      const container = document.getElementById('currentQuestion');
-      const selected = userAnswers[currentIndex];
-      container.innerHTML = `
-        <div class="question-card">
-          <div class="question-header">
-            <span class="question-number">Câu ${currentIndex+1}</span>
-            <button class="flag-btn" id="flagBtn">${flags[currentIndex]?'🚩':'🏁'}</button>
-          </div>
-          <div class="question-text">${q.text}</div>
-          <div class="options">${q.options.map((opt,i)=>`
-            <label class="option">
-              <input type="radio" name="currentOpt" value="${i}" ${selected===i?'checked':''} ${submitted?'disabled':''}>
-              <span>${opt}</span>
-            </label>`).join('')}
-          </div>
-          <div class="answer-result" id="answerResult"></div>
+        <div class="scoreboard">
+            <span>✅ Đúng: <b id="correct-score" class="correct-score">0</b></span>
+            <span>❌ Sai: <b id="wrong-score" class="wrong-score">0</b></span>
+            <span>📊 Tiến độ: <b id="progress" class="progress-score">0</b>/<span id="total-questions">50</span></span>
         </div>
-      `;
-      if (!submitted) {
-        document.querySelectorAll('input[name="currentOpt"]').forEach(r => r.addEventListener('change', e => {
-          userAnswers[currentIndex] = parseInt(e.target.value);
-          updateProgress(); updateNavActive(); saveState();
-        }));
-        document.getElementById('flagBtn').onclick = () => {
-          if (submitted) return;
-          flags[currentIndex] = !flags[currentIndex];
-          renderCurrentQuestion(); updateNavActive(); saveState();
-        };
-      } else {
-        showResultForCurrent();
-      }
-    }
-    function showResultForCurrent() {
-      const q = currentQuestions[currentIndex];
-      const choice = userAnswers[currentIndex];
-      const div = document.getElementById('answerResult');
-      const letter = String.fromCharCode(65+q.correct);
-      if (choice !== null) {
-        const correct = choice === q.correct;
-        div.className = `answer-result ${correct?'correct':'wrong'}`;
-        div.innerHTML = correct ? `<strong>✅ Đúng</strong><div class="explanation">${q.explanation}</div>` 
-                                : `<strong>❌ Sai. Đáp án đúng: ${letter}</strong><div class="explanation">${q.explanation}</div>`;
-      } else {
-        div.className = 'answer-result wrong';
-        div.innerHTML = `<strong>⚠️ Chưa trả lời. Đáp án: ${letter}</strong><div class="explanation">${q.explanation}</div>`;
-      }
-      div.style.display = 'block';
-    }
-    function updateProgress() {
-      const answered = userAnswers.filter(a => a!==null).length;
-      const pct = Math.round(answered/currentQuestions.length*100);
-      document.getElementById('answeredPercent').innerText = pct+'%';
-      document.getElementById('progressFill').style.width = pct+'%';
-    }
-    function startTimer() { if(timerInterval) clearInterval(timerInterval); timerInterval = setInterval(()=>{},1000); }
-    function submitQuiz() {
-      if (submitted) return;
-      submitted = true;
-      clearInterval(timerInterval);
-      let correctCount = 0;
-      currentQuestions.forEach((q,i) => { if(userAnswers[i]===q.correct) correctCount++; });
-      const total = currentQuestions.length;
-      const percent = Math.round(correctCount/total*100);
-      renderCurrentQuestion();
-      const summary = document.getElementById('resultSummary');
-      summary.style.display = 'block';
-      summary.innerHTML = `
-        <h3>📊 KẾT QUẢ</h3>
-        <div class="result-stats">
-          <div><div class="stat-value">${correctCount}</div><div class="stat-label">Đúng</div></div>
-          <div><div class="stat-value">${total-correctCount}</div><div class="stat-label">Sai</div></div>
-          <div><div class="stat-value">${percent}%</div><div class="stat-label">Tỷ lệ</div></div>
-        </div>
-        <button class="btn btn-secondary" id="retryBtn">🔁 Làm lại</button>
-      `;
-      document.getElementById('retryBtn').onclick = () => resetQuiz();
-      if (percent >= 80) confetti({particleCount:150, spread:80, origin:{y:0.6}});
-      if (correctCount === total) confetti({particleCount:300, spread:100});
-      saveState();
-    }
-    function resetQuiz() {
-      initQuestions();
-      clearState();
-      submitted = false;
-      renderNavGrid();
-      renderCurrentQuestion();
-      document.getElementById('resultSummary').style.display = 'none';
-      updateProgress();
-      startTimer();
-    }
-    function nextQuestion() { if (currentIndex < currentQuestions.length-1) { currentIndex++; renderCurrentQuestion(); updateNavActive(); saveState(); } }
-    function prevQuestion() { if (currentIndex > 0) { currentIndex--; renderCurrentQuestion(); updateNavActive(); saveState(); } }
 
-    // ========== CHUYỂN ĐỔI (LUÔN CHO PHÉP, TỰ RESET) ==========
-    function switchSubject(subject) {
-      if (currentSubject === subject) return;
-      currentSubject = subject;
-      currentMode = 'class';
-      currentCategory = 'category1';
-      initQuestions();
-      clearState();
-      loadState();
-      renderApp();
-    }
-    function switchMode(mode) {
-      if (currentMode === mode) return;
-      currentMode = mode;
-      if (currentSubject === 'exponential' && mode === 'class') currentCategory = 'category1';
-      initQuestions();
-      clearState();
-      loadState();
-      renderApp();
-    }
-    function switchCategory(cat) {
-      if (currentSubject !== 'exponential' || currentMode !== 'class') return;
-      // Xử lý khóa cat5
-      if (cat === 'category5' && !cat5Unlocked) {
-        const pwd = prompt('🔐 Dạng 5 (Bất phương trình) bị khóa. Vui lòng nhập mật khẩu:');
-        if (pwd === CAT5_PASSWORD) {
-          cat5Unlocked = true;
-          saveCat5Unlock();
-        } else {
-          alert('❌ Mật khẩu không đúng.');
-          return;
+        <div id="quiz-content"></div>
+
+        <div class="reset-btn-container">
+            <button class="reset-btn" onclick="resetQuiz()">🔄 Làm lại toàn bộ</button>
+        </div>
+    </div>
+
+    <script>
+        const quizData = [
+            {
+                q: "Giả sử bạn muốn mua một áo sơ mi cỡ 39 hoặc 40. Áo cỡ 39 có 5 màu khác nhau, áo cỡ 40 có 4 màu khác nhau. Hỏi có bao nhiêu sự lựa chọn?",
+                a: ["9", "5", "4", "20"],
+                correct: 0,
+                sign: "Từ khóa 'HOẶC', thực hiện một hành động chọn duy nhất.",
+                why: "Sử dụng QUY TẮC CỘNG vì đây là các phương án độc lập. Chọn áo cỡ 39 thì không chọn cỡ 40 và ngược lại, mỗi lựa chọn đều hoàn thành công việc.",
+                detail: "Số cách chọn = 5 (màu cỡ 39) + 4 (màu cỡ 40) = 9 cách."
+            },
+            {
+                q: "Một người có 4 cái quần, 6 cái áo, 3 chiếc cà vạt. Để chọn một cái quần hoặc một cái áo hoặc một cái cà vạt thì số cách chọn là?",
+                a: ["13", "72", "12", "30"],
+                correct: 0,
+                sign: "Từ khóa 'HOẶC', chọn 1 vật duy nhất từ nhiều nhóm.",
+                why: "Sử dụng QUY TẮC CỘNG vì các nhóm vật dụng (quần, áo, cà vạt) là riêng biệt. Việc chọn 1 món từ bất kỳ nhóm nào cũng kết thúc hành động.",
+                detail: "Số cách chọn = 4 + 6 + 3 = 13 cách."
+            },
+            {
+                q: "Trên bàn có 8 cây bút chì, 6 cây bút bi và 10 cuốn tập. Chọn một đồ vật duy nhất bất kỳ thì số cách chọn là?",
+                a: ["24", "480", "14", "60"],
+                correct: 0,
+                sign: "Từ khóa 'HOẶC', 'DUY NHẤT'.",
+                why: "Sử dụng QUY TẮC CỘNG. Tổng số vật phẩm có sẵn là tổng của từng loại.",
+                detail: "Số cách chọn = 8 + 6 + 10 = 24 cách."
+            },
+            {
+                q: "Một thí sinh chọn một đề tài từ: 8 đề tài lịch sử, 7 đề tài thiên nhiên, 10 đề tài con người và 6 đề tài văn hóa. Hỏi có bao nhiêu khả năng chọn?",
+                a: ["31", "280", "420", "560"],
+                correct: 0,
+                sign: "Chọn 1 vật phẩm từ nhiều danh mục khác nhau.",
+                why: "Sử dụng QUY TẮC CỘNG vì thí sinh chỉ được chọn duy nhất 1 đề tài.",
+                detail: "Số khả năng = 8 + 7 + 10 + 6 = 31 cách."
+            },
+            {
+                q: "Từ tỉnh A đến tỉnh B có thể đi bằng: ô tô (10 chuyến), tàu hỏa (5 chuyến), tàu thủy (3 chuyến), máy bay (2 chuyến). Hỏi có bao nhiêu cách đi?",
+                a: ["20", "300", "18", "15"],
+                correct: 0,
+                sign: "Nhiều phương thức vận tải khác nhau để đi từ A đến B.",
+                why: "Sử dụng QUY TẮC CỘNG vì mỗi chuyến đi là một lựa chọn độc lập để hoàn thành chặng đường.",
+                detail: "Số cách đi = 10 + 5 + 3 + 2 = 20 cách."
+            },
+            {
+                q: "Có 3 kiểu mặt đồng hồ và 4 kiểu dây. Hỏi có bao nhiêu cách chọn một chiếc đồng hồ gồm một mặt và một dây?",
+                a: ["12", "7", "4", "16"],
+                correct: 0,
+                sign: "Từ khóa 'GỒM', công việc có 2 giai đoạn.",
+                why: "Sử dụng QUY TẮC NHÂN vì để có 1 chiếc đồng hồ, ta bắt buộc phải thực hiện 2 bước liên tiếp: Chọn mặt VÀ chọn dây.",
+                detail: "Số cách chọn = 3 (mặt) × 4 (dây) = 12 cách."
+            },
+            {
+                q: "Một người có 4 cái quần, 6 cái áo, 3 chiếc cà vạt. Để chọn 'mỗi thứ một món' tạo thành bộ đồ thì có bao nhiêu cách?",
+                a: ["72", "13", "12", "30"],
+                correct: 0,
+                sign: "Công việc có nhiều giai đoạn liên tiếp (Quần + Áo + Cà vạt).",
+                why: "Sử dụng QUY TẮC NHÂN vì phải chọn đủ cả 3 loại món đồ mới thành một bộ.",
+                detail: "Số cách chọn = 4 × 6 × 3 = 72 cách."
+            },
+            {
+                q: "Từ thành phố A đến B có 6 con đường, từ B đến C có 7 con đường. Có bao nhiêu cách đi từ A đến C qua B?",
+                a: ["42", "13", "48", "44"],
+                correct: 0,
+                sign: "Lộ trình chia làm 2 chặng liên tiếp A-B và B-C.",
+                why: "Sử dụng QUY TẮC NHÂN vì muốn đi từ A đến C bắt buộc phải đi qua chặng 1 RỒI đi tiếp chặng 2.",
+                detail: "Số cách đi = 6 × 7 = 42 cách."
+            },
+            {
+                q: "An qua nhà Bình (4 đường), Bình qua nhà Cường (6 đường). Hỏi An có bao nhiêu cách đi đến nhà Cường qua nhà Bình?",
+                a: ["24", "10", "12", "18"],
+                correct: 0,
+                sign: "Hành động liên tiếp qua điểm trung gian.",
+                why: "Sử dụng QUY TẮC NHÂN.",
+                detail: "Số cách đi = 4 × 6 = 24 cách."
+            },
+            {
+                q: "Chọn thực đơn gồm: 1 món ăn (5 món), 1 tráng miệng (5 loại) và 1 nước uống (3 loại). Có bao nhiêu cách chọn?",
+                a: ["75", "13", "100", "15"],
+                correct: 0,
+                sign: "Hành động gồm 3 bước liên tiếp.",
+                why: "Sử dụng QUY TẮC NHÂN.",
+                detail: "Số cách chọn = 5 × 5 × 3 = 75 cách."
+            },
+            {
+                q: "Có bao nhiêu cách xếp khác nhau cho 5 người ngồi vào một bàn dài?",
+                a: ["120", "5", "20", "25"],
+                correct: 0,
+                sign: "Xếp thứ tự toàn bộ n phần tử vào n vị trí.",
+                why: "Sử dụng HOÁN VỊ vì ta lấy tất cả 5 người và sắp xếp thứ tự của họ trên bàn dài.",
+                detail: "Số cách xếp = 5! = 5 × 4 × 3 × 2 × 1 = 120 cách."
+            },
+            {
+                q: "Số cách sắp xếp 10 học sinh vào một dãy ghế hàng ngang có 10 chỗ ngồi là?",
+                a: ["10!", "10", "100", "2^10"],
+                correct: 0,
+                sign: "Sắp xếp toàn bộ phần tử vào hàng ngang.",
+                why: "Sử dụng HOÁN VỊ cho 10 phần tử.",
+                detail: "Số cách xếp = P₁₀ = 10! = 3.628.800 cách."
+            },
+            {
+                q: "Lập kế hoạch đi thăm 12 người bạn, mỗi ngày thăm 1 người trong 1 tuần (7 ngày). Hỏi có bao nhiêu kế hoạch?",
+                a: ["3.991.680", "12!", "3.583.180", "7!"],
+                correct: 0,
+                sign: "Chọn k phần tử từ n phần tử và SẮP THỨ TỰ theo ngày.",
+                why: "Sử dụng CHỈNH HỢP vì việc thăm bạn A vào thứ Hai khác với thăm bạn A vào thứ Ba (thứ tự quan trọng).",
+                detail: "Số kế hoạch = A(12, 7) = 12! / (12-7)! = 12×11×10×9×8×7×6 = 3.991.680 cách."
+            },
+            {
+                q: "Cho tập hợp 6 điểm phân biệt. Có bao nhiêu vectơ khác vectơ không có điểm đầu và cuối từ tập này?",
+                a: ["30", "15", "36", "12"],
+                correct: 0,
+                sign: "Chọn 2 điểm và có phân biệt thứ tự (Điểm đầu - Điểm cuối).",
+                why: "Sử dụng CHỈNH HỢP vì vectơ AB khác vectơ BA.",
+                detail: "Số vectơ = A(6, 2) = 6 × 5 = 30 vectơ."
+            },
+            {
+                q: "Có bao nhiêu cách mắc nối tiếp 4 bóng đèn được chọn từ 6 bóng đèn khác nhau?",
+                a: ["360", "15", "24", "17280"],
+                correct: 0,
+                sign: "Chọn 4 vật từ 6 vật và sắp xếp thứ tự nối tiếp.",
+                why: "Sử dụng CHỈNH HỢP vì thay đổi thứ tự các bóng đèn trong mạch nối tiếp tạo ra cách mắc khác nhau.",
+                detail: "Số cách mắc = A(6, 4) = 6 × 5 × 4 × 3 = 360 cách."
+            },
+            {
+                q: "Một cuộc thi có 8 vận động viên. Hỏi có bao nhiêu khả năng trao 3 giải: Nhất, Nhì, Ba?",
+                a: ["336", "56", "24", "120"],
+                correct: 0,
+                sign: "Chọn 3 từ 8 và phân chia thứ hạng (thứ tự).",
+                why: "Sử dụng CHỈNH HỢP vì các giải thưởng Nhất, Nhì, Ba là khác nhau.",
+                detail: "Số khả năng = A(8, 3) = 8 × 7 × 6 = 336 cách."
+            },
+            {
+                q: "Một ban chấp hành có 7 người, cần chọn 3 người vào 3 chức vụ: Bí thư, Phó bí thư, Ủy viên. Số cách chọn là?",
+                a: ["210", "35", "180", "150"],
+                correct: 0,
+                sign: "Chọn người và phân công chức vụ khác nhau.",
+                why: "Sử dụng CHỈNH HỢP vì vai trò mỗi người được chọn là khác nhau.",
+                detail: "Số cách = A(7, 3) = 7 × 6 × 5 = 210 cách."
+            },
+            {
+                q: "Xếp 5 bạn học sinh An, Bình, Chi, Dũng, Lệ vào ghế dài 5 chỗ sao cho bạn Chi luôn ngồi chính giữa. Có bao nhiêu cách?",
+                a: ["24", "120", "60", "16"],
+                correct: 0,
+                sign: "Sắp xếp có vị trí cố định.",
+                why: "Sử dụng HOÁN VỊ cho các vị trí còn lại. Chi đã cố định, ta xếp 4 bạn còn lại vào 4 chỗ trống.",
+                detail: "Số cách = 4! = 4 × 3 × 2 × 1 = 24 cách."
+            },
+            {
+                q: "Xếp 5 bạn học sinh sao cho bạn An và Dũng luôn ngồi ở hai đầu ghế. Hỏi có bao nhiêu cách?",
+                a: ["12", "24", "120", "6"],
+                correct: 0,
+                sign: "Sắp xếp có điều kiện ở biên.",
+                why: "Bước 1: Xếp An và Dũng vào 2 đầu (2! cách). Bước 2: Hoán vị 3 bạn còn lại vào giữa (3! cách). Dùng quy tắc nhân.",
+                detail: "Số cách = 2! × 3! = 2 × 6 = 12 cách."
+            },
+            {
+                q: "Lập danh sách sắp xếp thứ tự 5 cầu thủ trong số 11 cầu thủ để đá luân lưu. Có bao nhiêu cách?",
+                a: ["55.440", "462", "554.440", "11!"],
+                correct: 0,
+                sign: "Chọn và sắp thứ tự thực hiện.",
+                why: "Sử dụng CHỈNH HỢP vì thứ tự đá luân lưu quan trọng.",
+                detail: "Số cách = A(11, 5) = 11 × 10 × 9 × 8 × 7 = 55.440 cách."
+            },
+            {
+                q: "Một hộp đựng 12 viên bi. Có bao nhiêu cách lấy ra 6 viên bi bất kỳ?",
+                a: ["924", "665.280", "720", "942"],
+                correct: 0,
+                sign: "Chọn một nhóm phần tử, KHÔNG quan tâm thứ tự.",
+                why: "Sử dụng TỔ HỢP vì lấy ra 6 viên cùng lúc, viên nào trước viên nào sau không quan trọng.",
+                detail: "Số cách = C(12, 6) = 924 cách."
+            },
+            {
+                q: "Lớp học 40 học sinh. Chọn 3 học sinh đi tham gia vệ sinh công cộng. Hỏi có bao nhiêu cách?",
+                a: ["9.880", "59.280", "2.300", "455"],
+                correct: 0,
+                sign: "Chọn nhóm người làm cùng một công việc.",
+                why: "Sử dụng TỔ HỢP vì vai trò của 3 bạn là như nhau.",
+                detail: "Số cách = C(40, 3) = 9.880 cách."
+            },
+            {
+                q: "Một ban chấp hành đoàn 7 người, cần chọn ra 3 người vào ban thường vụ (không phân biệt chức vụ). Số cách là?",
+                a: ["35", "210", "42", "50"],
+                correct: 0,
+                sign: "Chọn nhóm không phân cấp.",
+                why: "Sử dụng TỔ HỢP.",
+                detail: "Số cách = C(7, 3) = 35 cách."
+            },
+            {
+                q: "Cho 10 điểm phân biệt trên đường tròn. Hỏi có bao nhiêu tam giác có đỉnh là các điểm đó?",
+                a: ["120", "720", "45", "1000"],
+                correct: 0,
+                sign: "Chọn 3 điểm từ 10 điểm để tạo hình.",
+                why: "Sử dụng TỔ HỢP vì tam giác ABC hay BCA là một.",
+                detail: "Số tam giác = C(10, 3) = 120 cách."
+            },
+            {
+                q: "Có 15 đội bóng đá vòng tròn một lượt (mỗi cặp đấu 1 trận). Hỏi có tất cả bao nhiêu trận đấu?",
+                a: ["105", "210", "100", "200"],
+                correct: 0,
+                sign: "Chọn cặp (2 đội) từ tập hợp đội.",
+                why: "Sử dụng TỔ HỢP vì trận đội A-B cũng là trận B-A.",
+                detail: "Số trận = C(15, 2) = 105 cách."
+            },
+            {
+                q: "Khối 11 có 280 nam và 325 nữ. Chọn một học sinh nam và một học sinh nữ đi dự trại hè. Có bao nhiêu cách?",
+                a: ["91.000", "605", "910", "625"],
+                correct: 0,
+                sign: "Chọn từ 2 nhóm khác nhau (Nam AND Nữ).",
+                why: "Sử dụng QUY TẮC NHÂN kết hợp chọn phần tử.",
+                detail: "Số cách = 280 (cách chọn nam) × 325 (cách chọn nữ) = 91.000 cách."
+            },
+            {
+                q: "Một tổ có 10 người gồm 6 nam và 4 nữ. Cần lập một đoàn đại biểu gồm 5 người. Hỏi có bao nhiêu cách lập?",
+                a: ["252", "25", "50", "455"],
+                correct: 0,
+                sign: "Chọn nhóm bất kỳ từ tập hợp người.",
+                why: "Sử dụng TỔ HỢP vì không phân biệt thứ tự trong đoàn.",
+                detail: "Số cách = C(10, 5) = 252 cách."
+            },
+            {
+                q: "Chọn 5 bạn từ lớp có 15 nam và 20 nữ sao cho có ĐÚNG 3 học sinh nữ?",
+                a: ["119.700", "110.790", "117.900", "110.970"],
+                correct: 0,
+                sign: "Chọn theo yêu cầu số lượng cụ thể từng nhóm.",
+                why: "Bước 1: Chọn 3 nữ từ 20 nữ (C(20,3)). Bước 2: Chọn 2 nam còn lại từ 15 nam (C(15,2)). Dùng quy tắc nhân.",
+                detail: "Số cách = C(20, 3) × C(15, 2) = 1.140 × 105 = 119.700 cách."
+            },
+            {
+                q: "Túi đựng 6 bi trắng, 5 bi xanh. Lấy ra 4 viên bi sao cho có ĐỦ cả hai màu. Hỏi có bao nhiêu cách?",
+                a: ["310", "300", "320", "330"],
+                correct: 0,
+                sign: "Chọn nhóm có điều kiện giới hạn màu sắc.",
+                why: "Sử dụng TỔ HỢP chia trường hợp hoặc dùng phần bù. Cách 1: Lấy tổng trừ đi trường hợp chỉ có 1 màu.",
+                detail: "Tổng số cách chọn 4 viên từ 11 viên: C(11,4) = 330.\nChỉ toàn trắng: C(6,4)=15. Chỉ toàn xanh: C(5,4)=5.\nSố cách thỏa = 330 - 15 - 5 = 310 cách."
+            },
+            {
+                q: "Nhóm học sinh có 6 nam và 5 nữ. Chọn ra 5 học sinh sao cho trong đó có cả nam và nữ?",
+                a: ["455", "456", "462", "450"],
+                correct: 0,
+                sign: "Chọn nhóm có sự xuất hiện của ít nhất một phần tử mỗi loại.",
+                why: "Dùng PHƯƠNG PHÁP BIẾN CỐ ĐỐI: Lấy tổng số cách chọn trừ đi trường hợp chỉ toàn nam hoặc chỉ toàn nữ.",
+                detail: "Số cách = C(11, 5) - C(6, 5) - C(5, 5) = 462 - 6 - 1 = 455 cách."
+            },
+            {
+                q: "Có bao nhiêu số tự nhiên có 3 chữ số?",
+                a: ["900", "901", "899", "999"],
+                correct: 0,
+                sign: "Lập số tự nhiên không yêu cầu khác nhau.",
+                why: "Dùng QUY TẮC NHÂN. Chữ số hàng trăm có 9 cách (1-9), hàng chục 10 cách (0-9), hàng đơn vị 10 cách (0-9).",
+                detail: "Số các số = 9 × 10 × 10 = 900 số."
+            },
+            {
+                q: "Từ các chữ số 2, 3, 4, 5 có thể lập được bao nhiêu số gồm 4 chữ số (cho phép lặp lại)?",
+                a: ["256", "120", "24", "16"],
+                correct: 0,
+                sign: "Lập số từ tập n chữ số, số chữ số bằng n, cho phép lặp.",
+                why: "Dùng QUY TẮC NHÂN. Mỗi vị trí đều có 4 lựa chọn.",
+                detail: "Số các số = 4 × 4 × 4 × 4 = 256 số."
+            },
+            {
+                q: "Từ tập {1, 2, 3, 4} có thể lập được bao nhiêu số có 4 chữ số KHÁC NHAU?",
+                a: ["24", "256", "4", "42"],
+                correct: 0,
+                sign: "Lập số dùng hết chữ số và các chữ số phải khác nhau.",
+                why: "Sử dụng HOÁN VỊ cho 4 chữ số.",
+                detail: "Số các số = 4! = 24 số."
+            },
+            {
+                q: "Từ các chữ số 1, 2, 3,..., 9. Lập được bao nhiêu số có 4 chữ số KHÁC NHAU?",
+                a: ["3.024", "1.344", "1.334", "340"],
+                correct: 0,
+                sign: "Chọn k từ n chữ số và sắp thứ tự (lập số).",
+                why: "Sử dụng CHỈNH HỢP A(9, 4).",
+                detail: "Số các số = A(9, 4) = 9×8×7×6 = 3.024 số."
+            },
+            {
+                q: "Lập được bao nhiêu số có 4 chữ số khác nhau từ tập {1, 2,..., 9} và số đó phải là số lẻ?",
+                a: ["1.680", "1.344", "3.024", "1.512"],
+                correct: 0,
+                sign: "Lập số có điều kiện tính chất (Lẻ).",
+                why: "Bước 1: Chọn hàng đơn vị là số lẻ {1,3,5,7,9} → 5 cách.\nBước 2: Chọn 3 chữ số còn lại từ 8 số còn lại và xếp thứ tự: A(8,3) cách.\nDùng quy tắc nhân.",
+                detail: "Số các số = 5 × A(8, 3) = 5 × 336 = 1.680 số."
+            },
+            {
+                q: "Cho tập {2, 3, 4, 5, 6, 7}. Số các số tự nhiên CHẴN có 3 chữ số (cho phép lặp) là?",
+                a: ["108", "36", "18", "256"],
+                correct: 0,
+                sign: "Lập số có tính chất chẵn, không yêu cầu khác nhau.",
+                why: "Hàng đơn vị chọn từ {2,4,6} → 3 cách. Hàng trăm và hàng chục mỗi hàng 6 cách (tất cả các chữ số trong tập). Dùng quy tắc nhân.",
+                detail: "Số các số = 6 × 6 × 3 = 108 số."
+            },
+            {
+                q: "Lập được bao nhiêu số LẺ có 4 chữ số khác nhau từ tập {1, 2, 3, 4, 5, 6, 7}?",
+                a: ["480", "840", "1.372", "80"],
+                correct: 0,
+                sign: "Lập số lẻ khác nhau từ tập cho trước.",
+                why: "Chọn hàng đơn vị lẻ {1,3,5,7} → 4 cách. Chọn 3 số còn lại từ 6 số và xếp thứ tự: A(6,3) cách.",
+                detail: "Số các số = 4 × A(6, 3) = 4 × 120 = 480 số."
+            },
+            {
+                q: "Cho tập {0, 1, 2, 3, 4, 5}. Lập được bao nhiêu số LẺ có 3 chữ số khác nhau?",
+                a: ["48", "60", "90", "100"],
+                correct: 0,
+                sign: "Lập số có chữ số 0 và tính chất lẻ.",
+                why: "Bước 1: Chọn hàng đơn vị lẻ {1,3,5} → 3 cách.\nBước 2: Chọn hàng trăm khác 0 và khác hàng đơn vị → 4 cách.\nBước 3: Chọn hàng chục (trừ 2 số đã chọn) → 4 cách.",
+                detail: "Số các số = 3 × 4 × 4 = 48 số."
+            },
+            {
+                q: "Có bao nhiêu số CHẴN gồm 4 chữ số đôi một khác nhau lập từ tập {0, 1, 2, 4, 5, 6, 8}?",
+                a: ["520", "480", "252", "368"],
+                correct: 0,
+                sign: "Lập số chẵn khác nhau từ tập có số 0.",
+                why: "Chia 2 trường hợp: đuôi 0 và đuôi khác 0.\nTH1: Đuôi 0 → chọn 3 số còn lại từ 6 số: A(6,3)=120.\nTH2: Đuôi ∈ {2,4,6,8} (4 cách). Hàng nghìn: 5 cách (trừ 0 và số đuôi). Hai vị trí giữa: A(5,2)=20.\n→ TH2: 4×5×20=400.\nTổng = 120+400=520.",
+                detail: "Số các số = 120 + 400 = 520 số."
+            },
+            {
+                q: "Có bao nhiêu số tự nhiên CHẴN có 4 chữ số khác nhau lập từ tập {0, 1, 2, 3, 4, 5, 6}?",
+                a: ["420", "480", "300", "360"],
+                correct: 0,
+                sign: "Lập số chẵn khác nhau có số 0.",
+                why: "TH1: Tận cùng là 0 → A(6,3)=120 số.\nTH2: Tận cùng ∈ {2,4,6} → 3 cách. Hàng nghìn có 5 cách (trừ 0 và số đuôi). Hai số giữa: A(5,2)=20.\n→ TH2: 3×5×20=300.\nTổng: 120+300=420.",
+                detail: "Số các số = 120 + 300 = 420 số."
+            },
+            {
+                q: "Chọn 1 HS giỏi khối 10, 1 HS khối 11 và 1 HS khối 12 đi dự đại hội. Đây là áp dụng quy tắc gì?",
+                a: ["Quy tắc Nhân", "Quy tắc Cộng", "Hoán vị", "Tổ hợp"],
+                correct: 0,
+                sign: "Công việc thực hiện qua các giai đoạn liên tiếp.",
+                why: "Dùng QUY TẮC NHÂN vì phải chọn đủ ở cả 3 khối mới xong công việc.",
+                detail: "Mỗi bước chọn ở một khối là một giai đoạn của công việc, thực hiện liên tiếp."
+            },
+            {
+                q: "Có bao nhiêu khả năng về thứ tự về đích của 5 đội bóng (không trùng điểm)?",
+                a: ["120", "5", "20", "60"],
+                correct: 0,
+                sign: "Sắp xếp thứ tự cho tất cả phần tử.",
+                why: "Sử dụng HOÁN VỊ cho 5 đội.",
+                detail: "Số khả năng = 5! = 120."
+            },
+            {
+                q: "Xếp 6 người và 1 cặp cô dâu - chú rể chụp ảnh sao cho cô dâu chú rể ĐỨNG CẠNH NHAU. Có bao nhiêu cách?",
+                a: ["2 × 7!", "8! - 2!", "6 × 7!", "2! + 6!"],
+                correct: 0,
+                sign: "Sắp xếp các phần tử 'buộc' vào nhau.",
+                why: "Coi cặp cô dâu-chú rể là 1 khối. Xếp khối này với 6 người còn lại là 7 vị trí (7! cách). Trong khối, cô dâu chú rể đổi chỗ (2! cách).",
+                detail: "Số cách xếp = 7! × 2! cách."
+            },
+            {
+                q: "Có 3 bi đen, 4 bi đỏ, 5 bi xanh khác nhau. Xếp thành dãy sao cho các viên bi CÙNG MÀU đứng cạnh nhau?",
+                a: ["103.680", "345.600", "725.760", "518.400"],
+                correct: 0,
+                sign: "Sắp xếp theo nhóm phần tử cạnh nhau.",
+                why: "Bước 1: Hoán vị 3 nhóm màu (3! cách).\nBước 2: Hoán vị nội bộ từng nhóm (3!, 4!, 5!).\nDùng quy tắc nhân.",
+                detail: "Số cách = 3! × (3! × 4! × 5!) = 6 × (6 × 24 × 120) = 103.680 cách."
+            },
+            {
+                q: "Có 10 cặp vợ chồng. Chọn 1 người nam và 1 người nữ phát biểu sao cho họ KHÔNG là vợ chồng?",
+                a: ["90", "100", "10", "91"],
+                correct: 0,
+                sign: "Chọn phần tử có điều kiện loại trừ cặp.",
+                why: "Bước 1: Chọn nam (10 cách).\nBước 2: Chọn nữ không phải vợ người đó (9 cách còn lại).",
+                detail: "Số cách = 10 × 9 = 90 cách."
+            },
+            {
+                q: "Đường thẳng d₁ có 17 điểm, d₂ có 20 điểm (d₁ // d₂). Có bao nhiêu tam giác tạo bởi các điểm này?",
+                a: ["5.950", "9.112", "120", "45"],
+                correct: 0,
+                sign: "Chọn 3 điểm không thẳng hàng từ 2 đường thẳng song song.",
+                why: "Sử dụng TỔ HỢP chia trường hợp:\nTH1: 2 điểm trên d₁, 1 điểm trên d₂ → C(17,2)×20 = 136×20 = 2.720.\nTH2: 1 điểm trên d₁, 2 điểm trên d₂ → 17×C(20,2) = 17×190 = 3.230.\nTổng = 2.720 + 3.230 = 5.950.",
+                detail: "Tổng số tam giác = C(17,2)×20 + 17×C(20,2) = 2.720 + 3.230 = 5.950 tam giác."
+            },
+            {
+                q: "Lấy 2 thẻ từ hộp 20 thẻ (1-20). Có bao nhiêu cách lấy được 2 thẻ có TỔNG là số chẵn?",
+                a: ["90", "190", "100", "45"],
+                correct: 0,
+                sign: "Tổng 2 số chẵn khi: Cùng chẵn hoặc Cùng lẻ.",
+                why: "Trong 20 thẻ có 10 thẻ chẵn và 10 thẻ lẻ.\nTH1: 2 thẻ cùng lẻ → C(10,2) = 45.\nTH2: 2 thẻ cùng chẵn → C(10,2) = 45.\nTổng = 90.",
+                detail: "Số cách = 45 + 45 = 90 cách."
+            },
+            {
+                q: "Lấy 2 thẻ từ hộp 20 thẻ (1-20). Có bao nhiêu cách lấy được 2 thẻ có TÍCH là số chẵn?",
+                a: ["145", "100", "45", "90"],
+                correct: 0,
+                sign: "Tích 2 số lẻ là số lẻ. Tích có ít nhất 1 số chẵn là số chẵn.",
+                why: "Sử dụng PHẦN BÙ: Tổng số cách chọn 2 thẻ trừ đi trường hợp cả 2 thẻ đều lẻ.",
+                detail: "Số cách = C(20, 2) - C(10, 2) = 190 - 45 = 145 cách."
+            },
+            {
+                q: "Xếp 5 bạn học sinh An, Bình, Chi, Dũng, Lệ vào ghế dài sao cho bạn An và bạn Dũng KHÔNG ngồi cạnh nhau?",
+                a: ["72", "24", "48", "12"],
+                correct: 0,
+                sign: "Sắp xếp có điều kiện loại trừ vị trí kề nhau.",
+                why: "Dùng PHẦN BÙ: Tổng cách xếp 5 bạn trừ đi số cách xếp An và Dũng cạnh nhau.",
+                detail: "Tổng: 5! = 120.\nAn-Dũng cạnh nhau: coi là 1 khối → 4! × 2! = 48.\nSố cách thỏa = 120 - 48 = 72 cách."
+            },
+            {
+                q: "Chọn 4 học sinh từ nhóm 9 nam, 7 nữ sao cho có ÍT NHẤT 1 học sinh nữ?",
+                a: ["1.694", "1.659", "3.185", "756"],
+                correct: 0,
+                sign: "Điều kiện 'Ít nhất'.",
+                why: "Dùng PHẦN BÙ: Tổng số cách chọn 4 người trừ đi cách chọn 4 người toàn nam.",
+                detail: "Số cách = C(16, 4) - C(9, 4) = 1.820 - 126 = 1.694 cách."
+            }
+        ];
+
+        const labels = ['A', 'B', 'C', 'D'];
+        let correctCount = 0;
+        let wrongCount = 0;
+        let answeredCount = 0;
+        const totalQuestions = quizData.length;
+
+        document.getElementById('total-questions').textContent = totalQuestions;
+
+        function renderQuiz() {
+            const quizContent = document.getElementById('quiz-content');
+            quizContent.innerHTML = quizData.map((item, index) => {
+                const typeLabel = item.sign.includes('HOÁN VỊ') ? 'HOÁN VỊ' :
+                                  item.sign.includes('CHỈNH HỢP') ? 'CHỈNH HỢP' :
+                                  item.sign.includes('TỔ HỢP') ? 'TỔ HỢP' :
+                                  item.sign.includes('NHÂN') ? 'QUY TẮC NHÂN' :
+                                  item.sign.includes('CỘNG') ? 'QUY TẮC CỘNG' : 'TỔNG HỢP';
+                return `
+                    <div class="question-card" id="card-${index}">
+                        <div class="question-number">
+                            📌 Câu ${index + 1}
+                            <span class="badge-type">${typeLabel}</span>
+                        </div>
+                        <div class="question-text">${item.q}</div>
+                        <div class="options" id="options-${index}">
+                            ${item.a.map((opt, optIdx) => `
+                                <button class="option-btn" onclick="checkAnswer(${index}, ${optIdx}, this)">
+                                    <span class="opt-label">${labels[optIdx]}.</span>
+                                    <span>${opt}</span>
+                                </button>
+                            `).join('')}
+                        </div>
+                        <div class="explanation-box" id="exp-${index}">
+                            <div class="exp-section">
+                                <span class="exp-label">🎯 Dấu hiệu nhận biết:</span>
+                                <div class="exp-content">${item.sign}</div>
+                            </div>
+                            <div class="exp-section">
+                                <span class="exp-label">💡 Tại sao chọn công thức này?</span>
+                                <div class="exp-content">${item.why}</div>
+                            </div>
+                            <div class="exp-section">
+                                <span class="exp-label">📝 Lời giải chi tiết:</span>
+                                <div class="exp-content">${item.detail}</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
         }
-      }
-      currentCategory = cat;
-      initQuestions();
-      clearState();
-      loadState();
-      renderApp();
-    }
 
-    function attachEvents() {
-      document.querySelectorAll('.subject-tab').forEach(t => t.onclick = () => switchSubject(t.dataset.subject));
-      document.querySelectorAll('.mode-btn').forEach(b => b.onclick = () => switchMode(b.dataset.mode));
-      document.querySelectorAll('.category-btn').forEach(b => b.onclick = () => switchCategory(b.dataset.category));
-      document.getElementById('prevBtn').onclick = prevQuestion;
-      document.getElementById('nextBtn').onclick = nextQuestion;
-      document.getElementById('submitBtn').onclick = submitQuiz;
-      document.getElementById('resetBtn').onclick = resetQuiz;
-      document.getElementById('logoutBtn').onclick = () => window.location.reload();
-    }
+        function checkAnswer(qIdx, optIdx, btn) {
+            const card = document.getElementById(`card-${qIdx}`);
+            const options = document.getElementById(`options-${qIdx}`).querySelectorAll('.option-btn');
+            const expBox = document.getElementById(`exp-${qIdx}`);
+            const correctIdx = quizData[qIdx].correct;
 
-    // ======================== LOGIN ========================
-    const loginScreen = document.getElementById('login-screen');
-    const appContainer = document.getElementById('app-container');
-    const loginBtn = document.getElementById('loginBtn');
-    const pwdInput = document.getElementById('passwordInput');
-    const loginError = document.getElementById('loginError');
-    function doLogin() {
-      if (pwdInput.value.trim() === CORRECT_PASSWORD) {
-        loginScreen.classList.add('exit');
-        setTimeout(() => {
-          loginScreen.style.display = 'none';
-          document.getElementById('themeToggle').classList.add('show');
-          appContainer.classList.add('visible');
-          loadCat5Unlock();
-          currentSubject = 'sequence';
-          currentMode = 'class';
-          initQuestions();
-          loadState();
-          renderApp();
-        }, 700);
-      } else {
-        loginError.style.display = 'block';
-        loginError.textContent = '❌ Sai mật khẩu!';
-        pwdInput.value = '';
-        setTimeout(() => loginError.style.display = 'none', 2000);
-      }
-    }
-    loginBtn.onclick = doLogin;
-    pwdInput.addEventListener('keypress', e => { if(e.key==='Enter') doLogin(); });
+            // Ngăn chọn lại nếu đã trả lời
+            if (options[0].disabled) return;
+            options.forEach(b => b.disabled = true);
+            answeredCount++;
 
-    const themeToggle = document.getElementById('themeToggle');
-    themeToggle.onclick = () => {
-      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
-      document.documentElement.setAttribute('data-theme', isDark ? '' : 'dark');
-      themeToggle.textContent = isDark ? '🌙' : '☀️';
-    };
-    document.addEventListener('mousemove', e => {
-      const light = document.getElementById('portalLight');
-      if(light) { light.style.left = e.clientX+'px'; light.style.top = e.clientY+'px'; }
-    });
-  })();
-</script>
+            if (optIdx === correctIdx) {
+                btn.classList.add('correct');
+                correctCount++;
+            } else {
+                btn.classList.add('wrong');
+                options[correctIdx].classList.add('correct');
+                wrongCount++;
+            }
+
+            // Hiển thị giải thích
+            expBox.style.display = 'block';
+
+            // Cập nhật điểm
+            document.getElementById('correct-score').textContent = correctCount;
+            document.getElementById('wrong-score').textContent = wrongCount;
+            document.getElementById('progress').textContent = answeredCount;
+
+            // Cuộn nhẹ tới phần giải thích
+            setTimeout(() => {
+                expBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }, 150);
+        }
+
+        function resetQuiz() {
+            correctCount = 0;
+            wrongCount = 0;
+            answeredCount = 0;
+            document.getElementById('correct-score').textContent = '0';
+            document.getElementById('wrong-score').textContent = '0';
+            document.getElementById('progress').textContent = '0';
+            renderQuiz();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.onload = renderQuiz;
+    </script>
 </body>
 </html>
